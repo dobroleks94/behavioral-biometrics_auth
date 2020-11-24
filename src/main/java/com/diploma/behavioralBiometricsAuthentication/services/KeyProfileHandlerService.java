@@ -11,10 +11,9 @@ import javax.annotation.PostConstruct;
 public class KeyProfileHandlerService {
 
     private final KeyInfoHolderFactory keyInfoHolderFactory;
-
     private Utility keyHandler;
-
     private KeyProfile currentKey, prevKey;
+
 
     public KeyProfileHandlerService(KeyInfoHolderFactory keyInfoHolderFactory){
         this.keyInfoHolderFactory = keyInfoHolderFactory;

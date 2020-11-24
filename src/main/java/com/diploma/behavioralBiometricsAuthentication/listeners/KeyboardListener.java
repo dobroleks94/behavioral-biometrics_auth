@@ -1,6 +1,7 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -34,24 +35,22 @@ public class KeyboardListener implements NativeKeyListener {
         if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
-                FeatureSample sample = kpsService.buildFeatureSample();
+                FeatureSample sample = featureSampleService.buildFeatureSample();
                 featureSampleService.save(sample);
-
-                fuzzyFeatureSampleService.setFuzzyMeasures(
-                        !fuzzyMeasureItemService.getAllFuzzyMeasureItems().isEmpty()
-                                ? fuzzyMeasureItemService.getAllFuzzyMeasureItems()
-                                : fuzzyMeasureItemService.computeFuzzyMeasureItems()
-                );
-                fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
                 System.out.println("Sample saved!");
                 //System.exit(0);
             }
         }
         //for debug
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
-            Double[] time = featureSampleService.getTimeCostsRange();
-            Double[] freq = featureSampleService.getFrequencyRange();
-            Double[] speed = featureSampleService.getTypingSpeedRange();
+            fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
+            /*fuzzyFeatureSampleService.setFuzzyMeasures(
+                    !fuzzyMeasureItemService.getAllFuzzyMeasureItems().isEmpty()
+                            ? fuzzyMeasureItemService.getAllFuzzyMeasureItems()
+                            : fuzzyMeasureItemService.computeFuzzyMeasureItems()
+            );*/
+            fuzzyFeatureSampleService.setFuzzyMeasures(fuzzyMeasureItemService.computeFuzzyMeasureItems());
+            List<FuzzyMeasureItem> items = fuzzyMeasureItemService.getAllFuzzyMeasureItems();
             System.exit(0);
         }
 
