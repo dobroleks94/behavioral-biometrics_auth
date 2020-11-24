@@ -45,7 +45,7 @@ public class FuzzyMeasureItemService {
         fuzzyItems.addAll( utils.generate(FeatureName.SPEED, minSpeed, maxSpeed) );
         fuzzyItems.addAll( utils.generate(FeatureName.FREQUENCY, minFrequencyRate, maxFrequencyRate ));
 
-
+        fuzzyMeasureRepository.saveAll(fuzzyItems);
 
         return getAllFuzzyMeasureItems();
     }
