@@ -3,12 +3,6 @@ package com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEnti
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Describes the single pressed key.
- * Contains information about pressed key value, code, release/press timestamps, time of key hold;
- * Differentiates whether pressed key is key for edit or belongs to NumPad keys;
- * Describes key's state: whether it pressed or released.
- */
 @Getter
 @Setter
 public class KeyProfile{

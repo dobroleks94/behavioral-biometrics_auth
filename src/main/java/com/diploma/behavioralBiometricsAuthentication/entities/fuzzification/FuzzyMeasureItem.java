@@ -11,10 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-/**
- * This class describes fuzzy ranges with its mean crisp value
- */
-
 @Getter
 @NoArgsConstructor
 @Entity
@@ -26,11 +22,13 @@ public class FuzzyMeasureItem {
     private Long id;
     private FeatureName featureName;
     private FuzzyMeasure fuzzyMeasure;
-    private double crispDescriptor;
+    private double minThreshold;
+    private double maxThreshold;
 
-    public FuzzyMeasureItem(FeatureName featureName, FuzzyMeasure fuzzyMeasure, double crispDescriptor) {
+    public FuzzyMeasureItem(FeatureName featureName, FuzzyMeasure fuzzyMeasure, double minThreshold, double maxThreshold) {
         this.featureName = featureName;
         this.fuzzyMeasure = fuzzyMeasure;
-        this.crispDescriptor = crispDescriptor;
+        this.minThreshold = minThreshold;
+        this.maxThreshold = maxThreshold;
     }
 }
