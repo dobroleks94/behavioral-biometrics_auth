@@ -5,9 +5,9 @@ package com.diploma.behavioralBiometricsAuthentication.entities.enums;
  * Measures for fuzzy values, acquired from pre-defined intervals of numeric values
  *
  * Here:
- *  ->   For typing speed, mean dwell time, mean backspace/delete dwell time,
- *                  mean flight time, mean di-/tri-graph key-up/key-down time - the VERY_SLOW, SLOW, MEDIUM, QUICK, FAST, VERY_FAST measures;
- *  ->   For indicators of frequent mistakes and NumPad usage - the VERY_RARE, RARE, MEDIUM, FREQUENT, VERY_FREQUENT;
+ *  ->   For typing speed, mean dwell time, frequency of mistakes and NumPad usage,
+ *              mean backspace/delete dwell time, mean flight time,
+ *              mean di-/tri-graph key-up/key-down time - the VERY_LOW, LOW, LESS_MEDIUM, MEDIUM, MORE_MEDIUM, HIGH, VERY_HIGH measures;
  */
 
 public enum FuzzyMeasure {
