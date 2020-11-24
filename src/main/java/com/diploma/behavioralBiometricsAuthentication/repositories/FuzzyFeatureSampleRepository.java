@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FuzzyFeatureSampleRepository extends JpaRepository<FuzzyFeatureSample, Long> {
-    void deleteAllByUserId(Long userId);
 }

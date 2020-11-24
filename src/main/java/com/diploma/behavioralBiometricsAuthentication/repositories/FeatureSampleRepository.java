@@ -2,6 +2,7 @@ package com.diploma.behavioralBiometricsAuthentication.repositories;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface FeatureSampleRepository extends JpaRepository<FeatureSample, Lo
     List<FeatureSample> findAllByOrderByMeanTrigraphKDTimeAsc();
     List<FeatureSample> findAllByOrderByMistakesFrequencyAsc();
     List<FeatureSample> findAllByOrderByNumPadUsageFrequencyAsc();
+
 }

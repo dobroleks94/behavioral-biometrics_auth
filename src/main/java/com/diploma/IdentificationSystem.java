@@ -1,13 +1,16 @@
 package com.diploma;
 
-import javafx.application.Application;
+import com.diploma.behavioralBiometricsAuthentication.services.FeatureSampleService;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class IdentificationSystem {
 
+    private static FeatureSampleService service;
     public static void main(String[] args) {
-        Application.launch(IdentificationSystemFx.class, args);
-        //SpringApplication.run(IdentificationSystem.class, args);
+        SpringApplication.run(IdentificationSystem.class, args);
     }
+
+
 }

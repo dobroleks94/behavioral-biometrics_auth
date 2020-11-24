@@ -3,9 +3,9 @@ package com.diploma.behavioralBiometricsAuthentication.entities.featureSamples;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import lombok.Getter;
 
-import javax.persistence.*;
-import java.util.Arrays;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Map;
 
 
@@ -34,17 +34,16 @@ public class FuzzyFeatureSample {
     @Id
     @GeneratedValue
     private Long id;
-    private FuzzyMeasure typingSpeed,
-                         meanDwellTime,
-                         meanDelBackspDwell,
-                         meanFlightTime,
-                         meanDigraphKUTime,
-                         meanDigraphKDTime,
-                         meanTrigraphKUTime,
-                         meanTrigraphKDTime,
-                         mistakesFrequency,
-                         numPadUsageFrequency;
-    private long userId;
+    private FuzzyMeasure    typingSpeed,
+                            meanDwellTime,
+                            meanDelBackspDwell,
+                            meanFlightTime,
+                            meanDigraphKUTime,
+                            meanDigraphKDTime,
+                            meanTrigraphKUTime,
+                            meanTrigraphKDTime,
+                            mistakesFrequency,
+                            numPadUsageFrequency;
 
     public FuzzyFeatureSample() {}
     public FuzzyFeatureSample(FuzzyMeasure typingSpeed,
@@ -70,34 +69,5 @@ public class FuzzyFeatureSample {
                 featureData.get("meanDiGraphKUTime"), featureData.get("meanDiGraphKDTime"),
                 featureData.get("meanTriGraphKUTime"), featureData.get("meanTriGraphKDTime"),
                 featureData.get("mistakesFrequency"), featureData.get("numPadUsageFrequency"));
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
-                                    typingSpeed.getShortRepres(),
-                                    meanDwellTime.getShortRepres(),
-                                    meanDelBackspDwell.getShortRepres(),
-                                    meanFlightTime.getShortRepres(),
-                                    meanDigraphKUTime.getShortRepres(),
-                                    meanDigraphKDTime.getShortRepres(),
-                                    meanTrigraphKUTime.getShortRepres(),
-                                    meanTrigraphKDTime.getShortRepres(),
-                                    mistakesFrequency.getShortRepres(),
-                                    numPadUsageFrequency.getShortRepres());
-    }
-
-    public static List<String> getMapKeys(){
-        return Arrays.asList(
-                        "typingSpeed",
-                        "meanDwellTime", "meanDelBackspDwell", "meanFlightTime",
-                        "meanDiGraphKUTime", "meanDiGraphKDTime",
-                        "meanTriGraphKUTime", "meanTriGraphKDTime",
-                        "mistakesFrequency", "numPadUsageFrequency"
-                );
     }
 }

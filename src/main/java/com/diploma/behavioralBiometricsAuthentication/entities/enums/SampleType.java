@@ -4,7 +4,7 @@ public enum SampleType {
 
     DiGraph(2), TriGraph(3), UNIDEFINED(0);
 
-    private final int contentLength;
+    int contentLength;
 
     SampleType(int contentLength) {
         this.contentLength = contentLength;
