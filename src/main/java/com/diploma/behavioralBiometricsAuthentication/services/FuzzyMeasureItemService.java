@@ -3,6 +3,7 @@ package com.diploma.behavioralBiometricsAuthentication.services;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FeatureName;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
+import com.diploma.behavioralBiometricsAuthentication.factories.FuzzyEntitiesFactory;
 import com.diploma.behavioralBiometricsAuthentication.repositories.FuzzyMeasureItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +15,22 @@ import java.util.List;
 @Service
 public class FuzzyMeasureItemService {
 
-    private FuzzyMeasureItemRepository fuzzyMeasureRepository;
-    private FeatureSampleService featureSampleService;
+    private final FuzzyMeasureItemRepository fuzzyMeasureRepository;
+    private final FeatureSampleService featureSampleService;
+    private final FuzzyEntitiesFactory fuzzyEntitiesFactory;
+    private Utility utils;
 
-    public FuzzyMeasureItemService(FuzzyMeasureItemRepository fuzzyMeasureRepository, FeatureSampleService featureSampleService) {
+    public FuzzyMeasureItemService(FuzzyMeasureItemRepository fuzzyMeasureRepository,
+                                   FeatureSampleService featureSampleService,
+                                   FuzzyEntitiesFactory fuzzyEntitiesFactory) {
         this.fuzzyMeasureRepository = fuzzyMeasureRepository;
         this.featureSampleService = featureSampleService;
+        this.fuzzyEntitiesFactory = fuzzyEntitiesFactory;
     }
-
-    private Utils utils;
 
     @PostConstruct
     private void initializeVariables(){
-        this.utils = new Utils();
+        this.utils = new Utility();
     }
 
     public List<FuzzyMeasureItem> getAllFuzzyMeasureItems() { return fuzzyMeasureRepository.findAll(); }
@@ -58,19 +62,19 @@ public class FuzzyMeasureItemService {
 
 
 
-    private class Utils{
+    private class Utility{
 
         private List<FuzzyMeasureItem> generate(FeatureName name, double min, double max){
 
             double step = (max - min) / 5; // defining a value of fuzzy indicators' range size
 
-            FuzzyMeasureItem veryLow = new FuzzyMeasureItem(name, FuzzyMeasure.VERY_LOW, 0, min);
-            FuzzyMeasureItem low = new FuzzyMeasureItem(name, FuzzyMeasure.LOW, min + 0.01, veryLow.getMaxThreshold() + step);
-            FuzzyMeasureItem lessMedium = new FuzzyMeasureItem(name, FuzzyMeasure.LESS_MEDIUM, low.getMaxThreshold() + 0.01, low.getMaxThreshold() + step);
-            FuzzyMeasureItem medium = new FuzzyMeasureItem(name, FuzzyMeasure.MEDIUM, lessMedium.getMaxThreshold() + 0.01, lessMedium.getMaxThreshold() + step);
-            FuzzyMeasureItem moreMedium = new FuzzyMeasureItem(name, FuzzyMeasure.MORE_MEDIUM, medium.getMaxThreshold() + 0.01, medium.getMaxThreshold() + step);
-            FuzzyMeasureItem high = new FuzzyMeasureItem(name, FuzzyMeasure.HIGH, moreMedium.getMaxThreshold() + 0.01, max);
-            FuzzyMeasureItem veryHigh = new FuzzyMeasureItem(name, FuzzyMeasure.VERY_HIGH, max + 0.01, Integer.MAX_VALUE);
+            FuzzyMeasureItem veryLow = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.VERY_LOW, 0);
+            FuzzyMeasureItem low = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.LOW, min);
+            FuzzyMeasureItem lessMedium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.LESS_MEDIUM, low.getCrispDescriptor() + step);
+            FuzzyMeasureItem medium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.MEDIUM, lessMedium.getCrispDescriptor() + step);
+            FuzzyMeasureItem moreMedium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.MORE_MEDIUM, medium.getCrispDescriptor() + step);
+            FuzzyMeasureItem high = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.HIGH, moreMedium.getCrispDescriptor() + step);
+            FuzzyMeasureItem veryHigh = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.VERY_HIGH, max);
 
             return Arrays.asList(veryLow, low, lessMedium, medium, moreMedium, high, veryHigh);
         }

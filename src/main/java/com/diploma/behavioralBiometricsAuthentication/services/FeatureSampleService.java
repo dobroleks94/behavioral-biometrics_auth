@@ -5,9 +5,8 @@ import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeyProfile;
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.Sample;
-import com.diploma.behavioralBiometricsAuthentication.exceptions.BadFeatureSampleException;
+import com.diploma.behavioralBiometricsAuthentication.factories.FeatureSampleFactory;
 import com.diploma.behavioralBiometricsAuthentication.repositories.FeatureSampleRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,30 +22,40 @@ public class FeatureSampleService {
 
     private final FeatureSampleRepository featureSampleRepository;
     private final KeyProfileSamplesService kpsService;
-    private Utils utils;
+    private final FeatureSampleFactory featureSampleFactory;
+    private Utility utils;
 
-    public FeatureSampleService(FeatureSampleRepository featureSampleRepository, KeyProfileSamplesService kpsService) {
+    public FeatureSampleService(FeatureSampleRepository featureSampleRepository,
+                                KeyProfileSamplesService kpsService,
+                                FeatureSampleFactory featureSampleFactory) {
         this.featureSampleRepository = featureSampleRepository;
         this.kpsService = kpsService;
+        this.featureSampleFactory = featureSampleFactory;
     }
 
     @PostConstruct
     private void initializeValues(){
-        this.utils = new Utils();
+        this.utils = new Utility();
     }
 
     public FeatureSample save(FeatureSample sample) {
         return featureSampleRepository.save(sample);
     }
-
     public Long getSize() {
         return featureSampleRepository.count();
     }
-
     public List<FeatureSample> findAll() {
         return featureSampleRepository.findAll();
     }
 
+    public FeatureSample buildFeatureSample() {
+        if (kpsService.getSamplesCollector().size() > 0)
+            return featureSampleFactory.createFeatureSample(
+                    utils.fillFeatures(kpsService.getSamplesCollector(), kpsService.getKeyProfilesCollector())
+                   );
+        else
+            throw new RuntimeException("It is likely to have been input nothing :(");
+    }
 
     public Double[] getTypingSpeedRange() {
         List<FeatureSample> samples = featureSampleRepository.findAllByOrderByTypingSpeedAsc();
@@ -55,7 +64,6 @@ public class FeatureSampleService {
                 samples.get(samples.size() - 1).getTypingSpeed()
         };
     }
-
     public Double[] getFrequencyRange() {
         Double minimum = findAscFrequencyValues(0).stream()
                 .reduce(Double::min)
@@ -66,7 +74,6 @@ public class FeatureSampleService {
 
         return new Double[]{minimum, maximum};
     }
-
     public Double[] getTimeCostsRange() {
         Double minimum = findAscTimedValues(0).stream()
                 .reduce(Double::min)
@@ -77,18 +84,17 @@ public class FeatureSampleService {
 
         return new Double[]{minimum, maximum};
     }
-
     public List<Double> findAscFrequencyValues(int index) {
         return Stream.of(
                 featureSampleRepository.findAllByOrderByMistakesFrequencyAsc().get(index).getMistakesFrequency(),
                 featureSampleRepository.findAllByOrderByNumPadUsageFrequencyAsc().get(index).getNumPadUsageFrequency()
         ).collect(Collectors.toList());
     }
-
     public List<Double> findAscTimedValues(int index) {
         return Stream.of(
                 featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
                 featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime(),
+                featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanDwellTime(),
                 featureSampleRepository.findAllByOrderByMeanDigraphKUTimeAsc().get(index).getMeanDigraphKUTime(),
                 featureSampleRepository.findAllByOrderByMeanDigraphKDTimeAsc().get(index).getMeanDigraphKDTime(),
                 featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),
@@ -97,16 +103,13 @@ public class FeatureSampleService {
 
     }
 
-    public FeatureSample buildFeatureSample() {
-        if (kpsService.getSamplesCollector().size() > 0)
-            return new FeatureSample(utils.fillFeatures(kpsService.getSamplesCollector(), kpsService.getKeyProfilesCollector()));
-        else
-            throw new BadFeatureSampleException();
-    }
 
 
-    private class Utils {
+
+    private class Utility {
+
         private Map<String, Double> fillFeatures(List<Sample> samplesCollector, List<KeyProfile> keyProfilesCollector) {
+
             HashMap<String, Double> result = new HashMap<>();
 
             computeTypeSpeed(keyProfilesCollector, result);
@@ -134,15 +137,14 @@ public class FeatureSampleService {
         }
 
         private void computeTypeSpeed(List<KeyProfile> keyProfilesCollector, HashMap<String, Double> result) {
-            int size = keyProfilesCollector.size();
-            int minute = 60;
-            int first = 0, last = keyProfilesCollector.size() - 1;
-            double inpTime = (double)
+            int size = keyProfilesCollector.size();  // the amount of all keys used in password, for example
+            int minute = 60; // seconds :)
+            int first = 0, last = keyProfilesCollector.size() - 1; // indexes of first key and last key
+            double inpTime = (double) // time, spent for typing password (in seconds)
                     (keyProfilesCollector.get(last).getReleaseTimestamp() - keyProfilesCollector.get(first).getPressTimestamp()) / 1000;
 
-            result.put("typingSpeed", (size / inpTime) * minute);
+            result.put("typingSpeed", (size / inpTime) * minute); // [keys per minute]
         }
-
         private void computeDwellTime(List<KeyProfile> keyProfilesCollector, HashMap<String, Double> result) {
             double dwellMean = (double) sumAll(keyProfilesCollector, KeyProfile::getHoldTime) / (long) keyProfilesCollector.size();
 
@@ -152,13 +154,11 @@ public class FeatureSampleService {
             result.put("meanDwellTime", dwellMean);
             result.put("meanDelBackspDwell", delHoldMean);
         }
-
         private void computeFlightTime(List<Sample> samples, HashMap<String, Double> result) {
             List<Sample> digraphSamples = samples.stream().filter(smpl -> smpl.getType() == SampleType.DiGraph).collect(Collectors.toList());
             result.put("meanFlightTime",
                     ((double) sumAll(digraphSamples, Sample::getFlightTime) / digraphSamples.size()));
         }
-
         private void computeKeyRelation(List<Sample> samplesCollector, HashMap<String, Double> result, SampleType type, KeyEventState eventState) {
             List<Sample> samplesKUKD = samplesCollector.stream().filter(item -> item.getType() == type).collect(Collectors.toList());
 
@@ -173,7 +173,6 @@ public class FeatureSampleService {
                     break;
             }
         }
-
         private void calculateUsageOf(String what, List<KeyProfile> keyProfilesCollector, HashMap<String, Double> result) {
             long keyPressCount;
             switch (what) {
