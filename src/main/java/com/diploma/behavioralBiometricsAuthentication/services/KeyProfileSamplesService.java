@@ -1,19 +1,13 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeyProfile;
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.Sample;
-import com.diploma.behavioralBiometricsAuthentication.entities.enums.KeyEventState;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
-import com.diploma.behavioralBiometricsAuthentication.exceptions.BadFeatureSampleException;
-import com.diploma.behavioralBiometricsAuthentication.exceptions.UndefinedSampleTypeException;
 import com.diploma.behavioralBiometricsAuthentication.factories.KeyInfoHolderFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class KeyProfileSamplesService {
@@ -55,14 +49,15 @@ public class KeyProfileSamplesService {
     public List<Sample> getSamplesCollector() {
         return samplesCollector;
     }
-
     public List<KeyProfile> getKeyProfilesCollector() {
         return keyProfilesCollector;
     }
-
     public List<KeyProfile> getTemporaryCollector() {
         return temporaryCollector;
     }
+
+
+
 
     private class Utility {
 
@@ -76,15 +71,28 @@ public class KeyProfileSamplesService {
                     samplesCollector.add(createSample(profiles));
                 }
                 return true;
-            } catch (UndefinedSampleTypeException e) {
+            } catch (RuntimeException e) {
                 e.printStackTrace();
-
                 samplesCollector.clear();
                 return false;
             }
         }
 
-        private Sample createSample(KeyProfile[] keyProfile) throws UndefinedSampleTypeException {
+        private KeyProfile[] defineProfileSet(SampleType sampleType, int index, int threshold) {
+            KeyProfile[] res =
+                    sampleType == SampleType.DiGraph ?
+                            new KeyProfile[]{temporaryCollector.get(index), temporaryCollector.get(index + threshold)}
+                            :
+                            sampleType == SampleType.TriGraph ?
+                                    new KeyProfile[]{temporaryCollector.get(index), temporaryCollector.get(index + threshold - 1), temporaryCollector.get(index + threshold)}
+                                    : new KeyProfile[]{};
+            if (res.length == 0)
+                throw new RuntimeException("Undefined sample type: " + sampleType.name());
+
+            return res;
+        }
+
+        private Sample createSample(KeyProfile[] keyProfile) {
             String splitter = "__";
 
             String name = Arrays.stream(keyProfile)
@@ -96,7 +104,7 @@ public class KeyProfileSamplesService {
             SampleType type = keyProfile.length == 2 ? SampleType.DiGraph :
                     keyProfile.length == 3 ? SampleType.TriGraph : SampleType.UNIDEFINED;
             if (type == SampleType.UNIDEFINED)
-                throw new UndefinedSampleTypeException(type.name());
+                throw new RuntimeException("Undefined sample type: " + type.name());
 
 
             double meanDwell = (double) Arrays.stream(keyProfile)
@@ -110,21 +118,5 @@ public class KeyProfileSamplesService {
 
             return keyInfoHolderFactory.createSample(name, type, meanDwell, flightTime, keyDownTime, keyUpTime);
         }
-
-        private KeyProfile[] defineProfileSet(SampleType sampleType, int index, int threshold) {
-            KeyProfile[] res =
-                    sampleType == SampleType.DiGraph ?
-                            new KeyProfile[]{temporaryCollector.get(index), temporaryCollector.get(index + threshold)}
-                            :
-                            sampleType == SampleType.TriGraph ?
-                                    new KeyProfile[]{temporaryCollector.get(index), temporaryCollector.get(index + threshold - 1), temporaryCollector.get(index + threshold)}
-                                    : new KeyProfile[]{};
-            if (res.length == 0)
-                throw new UndefinedSampleTypeException(sampleType.name());
-
-            return res;
-        }
-
-
     }
 }

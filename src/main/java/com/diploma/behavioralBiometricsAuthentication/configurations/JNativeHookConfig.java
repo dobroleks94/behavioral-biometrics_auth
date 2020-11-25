@@ -1,4 +1,4 @@
-package com.diploma.behavioralBiometricsAuthentication.configuration;
+package com.diploma.behavioralBiometricsAuthentication.configurations;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;

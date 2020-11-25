@@ -1,6 +1,8 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
@@ -38,19 +40,16 @@ public class KeyboardListener implements NativeKeyListener {
                 FeatureSample sample = featureSampleService.buildFeatureSample();
                 featureSampleService.save(sample);
                 System.out.println("Sample saved!");
-                //System.exit(0);
             }
         }
         //for debug
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
-            fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
-            /*fuzzyFeatureSampleService.setFuzzyMeasures(
-                    !fuzzyMeasureItemService.getAllFuzzyMeasureItems().isEmpty()
-                            ? fuzzyMeasureItemService.getAllFuzzyMeasureItems()
-                            : fuzzyMeasureItemService.computeFuzzyMeasureItems()
-            );*/
             fuzzyFeatureSampleService.setFuzzyMeasures(fuzzyMeasureItemService.computeFuzzyMeasureItems());
-            List<FuzzyMeasureItem> items = fuzzyMeasureItemService.getAllFuzzyMeasureItems();
+            fuzzyFeatureSampleService.deleteAll();
+            fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
+
+            List<FuzzyMeasureItem> items = fuzzyMeasureItemService.getAllFuzzyMeasureItems();   //for debug
+            List<FuzzyFeatureSample> fuzzyFeatureSamples = fuzzyFeatureSampleService.findAll(); //for debug
             System.exit(0);
         }
 

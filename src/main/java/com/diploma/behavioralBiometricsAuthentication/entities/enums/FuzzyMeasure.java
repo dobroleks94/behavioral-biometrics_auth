@@ -26,4 +26,8 @@ public enum FuzzyMeasure {
         this.name = name;
         this.shortRepres = shortRepres;
     }
+
+    public String getShortRepres() {
+        return shortRepres;
+    }
 }
