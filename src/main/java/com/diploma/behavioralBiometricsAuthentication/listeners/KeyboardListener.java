@@ -7,7 +7,6 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 
 

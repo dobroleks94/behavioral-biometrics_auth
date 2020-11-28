@@ -12,9 +12,6 @@ import com.diploma.behavioralBiometricsAuthentication.repositories.FuzzyFeatureS
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.URI;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
