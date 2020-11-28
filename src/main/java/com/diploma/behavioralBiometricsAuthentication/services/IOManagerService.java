@@ -1,7 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
-import net.sourceforge.jFuzzyLogic.FIS;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +18,6 @@ public class IOManagerService {
     private static final String TEMP_INPUT= "tempInput.arff.temp";
     private static final String TEMP_OUTPUT_ARFF = "tempOutput.arff";
     private static final String TEMP_OUTPUT = "tempOutput.arff.tmp";
-    private static final String FIS_FILE = "authenticator.fcl";
 
     private Utility utils;
 
@@ -37,15 +35,6 @@ public class IOManagerService {
             for(var profile : fuzzyFeatures)
                 Files.write(file, profile.toString().concat("\r\n").getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) { e.printStackTrace(); }
-
-        System.out.println("Features parameters are detected");
-    }
-    public void writeFIS(FIS fis) throws IOException {
-        Path filePath = Paths.get(".", FIS_FILE);
-        if(Files.exists(filePath))
-            Files.delete(filePath);
-        Files.createFile(filePath);
-        Files.write(filePath, fis.toString().getBytes());
     }
 
     public void deleteTemporaryFiles(){
@@ -81,18 +70,16 @@ public class IOManagerService {
         return TEMP_OUTPUT;
     }
 
-    public FIS loadFIS() {
-        return FIS.load(FIS_FILE, true);
-    }
-
-
     private class Utility{
 
         public Path declareAttributes(List<String> mapKeys) throws IOException {
             Path filePath = Paths.get(".", TEMP_INPUT_ARFF);
+
             if (Files.exists(filePath))
                 Files.delete(filePath);
+
             Files.createFile(filePath);
+
             mapKeys.forEach(attribute -> {
                         try { Files.write(filePath,
                                 String.format("@ATTRIBUTE %s STRING\r\n", attribute).getBytes(),

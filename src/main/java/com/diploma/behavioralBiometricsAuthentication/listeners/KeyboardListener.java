@@ -7,6 +7,7 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,6 +20,8 @@ public class KeyboardListener implements NativeKeyListener {
     private final FeatureSampleService featureSampleService;
     private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
+    private final AssociationRulesService associationRulesService;
+    private final StageCreationService stageCreationService;
 
 
 
@@ -34,25 +37,24 @@ public class KeyboardListener implements NativeKeyListener {
         if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
-                FeatureSample sample = kpsService.buildFeatureSample();
+                FeatureSample sample = featureSampleService.buildFeatureSample();
                 featureSampleService.save(sample);
-
-                fuzzyFeatureSampleService.setFuzzyMeasures(
-                        !fuzzyMeasureItemService.getAllFuzzyMeasureItems().isEmpty()
-                                ? fuzzyMeasureItemService.getAllFuzzyMeasureItems()
-                                : fuzzyMeasureItemService.computeFuzzyMeasureItems()
-                );
-                fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
                 System.out.println("Sample saved!");
-                //System.exit(0);
+                return;
             }
         }
         //for debug
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
-            Double[] time = featureSampleService.getTimeCostsRange();
-            Double[] freq = featureSampleService.getFrequencyRange();
-            Double[] speed = featureSampleService.getTypingSpeedRange();
-            System.exit(0);
+            fuzzyFeatureSampleService.setFuzzyMeasures(fuzzyMeasureItemService.computeFuzzyMeasureItems());
+            fuzzyFeatureSampleService.deleteAll();
+            fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
+
+            if(associationRulesService.getAssociationRules(fuzzyFeatureSampleService.findAll()))
+                System.out.println("success");
+            else
+                System.out.println("Error(");
+
+            return;
         }
 
         kpsService.addTemporary( keyProfileHandlerService.processReleasing(e.getKeyCode(), e.getWhen()) );
