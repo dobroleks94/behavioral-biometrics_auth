@@ -1,15 +1,13 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
-import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
-import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -22,6 +20,8 @@ public class KeyboardListener implements NativeKeyListener {
     private final FeatureSampleService featureSampleService;
     private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
+    private final AssociationRulesService associationRulesService;
+    private final StageCreationService stageCreationService;
 
 
 
@@ -40,6 +40,7 @@ public class KeyboardListener implements NativeKeyListener {
                 FeatureSample sample = featureSampleService.buildFeatureSample();
                 featureSampleService.save(sample);
                 System.out.println("Sample saved!");
+                return;
             }
         }
         //for debug
@@ -48,9 +49,12 @@ public class KeyboardListener implements NativeKeyListener {
             fuzzyFeatureSampleService.deleteAll();
             fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
 
-            List<FuzzyMeasureItem> items = fuzzyMeasureItemService.getAllFuzzyMeasureItems();   //for debug
-            List<FuzzyFeatureSample> fuzzyFeatureSamples = fuzzyFeatureSampleService.findAll(); //for debug
-            System.exit(0);
+            if(associationRulesService.getAssociationRules(fuzzyFeatureSampleService.findAll()))
+                System.out.println("success");
+            else
+                System.out.println("Error(");
+
+            return;
         }
 
         kpsService.addTemporary( keyProfileHandlerService.processReleasing(e.getKeyCode(), e.getWhen()) );

@@ -47,6 +47,8 @@ public class FeatureSampleService {
     public List<FeatureSample> findAll() {
         return featureSampleRepository.findAll();
     }
+    public void deleteOne(long id) { featureSampleRepository.deleteById(id);
+        System.out.println("Success delete");}
 
     public FeatureSample buildFeatureSample() {
         if (kpsService.getSamplesCollector().size() > 0)
@@ -94,7 +96,7 @@ public class FeatureSampleService {
         return Stream.of(
                 featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
                 featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime(),
-                featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanDwellTime(),
+                featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanFlightTime(),
                 featureSampleRepository.findAllByOrderByMeanDigraphKUTimeAsc().get(index).getMeanDigraphKUTime(),
                 featureSampleRepository.findAllByOrderByMeanDigraphKDTimeAsc().get(index).getMeanDigraphKDTime(),
                 featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),

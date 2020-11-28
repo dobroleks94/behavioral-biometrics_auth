@@ -6,6 +6,8 @@ import lombok.Getter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -73,7 +75,7 @@ public class FuzzyFeatureSample {
 
     @Override
     public String toString() {
-        return String.format("'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'",
+        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
                                     typingSpeed.getShortRepres(),
                                     meanDwellTime.getShortRepres(),
                                     meanDelBackspDwell.getShortRepres(),
@@ -84,5 +86,15 @@ public class FuzzyFeatureSample {
                                     meanTrigraphKDTime.getShortRepres(),
                                     mistakesFrequency.getShortRepres(),
                                     numPadUsageFrequency.getShortRepres());
+    }
+
+    public static List<String> getMapKeys(){
+        return Arrays.asList(
+                        "typingSpeed",
+                        "meanDwellTime", "meanDelBackspDwell", "meanFlightTime",
+                        "meanDiGraphKUTime", "meanDiGraphKDTime",
+                        "meanTriGraphKUTime", "meanTriGraphKDTime",
+                        "mistakesFrequency", "numPadUsageFrequency"
+                );
     }
 }
