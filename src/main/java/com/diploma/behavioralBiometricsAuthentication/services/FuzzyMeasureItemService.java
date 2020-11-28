@@ -3,8 +3,8 @@ package com.diploma.behavioralBiometricsAuthentication.services;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FeatureName;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
+import com.diploma.behavioralBiometricsAuthentication.factories.FuzzyEntitiesFactory;
 import com.diploma.behavioralBiometricsAuthentication.repositories.FuzzyMeasureItemRepository;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,21 +13,30 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-@Setter
 public class FuzzyMeasureItemService {
 
-    private FuzzyMeasureItemRepository fuzzyMeasureRepository;
-    private FeatureSampleService featureSampleService;
-    private Utils utils;
+    private final FuzzyMeasureItemRepository fuzzyMeasureRepository;
+    private final FeatureSampleService featureSampleService;
+    private final FuzzyEntitiesFactory fuzzyEntitiesFactory;
+    private Utility utils;
+
+    public FuzzyMeasureItemService(FuzzyMeasureItemRepository fuzzyMeasureRepository,
+                                   FeatureSampleService featureSampleService,
+                                   FuzzyEntitiesFactory fuzzyEntitiesFactory) {
+        this.fuzzyMeasureRepository = fuzzyMeasureRepository;
+        this.featureSampleService = featureSampleService;
+        this.fuzzyEntitiesFactory = fuzzyEntitiesFactory;
+    }
 
     @PostConstruct
     private void initializeVariables(){
-        this.utils = new Utils();
+        this.utils = new Utility();
     }
 
     public List<FuzzyMeasureItem> getAllFuzzyMeasureItems() { return fuzzyMeasureRepository.findAll(); }
-
     public List<FuzzyMeasureItem> computeFuzzyMeasureItems() {
+
+        fuzzyMeasureRepository.deleteAll();
 
         List<FuzzyMeasureItem> fuzzyItems = new ArrayList<>();
 
@@ -45,26 +54,27 @@ public class FuzzyMeasureItemService {
         fuzzyItems.addAll( utils.generate(FeatureName.SPEED, minSpeed, maxSpeed) );
         fuzzyItems.addAll( utils.generate(FeatureName.FREQUENCY, minFrequencyRate, maxFrequencyRate ));
 
-
+        fuzzyMeasureRepository.saveAll(fuzzyItems);
 
         return getAllFuzzyMeasureItems();
     }
 
 
 
-    private class Utils{
+
+    private class Utility{
 
         private List<FuzzyMeasureItem> generate(FeatureName name, double min, double max){
 
-            double step = max / 5;
+            double step = (max - min) / FuzzyMeasure.values().length; // defining a value of fuzzy indicators' range size
 
-            FuzzyMeasureItem veryLow = new FuzzyMeasureItem(name, FuzzyMeasure.VERY_LOW, Double.MIN_VALUE, min);
-            FuzzyMeasureItem low = new FuzzyMeasureItem(name, FuzzyMeasure.LOW, veryLow.getMaxThreshold() + 0.1, veryLow.getMaxThreshold() + step);
-            FuzzyMeasureItem lessMedium = new FuzzyMeasureItem(name, FuzzyMeasure.LESS_MEDIUM, low.getMaxThreshold() + 0.1, low.getMaxThreshold() + step);
-            FuzzyMeasureItem medium = new FuzzyMeasureItem(name, FuzzyMeasure.MEDIUM, lessMedium.getMaxThreshold() + 0.1, lessMedium.getMaxThreshold() + step);
-            FuzzyMeasureItem moreMedium = new FuzzyMeasureItem(name, FuzzyMeasure.MORE_MEDIUM, medium.getMaxThreshold() + 0.1, medium.getMaxThreshold() + step);
-            FuzzyMeasureItem high = new FuzzyMeasureItem(name, FuzzyMeasure.HIGH, moreMedium.getMaxThreshold() + 0.1, moreMedium.getMaxThreshold() + step);
-            FuzzyMeasureItem veryHigh = new FuzzyMeasureItem(name, FuzzyMeasure.VERY_HIGH, max + 0.1, Double.MAX_VALUE);
+            FuzzyMeasureItem veryLow = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.VERY_LOW, min);
+            FuzzyMeasureItem low = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.LOW, veryLow.getCrispDescriptor() + step);
+            FuzzyMeasureItem lessMedium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.LESS_MEDIUM, low.getCrispDescriptor() + step);
+            FuzzyMeasureItem medium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.MEDIUM, lessMedium.getCrispDescriptor() + step);
+            FuzzyMeasureItem moreMedium = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.MORE_MEDIUM, medium.getCrispDescriptor() + step);
+            FuzzyMeasureItem high = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.HIGH, moreMedium.getCrispDescriptor() + step);
+            FuzzyMeasureItem veryHigh = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.VERY_HIGH, max);
 
             return Arrays.asList(veryLow, low, lessMedium, medium, moreMedium, high, veryHigh);
         }
