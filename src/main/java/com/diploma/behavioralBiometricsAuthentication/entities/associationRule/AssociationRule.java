@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table
 @Getter
 @Setter
 public class AssociationRule {
@@ -20,7 +21,6 @@ public class AssociationRule {
     private List<AssociationItem> consequent;
     private int support;
     private double confidence;
-    private long userId;
 
 
 }

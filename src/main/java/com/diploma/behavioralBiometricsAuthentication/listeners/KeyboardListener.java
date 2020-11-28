@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,6 @@ public class KeyboardListener implements NativeKeyListener {
 
         List<FeatureSample> featureSamples = featureSampleService.findAll(); // for debug
 
-
         if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
@@ -49,11 +49,8 @@ public class KeyboardListener implements NativeKeyListener {
             fuzzyFeatureSampleService.deleteAll();
             fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
 
-            if(associationRulesService.getAssociationRules(fuzzyFeatureSampleService.findAll()))
-                System.out.println("success");
-            else
-                System.out.println("Error(");
-
+            List<AssociationRule> associationRules = associationRulesService.getAssociationRules(fuzzyFeatureSampleService.findAll());
+            //TODO: Saving AssociationRules to database
             return;
         }
 
