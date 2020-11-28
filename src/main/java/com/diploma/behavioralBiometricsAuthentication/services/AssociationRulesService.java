@@ -6,6 +6,10 @@ import ca.pfv.spmf.gui.PreferencesManager;
 import ca.pfv.spmf.patterns.itemset_array_integers_with_count.Itemsets;
 import ca.pfv.spmf.tools.dataset_converter.TransactionDatabaseConverter;
 import ca.pfv.spmf.tools.resultConverter.ResultConverter;
+import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationItem;
+import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
+import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
+import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.factories.AssociationRulesEngineFactory;
 import org.springframework.stereotype.Service;
@@ -13,10 +17,15 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class AssociationRulesService {
@@ -42,21 +51,18 @@ public class AssociationRulesService {
         this.utility = new Utility();
     }
 
-    public boolean getAssociationRules(List<FuzzyFeatureSample> fuzzyFeatureSamples){
+    public List<AssociationRule> getAssociationRules(List<FuzzyFeatureSample> fuzzyFeatureSamples){
 
         try {
 
             Map<Integer, String> itemsRepresentation = doDataPreProcess(fuzzyFeatureSamples);
             Itemsets frequentPatterns = getFrequentItemsets();
             generateAssociationRules(frequentPatterns);
-            doDataPostProcess(itemsRepresentation);
-            //TODO: generate AssociationRules Entities to return
-            ioManagerService.deleteTemporaryFiles();
-            //ioManagerService.deleteAllFiles();
-            return true;
+
+            return doDataPostProcess(itemsRepresentation);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -73,14 +79,17 @@ public class AssociationRulesService {
                 Integer.MAX_VALUE
         );
     }
-    public Path doDataPostProcess(Map<Integer, String> dataPreProcess) throws IOException {
+    public List<AssociationRule> doDataPostProcess(Map<Integer, String> dataPreProcess) throws IOException {
 
         Charset charset = PreferencesManager.getInstance().getPreferedCharset();
         ResultConverter converter = associationRulesEngine.createResultConverter();
 
         converter.convert(dataPreProcess, IOManagerService.getTempOutput(), IOManagerService.getTempOutputArff(), charset);
 
-        return Paths.get(".", IOManagerService.getTempOutputArff());
+        List<AssociationRule> rulesEntities = parseOutput();
+        ioManagerService.deleteAllFiles();
+
+        return rulesEntities;
 
     }
     public Itemsets getFrequentItemsets() throws IOException {
@@ -103,6 +112,13 @@ public class AssociationRulesService {
         algoAgrawal.runAlgorithm(itemsets, IOManagerService.getTempOutput(), utility.getDBSize(), MINIMUM_CONFIDENCE);
     }
 
+    public List<AssociationRule> parseOutput() throws IOException {
+        return Files.lines(Paths.get(".", IOManagerService.getTempOutputArff()))
+                .map(utility::splitForVitalParts)
+                .map(item -> utility.processPartitions(item, associationRulesEngine.createRule()))
+                .collect(Collectors.toList());
+    }
+
 
 
 
@@ -117,6 +133,58 @@ public class AssociationRulesService {
         private void setDBSize(int dbSize) {
             this.dbSize = dbSize;
         }
+
+        private Map<String, String> splitForVitalParts(String stringRule) {
+
+            Pattern pattern = Pattern.compile("(([A-Za-z]+=[А-Я]+\\s)+)(==>\\s)(([A-Za-z]+=[А-Я]+\\s)+)(#SUP:\\s\\d+)(\\s)(#CONF:\\s\\d+\\.\\d+)");
+            Matcher matcher = pattern.matcher(stringRule);
+
+            if(matcher.find())
+                return new HashMap<>(){
+                    {  put(AssociationRuleParty.ANTECEDENT.name(), matcher.group(1)); }
+                    {  put(AssociationRuleParty.CONSEQUENT.name(), matcher.group(4)); }
+                    {  put("support",    matcher.group(6)); }
+                    {  put("confidence", matcher.group(8)); }
+                };
+            else throw new RuntimeException("Impossible to process association rule :(");
+        }
+
+        private AssociationRule processPartitions(Map<String, String> parts, AssociationRule rule) {
+            List<AssociationItem> antecedents = processParty(AssociationRuleParty.ANTECEDENT, parts, rule);
+            List<AssociationItem> consequents = processParty(AssociationRuleParty.CONSEQUENT, parts, rule);
+            int support = (int) getMeasure("support", parts);
+            double confidence = (double) getMeasure("confidence", parts);
+
+            rule.setAntecedent(antecedents);
+            rule.setConsequent(consequents);
+            rule.setSupport(support);
+            rule.setConfidence(confidence);
+
+            return rule;
+        }
+
+        private Number getMeasure(String measure, Map<String, String> parts) {
+            switch (measure){
+                case "support":
+                    return Integer.parseInt(parts.get("support").split(":")[1].trim());
+                case "confidence":
+                    return Double.parseDouble(parts.get("confidence").split(":")[1].trim());
+                default:
+                    throw new RuntimeException("Bad measure specified!");
+            }
+        }
+
+        private List<AssociationItem> processParty(AssociationRuleParty party, Map<String, String> parts, AssociationRule rule){
+            return  Arrays.stream(parts.get(party.name()).split("\\s+"))
+                    .map(item -> associationRulesEngine.createAssociationItem(
+                            party,
+                            item.split("=")[0],
+                            FuzzyMeasure.getByShortRepres(item.split("=")[1]),
+                            rule
+                    ))
+                    .collect(Collectors.toList());
+        }
+
     }
 
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table
 @Getter
 @Setter
 public class AssociationRule {
@@ -20,25 +21,6 @@ public class AssociationRule {
     private List<AssociationItem> consequent;
     private int support;
     private double confidence;
-    private long userId;
 
-    private String getStringRule(List<AssociationItem> items){
-        String itemRepres = items.stream()
-                .map(AssociationItem::toString)
-                .reduce("", (prevRes, item) -> prevRes + " AND " + item);
-        String pattern = " AND ";
-        return (itemRepres.startsWith(pattern))
-                ? itemRepres.substring(pattern.length())
-                : itemRepres;
-    }
 
-    @Override
-    public String toString() {
-
-        return new StringBuilder("IF ")
-                .append(getStringRule(antecedent))
-                .append( " THEN " )
-                .append(getStringRule(consequent))
-                .toString();
-    }
 }

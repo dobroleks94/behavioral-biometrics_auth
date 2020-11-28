@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,11 +29,5 @@ public class AssociationItem {
         this.featureName = featureName;
         this.measure = measure;
         this.parent = parent;
-    }
-
-
-    @Override
-    public String toString() {
-        return String.format("%s IS %s", featureName, measure.getEngRepres());
     }
 }
