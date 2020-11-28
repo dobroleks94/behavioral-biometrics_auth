@@ -12,6 +12,9 @@ import com.diploma.behavioralBiometricsAuthentication.repositories.FuzzyFeatureS
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.net.URI;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +46,9 @@ public class FuzzyFeatureSampleService {
     public List<FuzzyFeatureSample> findAll() {
         return fuzzyFeatureSampleRepository.findAll();
     }
-    public void saveAll(List<FeatureSample> featureSamples) { fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples)); }
+    public void saveAll(List<FeatureSample> featureSamples) {
+        fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
+    }
     public void deleteAll() { fuzzyFeatureSampleRepository.deleteAll(); }
 
     public void setFuzzyMeasures(List<FuzzyMeasureItem> measureItems) {
@@ -59,7 +64,6 @@ public class FuzzyFeatureSampleService {
                 utils.fillFeatures(featureSample, measures)
                );
     }
-
 
 
     private class Utility {
@@ -107,7 +111,11 @@ public class FuzzyFeatureSampleService {
             FuzzyMeasureItem leftPossible = measures.stream()
                     .filter(item -> item.getFeatureName() == featureName)
                     .filter(item -> crispValue >= item.getCrispDescriptor())
-                    .reduce((first, last) -> last).orElseThrow(() -> new RuntimeException("Crisp value doesn't satisfy any fuzzy measure range: " + crispValue));
+                    .reduce((first, last) -> last).orElse(
+                            measures.stream()
+                                    .filter(item -> item.getFeatureName() == featureName && item.getFuzzyMeasure() == FuzzyMeasure.VERY_LOW)
+                                    .findFirst().get()
+                    );
             FuzzyMeasureItem rightPossible = measures.stream()
                     .filter(item -> item.getFeatureName() == featureName)
                     .filter(item -> crispValue < item.getCrispDescriptor())
@@ -179,8 +187,5 @@ public class FuzzyFeatureSampleService {
                     throw new RuntimeException("Bad feature name: " + feature);
             }
         }
-
-
-
     }
 }
