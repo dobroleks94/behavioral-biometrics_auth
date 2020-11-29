@@ -2,6 +2,8 @@ package com.diploma.behavioralBiometricsAuthentication.listeners;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -22,6 +24,7 @@ public class KeyboardListener implements NativeKeyListener {
     private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
     private final AssociationRulesService associationRulesService;
+    private final SystemLogger systemLogger;
     private final StageCreationService stageCreationService;
 
 
@@ -39,7 +42,7 @@ public class KeyboardListener implements NativeKeyListener {
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
                 FeatureSample sample = featureSampleService.buildFeatureSample();
                 featureSampleService.save(sample);
-                System.out.println("Sample saved!");
+                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
                 return;
             }
         }
@@ -47,10 +50,14 @@ public class KeyboardListener implements NativeKeyListener {
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
             fuzzyFeatureSampleService.setFuzzyMeasures(fuzzyMeasureItemService.computeFuzzyMeasureItems());
             fuzzyFeatureSampleService.deleteAll();
-            fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
+            associationRulesService.deleteAll();
 
-            List<AssociationRule> associationRules = associationRulesService.getAssociationRules(fuzzyFeatureSampleService.findAll());
-            //TODO: Saving AssociationRules to database
+            List<FuzzyFeatureSample> fuzzyFeatures = fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
+            List<AssociationRule> associationRules = associationRulesService.getAssociationRules(fuzzyFeatures);
+
+            associationRulesService.saveAll(associationRules);
+            systemLogger.log(SystemLogger.ASSOCIATION_RULES_SAVE_SUCCESS_RESULT);
+
             return;
         }
 

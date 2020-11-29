@@ -13,7 +13,6 @@ public class SystemLogger {
     public static final String DELETING_RESULT = "Temporary files deleted successfully.";
     public static final String SAMPLE_SAVE_SUCCESS_RESULT = "Sample saved successfully!";
     public static final String ASSOCIATION_RULES_SAVE_SUCCESS_RESULT = "Association rules saved successfully!";
-    public static final String KEY_FEATURE_CONTAINERS_CLEAN = "All key feature containers have been successfully cleaned";
 
 
     public void log(String text){
