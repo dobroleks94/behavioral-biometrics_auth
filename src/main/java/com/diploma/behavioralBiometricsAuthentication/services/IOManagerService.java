@@ -35,6 +35,8 @@ public class IOManagerService {
             for(var profile : fuzzyFeatures)
                 Files.write(file, profile.toString().concat("\r\n").getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) { e.printStackTrace(); }
+
+        System.out.println("Features parameters are detected");
     }
 
     public void deleteTemporaryFiles(){
