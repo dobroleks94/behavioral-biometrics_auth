@@ -11,7 +11,9 @@ import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.A
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.factories.AssociationRulesEngineFactory;
+import com.diploma.behavioralBiometricsAuthentication.repositories.AssociationRuleRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -36,14 +38,21 @@ public class AssociationRulesService {
     private static final double MINIMUM_SUPPORT = 0.5;
     private static final double MINIMUM_CONFIDENCE = 1;
 
+    private final AssociationRuleRepository associationRuleRepository;
     private final AssociationRulesEngineFactory associationRulesEngine;
     private final IOManagerService ioManagerService;
+    private final SystemLogger logger;
     private Utility utility;
 
 
-    public AssociationRulesService(AssociationRulesEngineFactory associationRulesEngine, IOManagerService ioManagerService) {
+    public AssociationRulesService(AssociationRuleRepository associationRuleRepository,
+                                   AssociationRulesEngineFactory associationRulesEngine,
+                                   IOManagerService ioManagerService,
+                                   SystemLogger logger) {
+        this.associationRuleRepository = associationRuleRepository;
         this.associationRulesEngine = associationRulesEngine;
         this.ioManagerService = ioManagerService;
+        this.logger = logger;
     }
 
     @PostConstruct
@@ -51,13 +60,20 @@ public class AssociationRulesService {
         this.utility = new Utility();
     }
 
+    public void saveAll(List<AssociationRule> associationRules){ associationRules.parallelStream().forEach(associationRuleRepository::saveAndFlush); }
+    public void deleteAll() { associationRuleRepository.deleteAll(); }
+    public List<AssociationRule> findAll() { return associationRuleRepository.findAll(); }
+
     public List<AssociationRule> getAssociationRules(List<FuzzyFeatureSample> fuzzyFeatureSamples){
 
         try {
 
             Map<Integer, String> itemsRepresentation = doDataPreProcess(fuzzyFeatureSamples);
+            logger.log(SystemLogger.PRE_PROCESS_RESULT);
             Itemsets frequentPatterns = getFrequentItemsets();
+            logger.log(SystemLogger.FREQUENT_PATTERNS_RESULT);
             generateAssociationRules(frequentPatterns);
+            logger.log(SystemLogger.ASSOCIATION_RULES_DATA_RESULT);
 
             return doDataPostProcess(itemsRepresentation);
         } catch (IOException e) {
@@ -87,7 +103,9 @@ public class AssociationRulesService {
         converter.convert(dataPreProcess, IOManagerService.getTempOutput(), IOManagerService.getTempOutputArff(), charset);
 
         List<AssociationRule> rulesEntities = parseOutput();
+        logger.log(SystemLogger.POST_PROCESS_RESULT);
         ioManagerService.deleteAllFiles();
+        logger.log(SystemLogger.DELETING_RESULT);
 
         return rulesEntities;
 

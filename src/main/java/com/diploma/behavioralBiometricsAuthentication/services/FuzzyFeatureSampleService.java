@@ -46,8 +46,8 @@ public class FuzzyFeatureSampleService {
     public List<FuzzyFeatureSample> findAll() {
         return fuzzyFeatureSampleRepository.findAll();
     }
-    public void saveAll(List<FeatureSample> featureSamples) {
-        fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
+    public List<FuzzyFeatureSample> saveAll(List<FeatureSample> featureSamples) {
+        return fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
     }
     public void deleteAll() { fuzzyFeatureSampleRepository.deleteAll(); }
 
