@@ -60,7 +60,7 @@ public class AssociationRulesService {
         this.utility = new Utility();
     }
 
-    public void saveAll(List<AssociationRule> associationRules){ associationRules.parallelStream().forEach(associationRuleRepository::saveAndFlush); }
+    public List<AssociationRule> saveAll(List<AssociationRule> associationRules){ return associationRuleRepository.saveAll(associationRules); }
     public void deleteAll() { associationRuleRepository.deleteAll(); }
     public List<AssociationRule> findAll() { return associationRuleRepository.findAll(); }
 
