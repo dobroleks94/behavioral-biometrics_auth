@@ -52,9 +52,8 @@ public class KeyboardListener implements NativeKeyListener {
             associationRulesService.deleteAll();
 
             List<FuzzyFeatureSample> fuzzyFeatures = fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
-            List<AssociationRule> associationRules = associationRulesService.getAssociationRules(fuzzyFeatures);
+            List<AssociationRule> associationR = associationRulesService.saveAll(associationRulesService.getAssociationRules(fuzzyFeatures));
 
-            List<AssociationRule> associationR = associationRulesService.saveAll(associationRules);
             systemLogger.log(SystemLogger.ASSOCIATION_RULES_SAVE_SUCCESS_RESULT);
 
             return;
