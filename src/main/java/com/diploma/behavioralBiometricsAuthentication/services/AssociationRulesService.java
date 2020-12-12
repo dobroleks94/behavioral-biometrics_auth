@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class AssociationRulesService {
 
-    private static final int MINIMUM_PATTERN_LENGTH = 5;
+    private static final int MINIMUM_PATTERN_LENGTH = 7;
     private static final int MAXIMUM_PATTERN_LENGTH = Integer.MAX_VALUE;
 
     private static final double MINIMUM_SUPPORT = 0.5;
