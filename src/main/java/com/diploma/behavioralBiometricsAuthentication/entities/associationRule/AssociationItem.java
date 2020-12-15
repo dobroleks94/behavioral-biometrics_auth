@@ -29,4 +29,10 @@ public class AssociationItem {
         this.measure = measure;
         this.parent = parent;
     }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s IS %s", featureName, measure.getEngRepres());
+    }
 }
