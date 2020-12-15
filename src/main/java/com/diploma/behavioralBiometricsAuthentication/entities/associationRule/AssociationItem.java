@@ -33,6 +33,6 @@ public class AssociationItem {
 
     @Override
     public String toString() {
-        return String.format("%s IS %s", featureName, measure.getShortRepres());
+        return String.format("%s IS %s", featureName, measure.getEngRepres());
     }
 }
