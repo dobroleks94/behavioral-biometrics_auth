@@ -68,7 +68,7 @@ public class FuzzyInferenceService {
                 .collect(Collectors.toList());  // output TERMS for decision (Genuine or Intruder user)
         factory.updateVariable(output, outputTerms);  // adding terms to respective variables
         output.setDefuzzifier(factory.createDefuzzifierCOG(output)); // Defuzzifier definition and assigning to output variable
-        RuleBlock ruleBlock = factory.createRuleBlock("rulesFromAssociated", functionBlock); // creating rule block which contains all rules
+        RuleBlock ruleBlock = factory.createRuleBlock("rulesFromAssociationRules", functionBlock); // creating rule block which contains all rules
         List<Rule> rules = utility.collectRules(associationRules, input, output, ruleBlock); // generating rules from Association Rules
 
         HashMap<String, RuleBlock> ruleBlocksMap = new HashMap<>();
