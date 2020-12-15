@@ -1,6 +1,7 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
+import net.sourceforge.jFuzzyLogic.FIS;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ public class IOManagerService {
     private static final String TEMP_INPUT= "tempInput.arff.temp";
     private static final String TEMP_OUTPUT_ARFF = "tempOutput.arff";
     private static final String TEMP_OUTPUT = "tempOutput.arff.tmp";
+    private static final String FIS_FILE = "authenticator.fcl";
 
     private Utility utils;
 
@@ -37,6 +39,12 @@ public class IOManagerService {
         } catch (IOException e) { e.printStackTrace(); }
 
         System.out.println("Features parameters are detected");
+    }
+    public void writeFIS(FIS fis) throws IOException {
+        Path filePath = Paths.get(".", FIS_FILE);
+        Files.createFile(filePath);
+
+        Files.write(filePath, fis.toString().getBytes());
     }
 
     public void deleteTemporaryFiles(){
