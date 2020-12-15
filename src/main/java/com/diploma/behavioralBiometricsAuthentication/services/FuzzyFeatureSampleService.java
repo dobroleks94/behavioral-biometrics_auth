@@ -40,9 +40,7 @@ public class FuzzyFeatureSampleService {
         this.utils = new Utility();
     }
 
-    public List<FuzzyFeatureSample> findAll() {
-        return fuzzyFeatureSampleRepository.findAll();
-    }
+
     public List<FuzzyFeatureSample> saveAll(List<FeatureSample> featureSamples) {
         return fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
     }
@@ -61,6 +59,7 @@ public class FuzzyFeatureSampleService {
                 utils.fillFeatures(featureSample, measures)
                );
     }
+    public FeatureName getFeatureName(String feature){ return utils.chooseFeatureNameFrom(feature); }
 
 
     private class Utility {
@@ -140,8 +139,6 @@ public class FuzzyFeatureSampleService {
             });
             values.sort((a, b) -> (int) (b.getMembershipRate() * 100 - a.getMembershipRate() * 100));
             return values;
-
-
         }
 
         private Double chooseCrispValueFrom(FeatureSample featureSample, String feature) {

@@ -13,24 +13,25 @@ import java.util.Arrays;
  */
 
 public enum FuzzyMeasure {
-    VERY_LOW    ("Дуже низька",     "ДН"),  LOW         ("Низька",          "Н"),
-    LESS_MEDIUM ("Менше середньої", "МС"),  MORE_MEDIUM ("Більше середньої","БС"),
-    MEDIUM      ("Середня",         "С"),   HIGH        ("Висока",          "В"),
-    VERY_HIGH   ("Дуже висока",     "ДВ");
+    VERY_LOW    ("Дуже низька",     "ДН", "very low"),  LOW         ("Низька",          "Н", "low"),
+    LESS_MEDIUM ("Менше середньої", "МС", "less medium"),  MORE_MEDIUM ("Більше середньої","БС", "more medium"),
+    MEDIUM      ("Середня",         "С", "medium"),   HIGH        ("Висока",          "В", "high"),
+    VERY_HIGH   ("Дуже висока",     "ДВ", "very high");
 
 
+    private final String shortRepres;
+    private final String engRepres;
 
-
-    String name;
-    String shortRepres;
-
-    FuzzyMeasure(String name, String shortRepres) {
-        this.name = name;
+    FuzzyMeasure(String name, String shortRepres, String engRepres) {
         this.shortRepres = shortRepres;
+        this.engRepres = engRepres;
     }
 
     public String getShortRepres() {
         return shortRepres;
+    }
+    public String getEngRepres() {
+        return engRepres;
     }
 
     public static FuzzyMeasure getByShortRepres(String shortRepres){

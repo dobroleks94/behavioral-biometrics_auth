@@ -33,6 +33,7 @@ public class FuzzyMeasureItemService {
         this.utils = new Utility();
     }
 
+    public List<FuzzyMeasureItem> getFuzzyMeasuresByFeatureName(FeatureName featureName) { return fuzzyMeasureRepository.findAllByFeatureName(featureName); }
     public List<FuzzyMeasureItem> getAllFuzzyMeasureItems() { return fuzzyMeasureRepository.findAll(); }
     public List<FuzzyMeasureItem> computeFuzzyMeasureItems() {
 

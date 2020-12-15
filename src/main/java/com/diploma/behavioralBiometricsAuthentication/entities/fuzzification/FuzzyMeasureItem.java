@@ -33,14 +33,4 @@ public class FuzzyMeasureItem {
         this.fuzzyMeasure = fuzzyMeasure;
         this.crispDescriptor = crispDescriptor;
     }
-
-    /*private double minThreshold;
-    private double maxThreshold;
-
-    public FuzzyMeasureItem(FeatureName featureName, FuzzyMeasure fuzzyMeasure, double minThreshold, double maxThreshold) {
-        this.featureName = featureName;
-        this.fuzzyMeasure = fuzzyMeasure;
-        this.minThreshold = minThreshold;
-        this.maxThreshold = maxThreshold;
-    }*/
 }
