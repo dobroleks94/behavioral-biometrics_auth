@@ -80,6 +80,10 @@ public class IOManagerService {
         return TEMP_OUTPUT;
     }
 
+    public FIS loadFIS() {
+        return FIS.load(FIS_FILE, true);
+    }
+
 
     private class Utility{
 
