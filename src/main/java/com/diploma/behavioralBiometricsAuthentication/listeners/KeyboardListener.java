@@ -45,7 +45,7 @@ public class KeyboardListener implements NativeKeyListener {
                 FeatureSample sample = featureSampleService.buildFeatureSample();
 //                featureSampleService.save(sample);
 //                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
-                fuzzyInferenceService.authentication(sample);
+                String result = fuzzyInferenceService.authentication(sample);
                 return;
             }
         }

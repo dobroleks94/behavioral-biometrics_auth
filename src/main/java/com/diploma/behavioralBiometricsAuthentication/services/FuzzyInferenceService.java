@@ -91,7 +91,7 @@ public class FuzzyInferenceService {
     public String authentication(FeatureSample inputSample){
         FIS fis = ioManagerService.loadFIS();
 
-        JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
+        //JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
 
         fis.setVariable("typingSpeed", inputSample.getTypingSpeed());
         fis.setVariable("numPadUsageFrequency", inputSample.getNumPadUsageFrequency());
@@ -108,10 +108,9 @@ public class FuzzyInferenceService {
 
         Variable userVerdict = fis.getVariable("user");
 
-        double genuine = userVerdict.getMembership("GENUINE");
-        double intruder = userVerdict.getMembership("INTRUDER");
+        double genuine = Double.isNaN(userVerdict.getMembership("GENUINE")) ? 0.0 : userVerdict.getMembership("GENUINE");
 
-        return "";
+        return genuine > 0.5 ? "GENUINE" : "INTRUDER";
     }
 
 
