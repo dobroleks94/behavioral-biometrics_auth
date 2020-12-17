@@ -43,8 +43,9 @@ public class KeyboardListener implements NativeKeyListener {
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
                 FeatureSample sample = featureSampleService.buildFeatureSample();
-                featureSampleService.save(sample);
-                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
+//                featureSampleService.save(sample);
+//                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
+                fuzzyInferenceService.authentication(sample);
                 return;
             }
         }
