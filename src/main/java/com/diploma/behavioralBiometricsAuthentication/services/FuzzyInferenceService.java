@@ -5,6 +5,7 @@ import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.A
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FeatureName;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
+import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.VarOutput;
@@ -15,7 +16,9 @@ import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.membership.MembershipFunction;
 import net.sourceforge.jFuzzyLogic.membership.MembershipFunctionTriangular;
 import net.sourceforge.jFuzzyLogic.membership.Value;
+import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 import net.sourceforge.jFuzzyLogic.rule.*;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -28,13 +31,18 @@ public class FuzzyInferenceService {
     private final FuzzyEntitiesFactory factory;
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
     private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
+    private final IOManagerService ioManagerService;
 
     private Utility utility;
 
-    public FuzzyInferenceService(FuzzyEntitiesFactory factory, FuzzyMeasureItemService fuzzyMeasureItemService, FuzzyFeatureSampleService fuzzyFeatureSampleService) {
+    public FuzzyInferenceService(FuzzyEntitiesFactory factory,
+                                 FuzzyMeasureItemService fuzzyMeasureItemService,
+                                 FuzzyFeatureSampleService fuzzyFeatureSampleService,
+                                 IOManagerService ioManagerService) {
         this.factory = factory;
         this.fuzzyMeasureItemService = fuzzyMeasureItemService;
         this.fuzzyFeatureSampleService = fuzzyFeatureSampleService;
+        this.ioManagerService = ioManagerService;
     }
 
     @PostConstruct
@@ -80,6 +88,31 @@ public class FuzzyInferenceService {
 
         return fis;
     }
+    public String authentication(FeatureSample inputSample){
+        FIS fis = ioManagerService.loadFIS();
+
+        JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
+
+        fis.setVariable("typingSpeed", inputSample.getTypingSpeed());
+        fis.setVariable("numPadUsageFrequency", inputSample.getNumPadUsageFrequency());
+        fis.setVariable("mistakesFrequency", inputSample.getMistakesFrequency());
+        fis.setVariable("meanTriGraphKUTime", inputSample.getMeanTrigraphKUTime());
+        fis.setVariable("meanTriGraphKDTime", inputSample.getMeanTrigraphKDTime());
+        fis.setVariable("meanFlightTime", inputSample.getMeanFlightTime());
+        fis.setVariable("meanDwellTime", inputSample.getMeanDwellTime());
+        fis.setVariable("meanDiGraphKUTime", inputSample.getMeanDigraphKUTime());
+        fis.setVariable("meanDiGraphKDTime", inputSample.getMeanDigraphKDTime());
+        fis.setVariable("meanDelBackspDwell", inputSample.getMeanDelBackspDwell());
+
+        fis.evaluate();
+
+        Variable userVerdict = fis.getVariable("user");
+
+        double genuine = userVerdict.getMembership("GENUINE");
+        double intruder = userVerdict.getMembership("INTRUDER");
+
+        return "";
+    }
 
 
 
@@ -94,50 +127,50 @@ public class FuzzyInferenceService {
         private Value[] valuesFor(String feature, FuzzyMeasure measure){
             FeatureName featureName = fuzzyFeatureSampleService.getFeatureName(feature);
             List<FuzzyMeasureItem> fuzzyMeasures = fuzzyMeasureItemService.getFuzzyMeasuresByFeatureName(featureName);
-            int indexMin = Integer.MIN_VALUE;
-            int indexMid = Integer.MIN_VALUE;
-            int indexMax = Integer.MIN_VALUE;
+            double min = Integer.MIN_VALUE;
+            double mid = Integer.MIN_VALUE;
+            double max = Integer.MIN_VALUE;
             switch (measure) {
                 case VERY_LOW -> {
-                    indexMin = 0;
-                    indexMid = 0;
-                    indexMax = 1;
+                    min = fuzzyMeasures.get(0).getCrispDescriptor() - fuzzyMeasures.get(6).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(0).getCrispDescriptor();
+                    max = fuzzyMeasures.get(1).getCrispDescriptor();
                 }
                 case LOW -> {
-                    indexMin = 0;
-                    indexMid = 1;
-                    indexMax = 2;
+                    min = fuzzyMeasures.get(0).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(1).getCrispDescriptor();
+                    max = fuzzyMeasures.get(2).getCrispDescriptor();
                 }
                 case LESS_MEDIUM -> {
-                    indexMin = 1;
-                    indexMid = 2;
-                    indexMax = 3;
+                    min = fuzzyMeasures.get(1).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(2).getCrispDescriptor();
+                    max = fuzzyMeasures.get(3).getCrispDescriptor();
                 }
                 case MEDIUM -> {
-                    indexMin = 2;
-                    indexMid = 3;
-                    indexMax = 4;
+                    min = fuzzyMeasures.get(2).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(3).getCrispDescriptor();
+                    max = fuzzyMeasures.get(4).getCrispDescriptor();
                 }
                 case MORE_MEDIUM -> {
-                    indexMin = 3;
-                    indexMid = 4;
-                    indexMax = 5;
+                    min = fuzzyMeasures.get(3).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(4).getCrispDescriptor();
+                    max = fuzzyMeasures.get(5).getCrispDescriptor();
                 }
                 case HIGH -> {
-                    indexMin = 4;
-                    indexMid = 5;
-                    indexMax = 6;
+                    min = fuzzyMeasures.get(4).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(5).getCrispDescriptor();
+                    max = fuzzyMeasures.get(6).getCrispDescriptor();
                 }
                 case VERY_HIGH -> {
-                    indexMin = 5;
-                    indexMid = 6;
-                    indexMax = 6;
+                    min = fuzzyMeasures.get(5).getCrispDescriptor();
+                    mid = fuzzyMeasures.get(6).getCrispDescriptor();
+                    max = fuzzyMeasures.get(6).getCrispDescriptor() * 2;
                 }
             }
             return new Value[]{
-                    new Value(fuzzyMeasures.get(indexMin).getCrispDescriptor()),
-                    new Value(fuzzyMeasures.get(indexMid).getCrispDescriptor()),
-                    new Value(fuzzyMeasures.get(indexMax).getCrispDescriptor())
+                    new Value(min),
+                    new Value(mid),
+                    new Value(max)
             };
         }
         private List<LinguisticTerm> createInputTerms(String feature){
@@ -181,7 +214,7 @@ public class FuzzyInferenceService {
 
             return associationRules.stream()
                     .map(aRule -> {
-                        Rule rule = factory.createRule("Rule #" + aRule.getId(), ruleBlock);
+                        Rule rule = factory.createRule(aRule.getId().toString(), ruleBlock);
                         List<RuleTerm> terms = collectRuleTerms(variablesIn, aRule, AssociationRuleParty.ANTECEDENT);
                         terms.addAll( collectRuleTerms(variablesIn, aRule, AssociationRuleParty.CONSEQUENT) );
                         RuleExpression expression = factory.createRuleExpressionAND(terms);

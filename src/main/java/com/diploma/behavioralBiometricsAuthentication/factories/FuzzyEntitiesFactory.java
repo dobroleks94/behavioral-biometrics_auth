@@ -40,6 +40,7 @@ public class FuzzyEntitiesFactory {
     }
     public FunctionBlock createFunctionBlock(String name, FIS fis){
         FunctionBlock functionBlock = new FunctionBlock(fis);
+        functionBlock.setName(name);
         fis.addFunctionBlock(name, functionBlock);
         return functionBlock;
     }
