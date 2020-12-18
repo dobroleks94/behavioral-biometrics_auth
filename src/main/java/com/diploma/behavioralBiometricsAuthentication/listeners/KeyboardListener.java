@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -27,6 +29,7 @@ public class KeyboardListener implements NativeKeyListener {
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
     private final AssociationRulesService associationRulesService;
     private final SystemLogger systemLogger;
+    private final UserService userService;
     private final FuzzyInferenceService fuzzyInferenceService;
     private final IOManagerService ioManagerService;
     private final StageCreationService stageCreationService;
@@ -43,6 +46,7 @@ public class KeyboardListener implements NativeKeyListener {
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
                 FeatureSample sample = featureSampleService.buildFeatureSample();
+                sample.setUserId(1L);
 //                featureSampleService.save(sample);
 //                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
                 String result = fuzzyInferenceService.authentication(sample);
@@ -51,17 +55,23 @@ public class KeyboardListener implements NativeKeyListener {
         }
         //for debug
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
+            User user = userService.findById(1L);
+
             fuzzyFeatureSampleService.setFuzzyMeasures(fuzzyMeasureItemService.computeFuzzyMeasureItems());
-            fuzzyFeatureSampleService.deleteAll();
+            fuzzyFeatureSampleService.deleteAllByUserId(user.getId());
             associationRulesService.deleteAll();
 
             List<FuzzyFeatureSample> fuzzyFeatures = fuzzyFeatureSampleService.saveAll( featureSampleService.findAll() );
-            List<AssociationRule> associationRules = associationRulesService.saveAll(associationRulesService.getAssociationRules(fuzzyFeatures));
+            List<AssociationRule> associationRules = associationRulesService.saveAll(
+                    associationRulesService.assignOwner(userService.findById(1L),
+                            associationRulesService.getAssociationRules(fuzzyFeatures))
+            );
             List<FuzzyMeasureItem> measureItems = fuzzyMeasureItemService.getAllFuzzyMeasureItems();
             systemLogger.log(SystemLogger.ASSOCIATION_RULES_SAVE_SUCCESS_RESULT);
             FIS fis = fuzzyInferenceService.createNewFIS(10, associationRules);
             try { ioManagerService.writeFIS(fis); }
             catch (IOException ioException) { ioException.printStackTrace(); }
+
 
             return;
         }

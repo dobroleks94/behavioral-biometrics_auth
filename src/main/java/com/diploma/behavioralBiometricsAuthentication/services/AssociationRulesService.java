@@ -6,6 +6,7 @@ import ca.pfv.spmf.gui.PreferencesManager;
 import ca.pfv.spmf.patterns.itemset_array_integers_with_count.Itemsets;
 import ca.pfv.spmf.tools.dataset_converter.TransactionDatabaseConverter;
 import ca.pfv.spmf.tools.resultConverter.ResultConverter;
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
@@ -62,8 +63,10 @@ public class AssociationRulesService {
 
     public List<AssociationRule> saveAll(List<AssociationRule> associationRules){ return associationRuleRepository.saveAll(associationRules); }
     public void deleteAll() { associationRuleRepository.deleteAll(); }
-    public List<AssociationRule> findAll() { return associationRuleRepository.findAll(); }
-
+    public List<AssociationRule> assignOwner(User user, List<AssociationRule> rules) {
+        rules.forEach(rule -> rule.setUserId(user.getId()));
+        return rules;
+    }
     public List<AssociationRule> getAssociationRules(List<FuzzyFeatureSample> fuzzyFeatureSamples){
 
         try {
