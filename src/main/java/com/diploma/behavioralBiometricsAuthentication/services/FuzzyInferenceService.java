@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
@@ -10,15 +11,12 @@ import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.Fu
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.VarOutput;
 import com.diploma.behavioralBiometricsAuthentication.factories.FuzzyEntitiesFactory;
-import lombok.AllArgsConstructor;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.membership.MembershipFunction;
 import net.sourceforge.jFuzzyLogic.membership.MembershipFunctionTriangular;
 import net.sourceforge.jFuzzyLogic.membership.Value;
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 import net.sourceforge.jFuzzyLogic.rule.*;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +29,7 @@ public class FuzzyInferenceService {
     private final FuzzyEntitiesFactory factory;
     private final FuzzyMeasureItemService fuzzyMeasureItemService;
     private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
+    private final UserService userService;
     private final IOManagerService ioManagerService;
 
     private Utility utility;
@@ -38,11 +37,13 @@ public class FuzzyInferenceService {
     public FuzzyInferenceService(FuzzyEntitiesFactory factory,
                                  FuzzyMeasureItemService fuzzyMeasureItemService,
                                  FuzzyFeatureSampleService fuzzyFeatureSampleService,
-                                 IOManagerService ioManagerService) {
+                                 IOManagerService ioManagerService,
+                                 UserService userService) {
         this.factory = factory;
         this.fuzzyMeasureItemService = fuzzyMeasureItemService;
         this.fuzzyFeatureSampleService = fuzzyFeatureSampleService;
         this.ioManagerService = ioManagerService;
+        this.userService = userService;
     }
 
     @PostConstruct
@@ -67,12 +68,12 @@ public class FuzzyInferenceService {
                 )
         ); // creating TERMS for each FUZZIFY item
 
-        Map<VarOutput, MembershipFunction> membershipFunctionMap = utility.getMembershipFunctions
+        Map<String, MembershipFunction> membershipFunctionMap = utility.getMembershipFunctions
                 (defuzzifyTermStep, MembershipFunctionTriangular.class);  // Membership function ranges for output decision
 
         List<LinguisticTerm> outputTerms = membershipFunctionMap.entrySet()
                 .stream()
-                .map(item -> factory.createTerm(item.getKey().name(), item.getValue()))
+                .map(item -> factory.createTerm(item.getKey(), item.getValue()))
                 .collect(Collectors.toList());  // output TERMS for decision (Genuine or Intruder user)
         factory.updateVariable(output, outputTerms);  // adding terms to respective variables
         output.setDefuzzifier(factory.createDefuzzifierCOG(output)); // Defuzzifier definition and assigning to output variable
@@ -91,7 +92,7 @@ public class FuzzyInferenceService {
     public String authentication(FeatureSample inputSample){
         FIS fis = ioManagerService.loadFIS();
 
-        JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
+        //JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
 
         fis.setVariable("typingSpeed", inputSample.getTypingSpeed());
         fis.setVariable("numPadUsageFrequency", inputSample.getNumPadUsageFrequency());
@@ -108,10 +109,11 @@ public class FuzzyInferenceService {
 
         Variable userVerdict = fis.getVariable("user");
 
-        double genuine = userVerdict.getMembership("GENUINE");
-        double intruder = userVerdict.getMembership("INTRUDER");
-
-        return "";
+        return userVerdict.getLinguisticTerms().values().stream()
+                                            .filter(lingTerm -> userVerdict.getValue() > lingTerm.getMembershipFunction().getParameter(0) &&
+                                                                userVerdict.getValue() < lingTerm.getMembershipFunction().getParameter(2))
+                                            .map(LinguisticTerm::getTermName)
+                                            .findFirst().orElse("INTRUDER");
     }
 
 
@@ -184,12 +186,13 @@ public class FuzzyInferenceService {
                     )
                     .collect(Collectors.toList());
         }
-        private Map<VarOutput, MembershipFunction> getMembershipFunctions(int defuzzifyTermStep, Class<? extends MembershipFunction> membershipFunction) {
-            Map<VarOutput, MembershipFunction> result = new HashMap<>();
+        private Map<String, MembershipFunction> getMembershipFunctions(int defuzzifyTermStep, Class<? extends MembershipFunction> membershipFunction) {
+            Map<String, MembershipFunction> result = new HashMap<>();
             double currentPoint = 0.0;
+            List<User> users = userService.findAll();
             if (MembershipFunctionTriangular.class.equals(membershipFunction)) {
-                for(var user : VarOutput.values()){
-                    result.put(user, factory.createTriangularMF(
+                for(var user : users){
+                    result.put(user.getLogin(), factory.createTriangularMF(
                             new Value[]{
                                     new Value(currentPoint),
                                     new Value(currentPoint + (defuzzifyTermStep / 2.0)),
@@ -218,7 +221,7 @@ public class FuzzyInferenceService {
                         List<RuleTerm> terms = collectRuleTerms(variablesIn, aRule, AssociationRuleParty.ANTECEDENT);
                         terms.addAll( collectRuleTerms(variablesIn, aRule, AssociationRuleParty.CONSEQUENT) );
                         RuleExpression expression = factory.createRuleExpressionAND(terms);
-                        factory.updateRule(rule, expression, factory.createRuleTerm(variableOut, VarOutput.GENUINE.name()));
+                        factory.updateRule(rule, expression, factory.createRuleTerm(variableOut, userService.findById(aRule.getUserId()).getLogin()));
                         return rule;
                     })
                     .collect(Collectors.toList());
