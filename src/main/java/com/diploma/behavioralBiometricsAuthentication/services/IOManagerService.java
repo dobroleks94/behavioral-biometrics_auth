@@ -42,8 +42,9 @@ public class IOManagerService {
     }
     public void writeFIS(FIS fis) throws IOException {
         Path filePath = Paths.get(".", FIS_FILE);
+        if(Files.exists(filePath))
+            Files.delete(filePath);
         Files.createFile(filePath);
-
         Files.write(filePath, fis.toString().getBytes());
     }
 
@@ -89,12 +90,9 @@ public class IOManagerService {
 
         public Path declareAttributes(List<String> mapKeys) throws IOException {
             Path filePath = Paths.get(".", TEMP_INPUT_ARFF);
-
             if (Files.exists(filePath))
                 Files.delete(filePath);
-
             Files.createFile(filePath);
-
             mapKeys.forEach(attribute -> {
                         try { Files.write(filePath,
                                 String.format("@ATTRIBUTE %s STRING\r\n", attribute).getBytes(),
