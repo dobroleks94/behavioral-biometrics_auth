@@ -1,10 +1,9 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.featureSamples;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Map;
 
 
@@ -43,6 +42,7 @@ public class FeatureSample {
                    meanTrigraphKDTime,
                    mistakesFrequency,
                    numPadUsageFrequency;
+    private long userId;
 
 
     public FeatureSample() {}
@@ -69,5 +69,9 @@ public class FeatureSample {
                 featureData.get("meanDiGraphKUTime"), featureData.get("meanDiGraphKDTime"),
                 featureData.get("meanTriGraphKUTime"), featureData.get("meanTriGraphKDTime"),
                 featureData.get("mistakesFrequency"), featureData.get("numPadUsageFrequency"));
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
