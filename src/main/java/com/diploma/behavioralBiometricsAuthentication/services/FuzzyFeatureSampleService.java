@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FeatureName;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
@@ -12,9 +13,7 @@ import com.diploma.behavioralBiometricsAuthentication.repositories.FuzzyFeatureS
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.URI;
-import java.nio.file.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,11 +42,11 @@ public class FuzzyFeatureSampleService {
         this.utils = new Utility();
     }
 
-
     public List<FuzzyFeatureSample> saveAll(List<FeatureSample> featureSamples) {
         return fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
     }
-    public void deleteAll() { fuzzyFeatureSampleRepository.deleteAll(); }
+    @Transactional
+    public void deleteAllByUserId(Long userId) { fuzzyFeatureSampleRepository.deleteAllByUserId(userId);}
 
     public void setFuzzyMeasures(List<FuzzyMeasureItem> measureItems) {
         this.measures = measureItems;
@@ -58,9 +57,11 @@ public class FuzzyFeatureSampleService {
                 .collect(Collectors.toList());
     }
     public FuzzyFeatureSample convertToFuzzyFeature(FeatureSample featureSample) {
-        return featureSampleFactory.createFuzzyFeatureSample(
+        FuzzyFeatureSample fuzzyFeatureSample = featureSampleFactory.createFuzzyFeatureSample(
                 utils.fillFeatures(featureSample, measures)
-               );
+        );
+        fuzzyFeatureSample.setUserId(featureSample.getUserId());
+        return fuzzyFeatureSample;
     }
     public FeatureName getFeatureName(String feature){ return utils.chooseFeatureNameFrom(feature); }
 

@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.associationRule;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class AssociationRule {
     private List<AssociationItem> consequent;
     private int support;
     private double confidence;
+    private long userId;
 
 
 }
