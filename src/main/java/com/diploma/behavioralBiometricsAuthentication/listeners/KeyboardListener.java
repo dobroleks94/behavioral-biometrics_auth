@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -32,7 +31,6 @@ public class KeyboardListener implements NativeKeyListener {
     private final UserService userService;
     private final FuzzyInferenceService fuzzyInferenceService;
     private final IOManagerService ioManagerService;
-    private final StageCreationService stageCreationService;
 
 
 
@@ -42,14 +40,14 @@ public class KeyboardListener implements NativeKeyListener {
 
     public void nativeKeyReleased(NativeKeyEvent e) {
 
-        if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
+        /*if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
-                FeatureSample sample = featureSampleService.buildFeatureSample();
-                sample.setUserId(1L);
+//                FeatureSample sample = FeatureSample sample = featureSampleService.buildFeatureSample();
 //                featureSampleService.save(sample);
 //                systemLogger.log(SystemLogger.SAMPLE_SAVE_SUCCESS_RESULT);
-                String result = fuzzyInferenceService.authentication(sample);
+//                String result = fuzzyInferenceService.authentication(sample);
+//                System.out.println(result);
                 return;
             }
         }
@@ -74,8 +72,7 @@ public class KeyboardListener implements NativeKeyListener {
 
 
             return;
-        }
-
+        }*/
         kpsService.addTemporary( keyProfileHandlerService.processReleasing(e.getKeyCode(), e.getWhen()) );
 
     }
