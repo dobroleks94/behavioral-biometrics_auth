@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,15 +18,15 @@
       <Rectangle fx:id="step4" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="749.0" layoutY="137.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
       <Rectangle fx:id="step3" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="503.0" layoutY="138.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
       <Rectangle fx:id="step2" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="249.0" layoutY="138.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
-      <Button fx:id="loginButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Увійти" textAlignment="CENTER">
+      <Button fx:id="authButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#auth" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Продовжити" textAlignment="CENTER">
       </Button>
       <Button fx:id="continueButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#startListener" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Продовжити" textAlignment="CENTER" />
-      <Label layoutX="336.0" layoutY="270.0" text="Behavioral Biometrics" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="title1" layoutX="336.0" layoutY="270.0" text="Behavioral Biometrics" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Ubuntu Bold" size="40.0" />
          </font>
       </Label>
-      <Label layoutX="409.0" layoutY="318.0" text="Authentication System" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="title2" layoutX="409.0" layoutY="318.0" text="Authentication System" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Ubuntu Bold" size="25.0" />
          </font>
@@ -45,7 +46,7 @@
       </Pane>
       <Pane fx:id="passwordPane" layoutX="322.0" layoutY="380.0" prefHeight="60.0" prefWidth="450.0">
          <children>
-               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization" onMousePressed="#resetAuthGUI" onMouseReleased="#startListener" prefHeight="50.0" prefWidth="327.0" promptText="Пароль" styleClass="inputAdj">
+               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization1" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Пароль" styleClass="inputAdj">
                <font>
                   <Font name="Ubuntu" size="22.0" />
                </font>
@@ -127,5 +128,22 @@
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
       </Label>
+      <Rectangle fx:id="descriptionContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="76.0" layoutX="144.0" layoutY="225.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
+      <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="201.0" layoutX="144.0" layoutY="307.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
+      <Label fx:id="descriptionLabel" layoutX="235.0" layoutY="248.0" text="Будь ласка, введіть нижче запропонований текст:">
+         <font>
+            <Font name="Ubuntu Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="inputPhrase" layoutX="179.0" layoutY="321.0" prefHeight="70.0" prefWidth="751.0" text="Plain sentence, which user should enter for successful authentication.">
+         <font>
+            <Font name="Ubuntu Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="inputArea" layoutX="176.0" layoutY="387.0" onKeyReleased="#verifyFullText" prefHeight="97.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj">
+         <font>
+            <Font name="Ubuntu Italic" size="50.0" />
+         </font>
+      </TextArea>
    </children>
 </AnchorPane>
