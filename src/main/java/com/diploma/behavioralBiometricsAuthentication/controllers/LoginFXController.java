@@ -104,6 +104,7 @@ public class LoginFXController {
             FeatureSample featureSample;
             if(currentUser.isProtect()) {
                 try {
+                    kpsService.buildSamples();
                     featureSample = handleFeatureSample(currentUser);
                     verdict = fuzzyInferenceService.authentication(featureSample);
 
@@ -132,9 +133,12 @@ public class LoginFXController {
         }
         showLastAuthLayer();
     }
-    public void verifyFullText() {
+    public void verifyFullText(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.SPACE)
+            kpsService.buildSamples();
         if(inputArea.getText().trim().length() == inputPhrase.getText().trim().length())
             login();
+
     }
     public void login() {
         User currentUser = userService.findByLogin(this.username);
@@ -149,14 +153,12 @@ public class LoginFXController {
                 if (!currentUser.getLogin().equals(verdict)) {
                     updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
                     createNotification("fail");
-                    this.inputArea.setText("");
                     return;
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
                 createNotification("fail");
                 updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
-                this.inputArea.setText("");
                 return;
             }
             createNotification("success");
@@ -284,19 +286,19 @@ public class LoginFXController {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(100);
         imageView.setFitHeight(100);
-        double duration = 2;
+        double duration = 1.5;
         Notifications notificationBuilder = Notifications.create()
                 .title(title)
                 .text(message)
                 .graphic(imageView)
                 .position(Pos.CENTER)
                 .hideAfter(Duration.seconds(duration))
-                .darkStyle();
+                .darkStyle()
+                .hideCloseButton();
 
         notificationBuilder.show();
     }
     private FeatureSample handleFeatureSample(User currentUser) {
-        kpsService.buildSamples();
         FeatureSample sample = featureSampleService.buildFeatureSample();
         sample.setUserId(currentUser.getId());
 

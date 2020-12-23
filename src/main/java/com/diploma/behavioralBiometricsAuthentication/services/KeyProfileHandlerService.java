@@ -42,9 +42,9 @@ public class KeyProfileHandlerService {
     public KeyProfile processReleasing(int keyCode, long releaseTime){
 
         if (keyHandler.comparePreviousKeyTo(keyCode))
-            prevKey = keyHandler.updateKey(prevKey, releaseTime);
-        else
             prevKey = keyHandler.updateKey(currentKey, releaseTime);
+        else
+            prevKey = keyHandler.updateKey(prevKey, releaseTime);
 
         return prevKey;
     }

@@ -1,6 +1,5 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.KeyEventState;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
