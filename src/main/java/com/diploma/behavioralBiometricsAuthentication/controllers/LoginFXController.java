@@ -6,23 +6,29 @@ import com.diploma.behavioralBiometricsAuthentication.services.FeatureSampleServ
 import com.diploma.behavioralBiometricsAuthentication.services.FuzzyInferenceService;
 import com.diploma.behavioralBiometricsAuthentication.services.KeyProfileSamplesService;
 import com.diploma.behavioralBiometricsAuthentication.services.UserService;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.jnativehook.GlobalScreen;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+
+import java.util.Arrays;
 
 
 @Controller
@@ -37,7 +43,14 @@ public class LoginFXController {
     @FXML
     private PasswordField passwordField;
     @FXML
-    private ImageView avatar;
+    public Rectangle step1, step2, step3, step4;
+    @FXML
+    public Circle circleStep1, circleStep2, circleStep3, circleStep4;
+    @FXML
+    public Label stepNum1, stepNum2, stepNum3, stepNum4,
+            identification, authentication1, authentication2, authentication3,
+            passwordAuth, biometrics1, biometrics2;
+
 
     private static KeyboardListener listener;
     private static FeatureSampleService featureSampleService;
@@ -64,21 +77,7 @@ public class LoginFXController {
 
     @FXML
     private void initialize(){
-        double centerX = avatar.getX() + (avatar.getFitWidth() / 2);
-        double centerY = avatar.getY() + (avatar.getFitHeight() / 2);
-        Circle clip = new Circle(centerX, centerY, avatar.getFitHeight());
-        avatar.setClip(clip);
-
         setElementVisibility(false);
-
-
-    }
-    private void setElementVisibility(boolean reverse){
-        continueButton.setVisible(!reverse);
-        loginPane.setVisible(!reverse);
-
-        loginButton.setVisible(reverse);
-        passwordPane.setVisible(reverse);
     }
 
 
@@ -89,47 +88,91 @@ public class LoginFXController {
         catch (RuntimeException e) {
             e.printStackTrace();
             createNotification("error-login");
+            updateGUIStep("fail", step1, circleStep1, stepNum1, identification);
             return;
         }
         if (!this.activeListener) {
             GlobalScreen.addNativeKeyListener(listener);
             this.activeListener = true;
-            System.out.println("Listener activated");
+            System.out.println("Keyboard Listener activated");
         }
-
+        updateGUIStep("success", step1, circleStep1, stepNum1, identification);
         setElementVisibility(true);
     }
-
-    public void login(ActionEvent actionEvent) {
+    public void login() {
 
         User currentUser = userService.findByLogin(this.username);
         this.password = passwordField.getText();
-
+        String verdict = "";
         if(userService.comparePassword(currentUser, this.password)){
-            FeatureSample featureSample = null;
-            try {
-                featureSample = handleFeatureSample(currentUser);
-            } catch (RuntimeException e){
-                e.printStackTrace();
-                createNotification("fail");
-            }
-            assert featureSample != null;
-            String verdict = fuzzyInferenceService.authentication(featureSample);
-            if (currentUser.getLogin().equals(verdict))
-                createNotification("success");
-            else {
-                createNotification("fail");
-            }
-        }
-        else
-            createNotification("error-password");
+            updateGUIStep("success", step2, circleStep2, stepNum2, authentication1, passwordAuth);
+            FeatureSample featureSample;
+            if(currentUser.isProtect()) {
+                try {
+                    featureSample = handleFeatureSample(currentUser);
+                    verdict = fuzzyInferenceService.authentication(featureSample);
 
+                    if (!currentUser.getLogin().equals(verdict)) {
+                        updateGUIStep("fail", step3, circleStep3, stepNum3, authentication2, biometrics1);
+                        createNotification("fail");
+                        this.passwordField.setText("");
+                        return;
+                    }
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    createNotification("fail");
+                    updateGUIStep("fail", step3, circleStep3, stepNum3, authentication2, biometrics1);
+                    this.passwordField.setText("");
+                    return;
+                }
+            }
+            createNotification("success");
+            updateGUIStep("success", step3, circleStep3, stepNum3, authentication2, biometrics1);
+            this.passwordField.setText("");
+        }
+        else {
+            updateGUIStep("fail", step2, circleStep2, stepNum2, authentication1, passwordAuth);
+            createNotification("error-password");
+        }
 
         GlobalScreen.removeNativeKeyListener(listener);
         this.activeListener = false;
         System.out.println("Listener disabled");
     }
 
+    public void showPassword(MouseEvent mouseEvent) {
+        passwordField.setVisible(false);
+        passwordExpose.setText(passwordField.getText());
+        passwordExpose.setVisible(true);
+    }
+    public void hidePassword(MouseEvent mouseEvent) {
+        passwordField.setVisible(true);
+        passwordExpose.setVisible(false);
+    }
+    public void delegateAuthorization(KeyEvent keyEvent) {
+        if(keyEvent.getCode().equals(KeyCode.ENTER))
+            login();
+    }
+    public void delegateIdentification(KeyEvent keyEvent){
+        if(keyEvent.getCode().equals(KeyCode.ENTER))
+            startListener();
+    }
+
+    public void resetIdentGUI() {
+        resetStepGUI("identification");
+    }
+    public void resetAuthGUI() {
+        resetStepGUI("authentication");
+    }
+
+
+    private void setElementVisibility(boolean reverse){
+        continueButton.setVisible(!reverse);
+        loginPane.setVisible(!reverse);
+
+        loginButton.setVisible(reverse);
+        passwordPane.setVisible(reverse);
+    }
     private void createNotification(String notification) {
         Image image = null;
         String title = "";
@@ -159,17 +202,17 @@ public class LoginFXController {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(100);
         imageView.setFitHeight(100);
+        double duration = 2;
         Notifications notificationBuilder = Notifications.create()
                 .title(title)
                 .text(message)
                 .graphic(imageView)
                 .position(Pos.CENTER)
-                .hideAfter(Duration.seconds(5))
+                .hideAfter(Duration.seconds(duration))
                 .darkStyle();
 
         notificationBuilder.show();
     }
-
     private FeatureSample handleFeatureSample(User currentUser) {
         kpsService.buildSamples();
         FeatureSample sample = featureSampleService.buildFeatureSample();
@@ -177,15 +220,42 @@ public class LoginFXController {
 
         return sample;
     }
+    private void updateGUIStep(String result, Rectangle block, Circle border, Label ... notes){
+        Color fill = switch (result) {
+            case "success" -> Color.LIMEGREEN;
+            case "fail" -> Color.RED;
+            default -> Color.WHITE;
+        };
+        Color stroke = switch (result){
+            case "success", "fail" -> Color.WHITE;
+            default -> Color.LIMEGREEN;
+        };
+        block.setFill(fill);
+        block.setStroke(stroke);
 
-    public void showPassword(MouseEvent mouseEvent) {
-        passwordField.setVisible(false);
-        passwordExpose.setText(passwordField.getText());
-        passwordExpose.setVisible(true);
+        border.setFill(fill);
+        border.setStroke(stroke);
+
+        Arrays.stream(notes).forEach(note -> note.setTextFill(stroke));
     }
+    private void resetStepGUI(String step){
+        switch (step) {
+            case "identification" -> updateGUIStep("default", step1, circleStep1, stepNum1, identification);
+            case "authentication" -> {
+                updateGUIStep("default", step2, circleStep2, stepNum2, authentication1, passwordAuth);
+                updateGUIStep("default", step3, circleStep3, stepNum3, authentication2, biometrics1);
+                updateGUIStep("default", step4, circleStep4, stepNum4, authentication3, biometrics2);
+            }
+            case "all" -> {
+                resetStepGUI("identification");
+                resetStepGUI("authentication");
+            }
+        }
+    }
+    private boolean tryParse(String str){
+        try { Integer.parseInt(str); }
+        catch (Exception e){ return false; }
 
-    public void hidePassword(MouseEvent mouseEvent) {
-        passwordField.setVisible(true);
-        passwordExpose.setVisible(false);
+        return true;
     }
 }
