@@ -1,20 +1,11 @@
 package com.diploma.behavioralBiometricsAuthentication.listeners;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
-import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
-import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
-import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
-import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
-import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import lombok.AllArgsConstructor;
-import net.sourceforge.jFuzzyLogic.FIS;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.List;
 
 
 @Component
@@ -23,15 +14,6 @@ public class KeyboardListener implements NativeKeyListener {
 
     private final KeyProfileHandlerService keyProfileHandlerService;
     private final KeyProfileSamplesService kpsService;
-    private final FeatureSampleService featureSampleService;
-    private final FuzzyFeatureSampleService fuzzyFeatureSampleService;
-    private final FuzzyMeasureItemService fuzzyMeasureItemService;
-    private final AssociationRulesService associationRulesService;
-    private final SystemLogger systemLogger;
-    private final UserService userService;
-    private final FuzzyInferenceService fuzzyInferenceService;
-    private final IOManagerService ioManagerService;
-
 
 
     public void nativeKeyPressed(NativeKeyEvent e) {
@@ -39,7 +21,7 @@ public class KeyboardListener implements NativeKeyListener {
     }
 
     public void nativeKeyReleased(NativeKeyEvent e) {
-
+        kpsService.addTemporary( keyProfileHandlerService.processReleasing(e.getKeyCode(), e.getWhen()) );
         /*if(e.getKeyCode() == NativeKeyEvent.VC_SPACE || e.getKeyCode() == NativeKeyEvent.VC_ENTER){
             kpsService.buildSamples();
             if(e.getKeyCode() == NativeKeyEvent.VC_ENTER){
@@ -73,8 +55,6 @@ public class KeyboardListener implements NativeKeyListener {
 
             return;
         }*/
-        kpsService.addTemporary( keyProfileHandlerService.processReleasing(e.getKeyCode(), e.getWhen()) );
-
     }
 
     public void nativeKeyTyped(NativeKeyEvent e) { }

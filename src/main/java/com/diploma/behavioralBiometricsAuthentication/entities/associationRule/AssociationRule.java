@@ -1,6 +1,5 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.associationRule;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
