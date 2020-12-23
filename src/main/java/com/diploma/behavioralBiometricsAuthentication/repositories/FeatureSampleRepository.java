@@ -1,9 +1,7 @@
 package com.diploma.behavioralBiometricsAuthentication.repositories;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -4,7 +4,6 @@ import com.diploma.behavioralBiometricsAuthentication.entities.enums.FeatureName
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyValue;
-import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.VarOutput;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.defuzzifier.Defuzzifier;
@@ -19,10 +18,7 @@ import net.sourceforge.jFuzzyLogic.ruleActivationMethod.RuleActivationMethodMin;
 import net.sourceforge.jFuzzyLogic.ruleConnectionMethod.RuleConnectionMethodAndMin;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class FuzzyEntitiesFactory {

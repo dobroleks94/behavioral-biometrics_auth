@@ -1,6 +1,5 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.featureSamples;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import lombok.Getter;
 
