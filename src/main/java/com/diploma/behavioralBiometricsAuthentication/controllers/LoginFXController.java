@@ -197,6 +197,9 @@ public class LoginFXController {
     public void resetAuthGUI() {
         resetStepGUI("authentication");
     }
+    public void resetAuth2GUI(){
+        resetStepGUI("authentication2");
+    }
 
 
     private void setElementVisibility(String step){
@@ -248,6 +251,9 @@ public class LoginFXController {
         GlobalScreen.removeNativeKeyListener(listener);
         this.activeListener = false;
         System.out.println("Listener disabled");
+    }
+    public void clearInputArea(){
+        this.inputArea.setText("");
     }
     public void clearPassword(){
         this.passwordField.setText("");
@@ -320,11 +326,14 @@ public class LoginFXController {
             case "authentication" -> {
                 updateGUIStep("default", step2, circleStep2, stepNum2, authentication1, passwordAuth);
                 updateGUIStep("default", step3, circleStep3, stepNum3, authentication2, biometrics1);
+            }
+            case "authentication2" -> {
                 updateGUIStep("default", step4, circleStep4, stepNum4, authentication3, biometrics2);
             }
             case "all" -> {
                 resetStepGUI("identification");
                 resetStepGUI("authentication");
+                resetStepGUI("authentication2");
             }
         }
     }
@@ -333,5 +342,9 @@ public class LoginFXController {
         resetAuthGUI();
         clearPassword();
     }
-
+    public void actionInputArea(MouseEvent mouseEvent) {
+        resetAuth2GUI();
+        clearInputArea();
+        enableListener();
+    }
 }

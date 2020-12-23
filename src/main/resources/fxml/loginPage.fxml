@@ -140,10 +140,7 @@
             <Font name="Ubuntu Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TextArea fx:id="inputArea" layoutX="176.0" layoutY="387.0" onKeyReleased="#verifyFullText" prefHeight="97.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj">
-         <font>
-            <Font name="Ubuntu Italic" size="50.0" />
-         </font>
+      <TextArea fx:id="inputArea" layoutX="176.0" layoutY="387.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="97.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj">
       </TextArea>
    </children>
 </AnchorPane>
