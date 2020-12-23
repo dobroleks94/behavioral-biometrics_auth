@@ -9,7 +9,6 @@ import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasur
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
-import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.VarOutput;
 import com.diploma.behavioralBiometricsAuthentication.factories.FuzzyEntitiesFactory;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;

@@ -11,10 +11,9 @@ import javax.annotation.PostConstruct;
 public class KeyProfileHandlerService {
 
     private final KeyInfoHolderFactory keyInfoHolderFactory;
-
     private Utility keyHandler;
-
     private KeyProfile currentKey, prevKey;
+
 
     public KeyProfileHandlerService(KeyInfoHolderFactory keyInfoHolderFactory){
         this.keyInfoHolderFactory = keyInfoHolderFactory;
@@ -42,10 +41,10 @@ public class KeyProfileHandlerService {
 
     public KeyProfile processReleasing(int keyCode, long releaseTime){
 
-        if(keyHandler.comparePreviousKeyTo(keyCode))
-            prevKey = keyHandler.updateKey(prevKey, releaseTime);
-        else
+        if (keyHandler.comparePreviousKeyTo(keyCode))
             prevKey = keyHandler.updateKey(currentKey, releaseTime);
+        else
+            prevKey = keyHandler.updateKey(prevKey, releaseTime);
 
         return prevKey;
     }
