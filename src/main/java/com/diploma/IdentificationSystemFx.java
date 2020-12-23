@@ -1,7 +1,6 @@
 package com.diploma;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
@@ -14,20 +13,20 @@ public class IdentificationSystemFx extends Application {
     private ConfigurableApplicationContext applicationContext;
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         this.applicationContext = new SpringApplicationBuilder()
                 .sources(IdentificationSystem.class)
                 .run();
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         this.applicationContext.close();
-        Platform.exit();
+        System.exit(0);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         applicationContext.publishEvent(new StageReadyEvent(stage));
     }
 
