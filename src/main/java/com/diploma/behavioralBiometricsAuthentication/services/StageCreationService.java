@@ -11,11 +11,13 @@ import java.io.IOException;
 
 @Service
 public class StageCreationService {
-    public Stage createStage(Stage stage, Resource fxmlTemplate) throws IOException {
+    public Stage createStage(String title, Stage stage, Resource fxmlTemplate) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlTemplate.getURL());
         Parent root = fxmlLoader.load();
+        stage.setTitle(title);
         stage.setScene(new Scene(root));
+        stage.setResizable(false);
 
         return stage;
     }

@@ -25,6 +25,7 @@ public class InitialConfig {
     public void createInitialUser(){
         User dobroshtan = userService.createUser("dobroshtan94", "dobroshtan_Password94");
         dobroshtan.setId(1L);
+        dobroshtan.setProtect(true);
         System.out.println("User created");
         System.out.println("User saved with id: " + userService.saveUser(dobroshtan).getId());
     }

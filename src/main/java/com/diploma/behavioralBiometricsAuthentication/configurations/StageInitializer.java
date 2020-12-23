@@ -25,7 +25,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         try {
-            Stage stage = stageCreationService.createStage(event.getStage(), loginPageResource);
+            Stage stage = stageCreationService.createStage("Ласкаво просимо!", event.getStage(), loginPageResource);
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException();
