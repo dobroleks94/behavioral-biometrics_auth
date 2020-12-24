@@ -173,6 +173,7 @@ public class LoginFXController {
         GlobalScreen.removeNativeKeyListener(listener);
         this.activeListener = false;
         System.out.println("Listener disabled");
+        setElementVisibility("identify");
     }
 
     public void showPassword(MouseEvent mouseEvent) {
@@ -216,18 +217,23 @@ public class LoginFXController {
         inputArea.setVisible(false);
         title1.setVisible(false);
         title2.setVisible(false);
+        loginField.setText("");
+        passwordField.setText("");
+        inputArea.setText("");
         switch (step){
             case "identify" -> {
                 title1.setVisible(true);
                 title2.setVisible(true);
                 continueButton.setVisible(true);
                 loginPane.setVisible(true);
+                resetStepGUI("all");
             }
             case "auth1" -> {
                 title1.setVisible(true);
                 title2.setVisible(true);
                 authButton.setVisible(true);
                 passwordPane.setVisible(true);
+                resetStepGUI("authentication");
             }
             case "auth2" -> {
                 descriptionContainer.setVisible(true);
@@ -235,6 +241,7 @@ public class LoginFXController {
                 inputContainer.setVisible(true);
                 inputPhrase.setVisible(true);
                 inputArea.setVisible(true);
+                resetStepGUI("authentication2");
             }
         }
     }
