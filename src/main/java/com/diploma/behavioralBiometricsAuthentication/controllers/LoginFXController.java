@@ -2,10 +2,7 @@ package com.diploma.behavioralBiometricsAuthentication.controllers;
 import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
-import com.diploma.behavioralBiometricsAuthentication.services.FeatureSampleService;
-import com.diploma.behavioralBiometricsAuthentication.services.FuzzyInferenceService;
-import com.diploma.behavioralBiometricsAuthentication.services.KeyProfileSamplesService;
-import com.diploma.behavioralBiometricsAuthentication.services.UserService;
+import com.diploma.behavioralBiometricsAuthentication.services.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -24,6 +21,7 @@ import org.jnativehook.GlobalScreen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 
@@ -47,11 +45,11 @@ public class LoginFXController {
     public Label title1, title2, stepNum1, stepNum2, stepNum3, stepNum4,
             identification, authentication1, authentication2, authentication3,
             passwordAuth, biometrics1, biometrics2,
-            descriptionLabel, inputPhrase;
+            descriptionLabel;
     @FXML
-    public TextArea inputArea;
+    public TextArea inputPhrase, inputArea;
 
-
+    private static ArbitraryPhraseExtractor phraseExtractor;
     private static KeyboardListener listener;
     private static FeatureSampleService featureSampleService;
     private static UserService userService;
@@ -61,23 +59,30 @@ public class LoginFXController {
     private String username;
     private String password;
     private boolean activeListener;
+    private String phrase;
 
     @Autowired
     private void initializeBeans(KeyboardListener listener,
                                  FeatureSampleService featureSampleService,
                                  UserService userService,
                                  FuzzyInferenceService fuzzyInferenceService,
-                                 KeyProfileSamplesService kpsService) {
+                                 KeyProfileSamplesService kpsService,
+                                 ArbitraryPhraseExtractor phraseExtractor) {
         LoginFXController.listener = listener;
         LoginFXController.featureSampleService = featureSampleService;
         LoginFXController.userService = userService;
         LoginFXController.fuzzyInferenceService = fuzzyInferenceService;
         LoginFXController.kpsService = kpsService;
+        LoginFXController.phraseExtractor = phraseExtractor;
     }
 
     @FXML
     private void initialize(){
         setElementVisibility("identify");
+        try { phrase = phraseExtractor.getRandomPhrase(); }
+        catch (IOException e) { e.printStackTrace(); }
+
+        inputPhrase.setText( phrase );
     }
 
 
@@ -136,13 +141,14 @@ public class LoginFXController {
     public void verifyFullText(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.SPACE)
             kpsService.buildSamples();
-        if(inputArea.getText().trim().length() == inputPhrase.getText().trim().length())
+        if(phrase.trim().length() == inputArea.getText().trim().length())
             login();
 
     }
     public void login() {
         User currentUser = userService.findByLogin(this.username);
         String userInput = inputArea.getText().trim();
+        String phrasss = phrase;
         String verdict = "";
         if(inputPhrase.getText().trim().equals(userInput)){
             FeatureSample featureSample;
@@ -168,6 +174,7 @@ public class LoginFXController {
         else {
             updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
             createNotification("error-phrase");
+            return;
         }
 
         GlobalScreen.removeNativeKeyListener(listener);
