@@ -33,14 +33,14 @@ public class ArbitraryPhraseExtractor {
         Element newsBlocks = document.getElementsByAttributeValue("class", "col-2-3 col-left").get(2);
         Elements newsSet = newsBlocks.getElementsByTag("a");
         links = newsSet.eachAttr("href");
-        extractPhrases();
     }
 
-    public String getRandomPhrase() throws IOException {
-        return phrases.get(new Random().nextInt(phrases.size()))
-                .replaceAll("[“”]", "\"")
-                .replaceAll("\\s*—\\s*", " - ")
-                .replaceAll("’", "'");
+    public String getRandomPhrase(int labelLength) throws IOException {
+        extractPhrases();
+        StringBuilder phraseBuilder = new StringBuilder(phrases.get(new Random().nextInt( phrases.size() )).replaceAll("“", "\""));
+        if (phraseBuilder.toString().length() > labelLength)
+            phraseBuilder.insert(labelLength, "\n");
+        return phraseBuilder.toString();
     }
 
     public void extractPhrases() throws IOException {
