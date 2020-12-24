@@ -129,18 +129,14 @@
          </font>
       </Label>
       <Rectangle fx:id="descriptionContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="76.0" layoutX="144.0" layoutY="225.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
-      <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="201.0" layoutX="144.0" layoutY="307.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
+      <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="320.0" layoutX="144.0" layoutY="307.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
       <Label fx:id="descriptionLabel" layoutX="235.0" layoutY="248.0" text="Будь ласка, введіть нижче запропонований текст:">
          <font>
             <Font name="Ubuntu Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="inputPhrase" layoutX="179.0" layoutY="321.0" prefHeight="70.0" prefWidth="751.0" text="Plain sentence, which user should enter for successful authentication.">
-         <font>
-            <Font name="Ubuntu Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <TextArea fx:id="inputArea" layoutX="176.0" layoutY="387.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="97.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj">
+      <TextArea fx:id="inputArea" layoutX="171.0" layoutY="463.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="150.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj" wrapText="true">
       </TextArea>
+      <TextArea fx:id="inputPhrase" editable="false" layoutX="171.0" layoutY="318.0" prefHeight="150.0" prefWidth="751.0" styleClass="inputAreaAdj, phrase" wrapText="true" />
    </children>
 </AnchorPane>
