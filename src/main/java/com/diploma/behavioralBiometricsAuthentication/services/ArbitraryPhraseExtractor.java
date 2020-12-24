@@ -35,12 +35,9 @@ public class ArbitraryPhraseExtractor {
         links = newsSet.eachAttr("href");
     }
 
-    public String getRandomPhrase(int labelLength) throws IOException {
+    public String getRandomPhrase() throws IOException {
         extractPhrases();
-        StringBuilder phraseBuilder = new StringBuilder(phrases.get(new Random().nextInt( phrases.size() )).replaceAll("“", "\""));
-        if (phraseBuilder.toString().length() > labelLength)
-            phraseBuilder.insert(labelLength, "\n");
-        return phraseBuilder.toString();
+        return phrases.get(new Random().nextInt(phrases.size())).replaceAll("[“”]", "\"");
     }
 
     public void extractPhrases() throws IOException {

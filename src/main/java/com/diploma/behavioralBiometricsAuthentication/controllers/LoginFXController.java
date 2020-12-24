@@ -79,7 +79,7 @@ public class LoginFXController {
     @FXML
     private void initialize(){
         setElementVisibility("identify");
-        try { phrase = phraseExtractor.getRandomPhrase(1000); }
+        try { phrase = phraseExtractor.getRandomPhrase(); }
         catch (IOException e) { e.printStackTrace(); }
 
         inputPhrase.setText( phrase );
