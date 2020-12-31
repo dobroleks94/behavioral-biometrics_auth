@@ -64,6 +64,8 @@ public class FuzzyFeatureSampleService {
     }
     public FeatureName getFeatureName(String feature){ return utils.chooseFeatureNameFrom(feature); }
 
+    public long getCount() { return fuzzyFeatureSampleRepository.count(); }
+
 
     private class Utility {
         private Map<String, FuzzyMeasure> fillFeatures(FeatureSample featureSample, List<FuzzyMeasureItem> fuzzyMeasures) {

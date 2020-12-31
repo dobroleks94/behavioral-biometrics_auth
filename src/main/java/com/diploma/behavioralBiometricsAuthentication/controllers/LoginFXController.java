@@ -1,13 +1,9 @@
 package com.diploma.behavioralBiometricsAuthentication.controllers;
 import com.diploma.behavioralBiometricsAuthentication.entities.User;
-import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
+import javafx.stage.Stage;
 import org.jnativehook.GlobalScreen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +26,7 @@ public class LoginFXController {
     @FXML
     public Button authButton, continueButton;
     @FXML
-    public Pane passwordPane, loginPane;
+    public Pane passwordPane, loginPane, phrasePane;
     @FXML
     private TextField loginField, passwordExpose;
     @FXML
@@ -51,10 +46,12 @@ public class LoginFXController {
 
     private static ArbitraryPhraseExtractor phraseExtractor;
     private static KeyboardListener listener;
-    private static FeatureSampleService featureSampleService;
     private static UserService userService;
-    private static FuzzyInferenceService fuzzyInferenceService;
     private static KeyProfileSamplesService kpsService;
+    private static StageCreationService stageCreationService;
+    private static NotificationService notificationService;
+
+    private static AuthenticationService authService;
 
     private String username;
     private String password;
@@ -63,125 +60,135 @@ public class LoginFXController {
 
     @Autowired
     private void initializeBeans(KeyboardListener listener,
-                                 FeatureSampleService featureSampleService,
+                                 NotificationService notificationService,
                                  UserService userService,
-                                 FuzzyInferenceService fuzzyInferenceService,
                                  KeyProfileSamplesService kpsService,
-                                 ArbitraryPhraseExtractor phraseExtractor) {
+                                 ArbitraryPhraseExtractor phraseExtractor,
+                                 StageCreationService stageCreationService,
+                                 AuthenticationService authService) {
         LoginFXController.listener = listener;
-        LoginFXController.featureSampleService = featureSampleService;
+        LoginFXController.notificationService = notificationService;
         LoginFXController.userService = userService;
-        LoginFXController.fuzzyInferenceService = fuzzyInferenceService;
         LoginFXController.kpsService = kpsService;
         LoginFXController.phraseExtractor = phraseExtractor;
+        LoginFXController.stageCreationService = stageCreationService;
+
+        LoginFXController.authService = authService;
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() throws IOException {
         setElementVisibility("identify");
-        try { phrase = phraseExtractor.getRandomPhrase(1000); }
+        try { phrase = phraseExtractor.getRandomPhrase(); }
         catch (IOException e) { e.printStackTrace(); }
-
         inputPhrase.setText( phrase );
     }
 
 
-    public void startListener() {
+    public void identify() throws IOException {
         try {
-            this.username = userService.findByLogin( loginField.getText() ).getLogin();
+            User temp = authService.identifyUser( userService.findByLogin( loginField.getText() ) );
+            this.username = temp.getLogin();
+
+            enableListener();
+            updateGUIStep("success", step1, circleStep1, stepNum1, identification);
+            setElementVisibility("auth1");
         }
         catch (RuntimeException e) {
             e.printStackTrace();
-            createNotification("error-login");
+            notificationService.createNotification("error-login");
             updateGUIStep("fail", step1, circleStep1, stepNum1, identification);
-            return;
         }
-        enableListener();
-        updateGUIStep("success", step1, circleStep1, stepNum1, identification);
-        setElementVisibility("auth1");
     }
-    public void auth() {
-        User currentUser = userService.findByLogin(this.username);
+    public void auth() throws IOException {
         this.password = passwordField.getText();
-        String verdict = "";
-        if(userService.comparePassword(currentUser, this.password)){
+        if(authService.passwordAuth(this.password)){
             updateGUIStep("success", step2, circleStep2, stepNum2, authentication1, passwordAuth);
-            FeatureSample featureSample;
-            if(currentUser.isProtect()) {
-                try {
-                    kpsService.buildSamples();
-                    featureSample = handleFeatureSample(currentUser);
-                    verdict = fuzzyInferenceService.authentication(featureSample);
-
-                    if (!currentUser.getLogin().equals(verdict)) {
-                        updateGUIStep("fail", step3, circleStep3, stepNum3, authentication2, biometrics1);
-                        createNotification("fail");
-                        disableListener();
-                        return;
-                    }
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    updateGUIStep("fail", step3, circleStep3, stepNum3, authentication2, biometrics1);
-                    createNotification("fail");
-                    disableListener();
-                    return;
-                }
+            if(authService.checkOnBiometricsProtection()) {
+               try {
+                   if (authService.checkUserIdentity(authService.biometricsAuth())) {
+                       failAuth2();
+                       return;
+                   }
+               }
+               catch (RuntimeException e){
+                   e.printStackTrace();
+                   failAuth2();
+                   return;
+               }
+            }
+            else {
+                notificationService.createNotification("success");
+                AuthenticationService.authenticateUser();
+                disableListener();
+                StageCreationService.getCurrentStage().close();
+                stageCreationService.createStage("Особистий кабінет", new Stage(), "info").show();
             }
             updateGUIStep("success", step3, circleStep3, stepNum3, authentication2, biometrics1);
             disableListener();
+            showLastAuthLayer();
         }
         else {
             updateGUIStep("fail", step2, circleStep2, stepNum2, authentication1, passwordAuth);
-            createNotification("error-password");
+            notificationService.createNotification("error-password");
             disableListener();
-            return;
         }
-        showLastAuthLayer();
     }
-    public void verifyFullText(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.SPACE)
-            kpsService.buildSamples();
-        if(phrase.trim().length() == inputArea.getText().trim().length())
-            login();
-
-    }
-    public void login() {
-        User currentUser = userService.findByLogin(this.username);
+    public void login() throws IOException {
         String userInput = inputArea.getText().trim();
-        String phrasss = phrase;
-        String verdict = "";
         if(inputPhrase.getText().trim().equals(userInput)){
-            FeatureSample featureSample;
             try {
-                featureSample = handleFeatureSample(currentUser);
-                verdict = fuzzyInferenceService.authentication(featureSample);
-
-                if (!currentUser.getLogin().equals(verdict)) {
-                    updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
-                    createNotification("fail");
+                if (authService.checkUserIdentity(authService.biometricsAuth())) {
+                    failAuth3();
                     return;
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
-                createNotification("fail");
-                updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
+                failAuth3();
                 return;
             }
-            createNotification("success");
-            updateGUIStep("success", step4, circleStep4, stepNum4, authentication3, biometrics2);
             this.inputArea.setText("");
+            updateGUIStep("success", step4, circleStep4, stepNum4, authentication3, biometrics2);
+            AuthenticationService.authenticateUser();
+            disableListener();
+
+            setElementVisibility("identify");
+            StageCreationService.getCurrentStage().close();
+            stageCreationService.createStage("Особистий кабінет", new Stage(), "info").show();
+            notificationService.createNotification("success");
         }
         else {
             updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
-            createNotification("error-phrase");
-            return;
+            notificationService.createNotification("error-phrase");
         }
-
-        GlobalScreen.removeNativeKeyListener(listener);
-        this.activeListener = false;
-        System.out.println("Listener disabled");
     }
 
+    // ----------------------------- Input Area in Auth3 ------------------------------------------//
+    public void actionInputArea(MouseEvent mouseEvent) {
+        resetAuth2GUI();
+        clearInputArea();
+        enableListener();
+    }
+    public void clearInputArea(){
+        this.inputArea.setText("");
+    }
+    public void verifyFullText(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.SPACE)
+            kpsService.buildSamples();
+        if(phrase.trim().length() == inputArea.getText().trim().length())
+            login();
+    }
+    public void updatePhrase() throws IOException {
+        phrase = phraseExtractor.getRandomPhrase();
+        inputPhrase.setText(phrase);
+    }
+    //---------------------------------------------------------------------------------------------//
+
+    // ----------------------------- Password process ---------------------------------------------//
+    public void actionPassword() {
+        resetAuthGUI();
+        clearPassword();
+    }
     public void showPassword(MouseEvent mouseEvent) {
         passwordField.setVisible(false);
         passwordExpose.setText(passwordField.getText());
@@ -191,127 +198,25 @@ public class LoginFXController {
         passwordField.setVisible(true);
         passwordExpose.setVisible(false);
     }
-    public void delegateAuthorization1(KeyEvent keyEvent) {
-        if(keyEvent.getCode().equals(KeyCode.ENTER))
-            auth();
-    }
-    public void delegateIdentification(KeyEvent keyEvent){
-        if(keyEvent.getCode().equals(KeyCode.ENTER))
-            startListener();
-    }
-
-    public void resetIdentGUI() {
-        resetStepGUI("identification");
-    }
-    public void resetAuthGUI() {
-        resetStepGUI("authentication");
-    }
-    public void resetAuth2GUI(){
-        resetStepGUI("authentication2");
-    }
-
-
-    private void setElementVisibility(String step){
-        continueButton.setVisible(false);
-        loginPane.setVisible(false);
-        authButton.setVisible(false);
-        passwordPane.setVisible(false);
-        descriptionContainer.setVisible(false);
-        descriptionLabel.setVisible(false);
-        inputContainer.setVisible(false);
-        inputPhrase.setVisible(false);
-        inputArea.setVisible(false);
-        title1.setVisible(false);
-        title2.setVisible(false);
-        switch (step){
-            case "identify" -> {
-                title1.setVisible(true);
-                title2.setVisible(true);
-                continueButton.setVisible(true);
-                loginPane.setVisible(true);
-            }
-            case "auth1" -> {
-                title1.setVisible(true);
-                title2.setVisible(true);
-                authButton.setVisible(true);
-                passwordPane.setVisible(true);
-            }
-            case "auth2" -> {
-                descriptionContainer.setVisible(true);
-                descriptionLabel.setVisible(true);
-                inputContainer.setVisible(true);
-                inputPhrase.setVisible(true);
-                inputArea.setVisible(true);
-            }
-        }
-    }
-    private void showLastAuthLayer(){
-       setElementVisibility("auth2");
-       enableListener();
-    }
-    public void enableListener(){
-        if(!this.activeListener) {
-            GlobalScreen.addNativeKeyListener(listener);
-            this.activeListener = true;
-            System.out.println("Keyboard Listener activated");
-        }
-    }
-    private void disableListener(){
-        GlobalScreen.removeNativeKeyListener(listener);
-        this.activeListener = false;
-        System.out.println("Listener disabled");
-    }
-    public void clearInputArea(){
-        this.inputArea.setText("");
-    }
     public void clearPassword(){
         this.passwordField.setText("");
     }
-    private void createNotification(String notification) {
-        Image image = null;
-        String title = "";
-        String message = "";
-        switch (notification) {
-            case "success" -> {
-                image = new Image("/fxml/stylesheets/icons/success.png");
-                title = "Авторизовано";
-                message = "Авторизація пройшла успішно! Користувач: " + this.username;
-            }
-            case "fail" -> {
-                image = new Image("/fxml/stylesheets/icons/fail.png");
-                title = "Відмова";
-                message = "Відхилено авторизацію :(";
-            }
-            case "error-password", "error-phrase", "error-login" -> {
-                image = new Image("/fxml/stylesheets/icons/wrong.png");
-                title = "Помилка";
-                message = notification.equals("error-password") ? "Введено неправильний пароль!"
-                            : notification.equals("error-login") ? "Введено неправильний логін!"
-                            : "Перевірте правильність введеного тексту!";
-            }
-        }
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
-        double duration = 1.5;
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(message)
-                .graphic(imageView)
-                .position(Pos.CENTER)
-                .hideAfter(Duration.seconds(duration))
-                .darkStyle()
-                .hideCloseButton();
+    //---------------------------------------------------------------------------------------------//
 
-        notificationBuilder.show();
+    // ----------------------------- Event delegations --------------------------------------------//
+    public void delegateAuthorization(KeyEvent keyEvent) throws IOException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER))
+            auth();
     }
-    private FeatureSample handleFeatureSample(User currentUser) {
-        FeatureSample sample = featureSampleService.buildFeatureSample();
-        sample.setUserId(currentUser.getId());
+    public void delegateIdentification(KeyEvent keyEvent) throws IOException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER))
+            identify();
+    }
+    //---------------------------------------------------------------------------------------------//
 
-        return sample;
-    }
-    private void updateGUIStep(String result, Rectangle block, Circle border, Label ... notes){
+    //---------------------------- GUI resolution settings ----------------------------------------//
+
+    public void updateGUIStep(String result, Rectangle block, Circle border, Label ... notes){
         Color fill = switch (result) {
             case "success" -> Color.LIMEGREEN;
             case "fail" -> Color.RED;
@@ -329,7 +234,7 @@ public class LoginFXController {
 
         Arrays.stream(notes).forEach(note -> note.setTextFill(stroke));
     }
-    private void resetStepGUI(String step){
+    public void resetStepGUI(String step){
         switch (step) {
             case "identification" -> updateGUIStep("default", step1, circleStep1, stepNum1, identification);
             case "authentication" -> {
@@ -346,14 +251,80 @@ public class LoginFXController {
             }
         }
     }
+    public void resetIdentGUI() {
+        resetStepGUI("identification");
+    }
+    public void resetAuthGUI() {
+        resetStepGUI("authentication");
+    }
+    public void resetAuth2GUI(){
+        resetStepGUI("authentication2");
+    }
+    //---------------------------------------------------------------------------------------------//
 
-    public void actionPassword() {
-        resetAuthGUI();
-        clearPassword();
+    private void setElementVisibility(String step) throws IOException {
+        continueButton.setVisible(false);
+        loginPane.setVisible(false);
+        authButton.setVisible(false);
+        passwordPane.setVisible(false);
+        phrasePane.setVisible(false);
+        title1.setVisible(false);
+        title2.setVisible(false);
+        loginField.setText("");
+        passwordField.setText("");
+        inputArea.setText("");
+        switch (step){
+            case "identify" -> {
+                title1.setVisible(true);
+                title2.setVisible(true);
+                continueButton.setVisible(true);
+                loginPane.setVisible(true);
+                resetStepGUI("all");
+            }
+            case "auth1" -> {
+                title1.setVisible(true);
+                title2.setVisible(true);
+                authButton.setVisible(true);
+                passwordPane.setVisible(true);
+                resetStepGUI("authentication");
+            }
+            case "auth2" -> {
+                phrasePane.setVisible(true);
+                resetStepGUI("authentication2");
+            }
+        }
     }
-    public void actionInputArea(MouseEvent mouseEvent) {
-        resetAuth2GUI();
+    private void showLastAuthLayer() throws IOException {
+       setElementVisibility("auth2");
+       enableListener();
+    }
+
+    public void enableListener(){
+        if(!this.activeListener) {
+            GlobalScreen.addNativeKeyListener(listener);
+            this.activeListener = true;
+            System.out.println("Keyboard Listener activated");
+        }
+    }
+    public void disableListener(){
+        GlobalScreen.removeNativeKeyListener(listener);
+        this.activeListener = false;
+        System.out.println("Listener disabled");
+    }
+
+    private void failAuth2() {
+        updateGUIStep("fail", step3, circleStep3, stepNum3, authentication2, biometrics1);
+        disableListener();
+        notificationService.createNotification("fail");
+    }
+    private void failAuth3() throws IOException {
+        updatePhrase();
         clearInputArea();
-        enableListener();
+        updateGUIStep("fail", step4, circleStep4, stepNum4, authentication3, biometrics2);
+        notificationService.createNotification("fail");
     }
+
+
+
+
 }
