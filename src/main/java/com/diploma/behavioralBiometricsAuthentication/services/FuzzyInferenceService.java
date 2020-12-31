@@ -88,10 +88,8 @@ public class FuzzyInferenceService {
 
         return fis;
     }
-    public String authentication(FeatureSample inputSample){
+    public String authentication(FeatureSample inputSample) throws RuntimeException{
         FIS fis = ioManagerService.loadFIS();
-
-        //JFuzzyChart.get().chart(fis.getFunctionBlock("authenticator"));
 
         fis.setVariable("typingSpeed", inputSample.getTypingSpeed());
         fis.setVariable("numPadUsageFrequency", inputSample.getNumPadUsageFrequency());
@@ -112,7 +110,7 @@ public class FuzzyInferenceService {
                                             .filter(lingTerm -> userVerdict.getValue() > lingTerm.getMembershipFunction().getParameter(0) &&
                                                                 userVerdict.getValue() < lingTerm.getMembershipFunction().getParameter(2))
                                             .map(LinguisticTerm::getTermName)
-                                            .findFirst().orElse("INTRUDER");
+                                            .findFirst().orElseThrow(() -> new RuntimeException("Intruder detected!"));
     }
 
 

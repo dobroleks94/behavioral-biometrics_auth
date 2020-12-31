@@ -58,7 +58,11 @@ public class KeyProfileSamplesService {
         else
             throw new BadFeatureSampleException();
     }
-
+    public void clearAllContainers(){
+        getTemporaryCollector().clear();
+        getKeyProfilesCollector().clear();
+        getSamplesCollector().clear();
+    }
 
 
 

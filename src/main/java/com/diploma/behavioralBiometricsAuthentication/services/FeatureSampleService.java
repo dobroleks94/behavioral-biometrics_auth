@@ -49,10 +49,13 @@ public class FeatureSampleService {
     }
 
     public FeatureSample buildFeatureSample() {
-        if (kpsService.getSamplesCollector().size() > 0)
-            return featureSampleFactory.createFeatureSample(
+        if (kpsService.getSamplesCollector().size() > 0) {
+            FeatureSample featureSample = featureSampleFactory.createFeatureSample(
                     utils.fillFeatures(kpsService.getSamplesCollector(), kpsService.getKeyProfilesCollector())
-                   );
+            );
+            kpsService.clearAllContainers();
+            return featureSample;
+        }
         else
             throw new RuntimeException("It is likely to have been input nothing :(");
     }
@@ -103,7 +106,7 @@ public class FeatureSampleService {
 
     }
 
-
+    public long getCount() { return featureSampleRepository.count(); }
 
 
     private class Utility {
@@ -122,9 +125,6 @@ public class FeatureSampleService {
             calculateUsageOf("BackspDel", keyProfilesCollector, result);
             calculateUsageOf("NumPad", keyProfilesCollector, result);
 
-            samplesCollector.clear();
-            keyProfilesCollector.clear();
-            kpsService.getTemporaryCollector().clear();
             return result;
 
         }
