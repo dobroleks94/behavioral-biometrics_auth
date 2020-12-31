@@ -1,11 +1,9 @@
 package com.diploma.behavioralBiometricsAuthentication.controllers;
 
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
-import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
@@ -14,7 +12,6 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -23,7 +20,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
