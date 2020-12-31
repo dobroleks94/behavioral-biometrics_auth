@@ -27,3 +27,7 @@
     -fx-font-style: italic;
     -fx-font-alignment: center;
 }
+
+.tableStyle {
+    text-area-background:  #252547;
+}
