@@ -55,7 +55,11 @@ public class KeyProfileSamplesService {
     public List<KeyProfile> getTemporaryCollector() {
         return temporaryCollector;
     }
-
+    public void clearAllContainers(){
+        getTemporaryCollector().clear();
+        getKeyProfilesCollector().clear();
+        getSamplesCollector().clear();
+    }
 
 
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-public class InitialConfig {
+public class InitialConfig{
 
     private UserService userService;
     @Autowired
@@ -21,13 +21,13 @@ public class InitialConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    /*@Bean
     public void createInitialUser(){
-        User dobroshtan = userService.createUser("dobroshtan94", "dobroshtan_Password94");
+        User dobroshtan = userService.createUser("oleksii_dobroshtan", "dobroshtan_Password94");
         dobroshtan.setId(1L);
         dobroshtan.setProtect(true);
         System.out.println("User created");
         System.out.println("User saved with id: " + userService.saveUser(dobroshtan).getId());
-    }
+    }*/
 
 }

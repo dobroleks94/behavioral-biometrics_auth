@@ -61,6 +61,7 @@ public class AssociationRulesService {
         this.utility = new Utility();
     }
 
+    public long getCount() { return associationRuleRepository.count(); }
     public List<AssociationRule> saveAll(List<AssociationRule> associationRules){ return associationRuleRepository.saveAll(associationRules); }
     public void deleteAll() { associationRuleRepository.deleteAll(); }
     public List<AssociationRule> assignOwner(User user, List<AssociationRule> rules) {
