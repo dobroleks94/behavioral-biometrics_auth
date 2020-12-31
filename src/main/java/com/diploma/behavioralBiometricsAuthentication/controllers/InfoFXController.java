@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.controllers;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.AssociationRule;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
@@ -111,7 +112,6 @@ public class InfoFXController {
 
         mainPage.getChildren().addAll(toggleSwitch);
 
-        updateInfoCard();
         username.setText(AuthenticationService.getAuthenticatedUser().getLogin());
 
         showMainPage();
@@ -120,6 +120,7 @@ public class InfoFXController {
     public void showMainPage() {
         resetGUI();
         mainPage.setVisible(true);
+        updateInfoCard();
         disableListener();
     }
     public void showPasswordInput() {
@@ -154,7 +155,7 @@ public class InfoFXController {
 
             clearAllInputs();
             updateUser(false);
-            updateInfoCard();
+
             showMainPage();
     }
     public void writeInputAreaSample(){
@@ -208,6 +209,8 @@ public class InfoFXController {
         featureSampleCount.setText(String.valueOf( fsService.getCount() ));
         featureCount.setText(String.valueOf( FuzzyFeatureSample.getMapKeys().size() ));
         termCount.setText(String.valueOf( FuzzyMeasure.values().length ));
+
+        toggleSwitch.animation.play();
     }
 
     public void clearAllInputs(){
@@ -286,12 +289,14 @@ public class InfoFXController {
                 translateTransition.setToX(isOn ? background.getWidth() - trigger.getRadius() * 2 : 0);
                 fillTransition.setFromValue(isOn ? Color.WHITESMOKE : Color.LIMEGREEN);
                 fillTransition.setToValue(isOn ? Color.LIMEGREEN : Color.WHITESMOKE);
-                animation.play();
 
                 if (isOn)
                     generateFIS();
+
                 updateUser(isOn);
                 updateInfoCard();
+
+                animation.play();
             });
 
             setOnMouseClicked(event -> {
