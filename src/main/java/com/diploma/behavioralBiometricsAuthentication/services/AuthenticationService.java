@@ -32,8 +32,8 @@ public class AuthenticationService {
         this.fisService = fisService;
     }
 
-    public User identifyUser(String username){
-        tempUser = userService.findByLogin( username );
+    public User identifyUser(User user){
+        tempUser = user;
         return tempUser;
     }
     public boolean passwordAuth(String password) {

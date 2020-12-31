@@ -4,6 +4,7 @@ import com.diploma.behavioralBiometricsAuthentication.entities.associationRule.A
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasure;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FuzzyFeatureSample;
+import com.diploma.behavioralBiometricsAuthentication.entities.fuzzification.FuzzyMeasureItem;
 import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
@@ -12,6 +13,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -20,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -97,9 +100,6 @@ public class InfoFXController {
         InfoFXController.fisService = fisService;
         InfoFXController.ioManagerService = ioManagerService;
         InfoFXController.stageCreationService = stageCreationService;
-
-        System.out.println("Very high" + ffsService.findAll().stream().filter(feature -> feature.getTypingSpeed().equals(FuzzyMeasure.VERY_HIGH)).count());
-        System.out.println("high" + ffsService.findAll().stream().filter(feature -> feature.getTypingSpeed().equals(FuzzyMeasure.HIGH)).count());
     }
 
     @FXML
@@ -111,6 +111,7 @@ public class InfoFXController {
 
         mainPage.getChildren().addAll(toggleSwitch);
 
+        updateInfoCard();
         username.setText(AuthenticationService.getAuthenticatedUser().getLogin());
 
         showMainPage();
@@ -119,9 +120,7 @@ public class InfoFXController {
     public void showMainPage() {
         resetGUI();
         mainPage.setVisible(true);
-        updateInfoCard();
-        if (this.activeListener)
-            disableListener();
+        disableListener();
     }
     public void showPasswordInput() {
         resetGUI();
@@ -155,7 +154,7 @@ public class InfoFXController {
 
             clearAllInputs();
             updateUser(false);
-
+            updateInfoCard();
             showMainPage();
     }
     public void writeInputAreaSample(){
@@ -202,9 +201,6 @@ public class InfoFXController {
     public void updatePhrase() throws IOException {
         phrase = phraseExtractor.getRandomPhrase();
         inputPhrase.setText(phrase);
-        kpsService.clearAllContainers();
-        clearAllInputs();
-        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     private void updateInfoCard(){
         toggleSwitch.switchedOnProperty().set(AuthenticationService.getAuthenticatedUser().isProtect());
@@ -212,15 +208,12 @@ public class InfoFXController {
         featureSampleCount.setText(String.valueOf( fsService.getCount() ));
         featureCount.setText(String.valueOf( FuzzyFeatureSample.getMapKeys().size() ));
         termCount.setText(String.valueOf( FuzzyMeasure.values().length ));
-
-        toggleSwitch.animation.play();
     }
 
     public void clearAllInputs(){
         trainPwd.setText("");
         inputArea.setText("");
         kpsService.clearAllContainers();
-        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     public void resetGUI(){
         passwordPage.setVisible(false);
@@ -293,14 +286,12 @@ public class InfoFXController {
                 translateTransition.setToX(isOn ? background.getWidth() - trigger.getRadius() * 2 : 0);
                 fillTransition.setFromValue(isOn ? Color.WHITESMOKE : Color.LIMEGREEN);
                 fillTransition.setToValue(isOn ? Color.LIMEGREEN : Color.WHITESMOKE);
+                animation.play();
 
                 if (isOn)
                     generateFIS();
-
                 updateUser(isOn);
                 updateInfoCard();
-
-                animation.play();
             });
 
             setOnMouseClicked(event -> {
