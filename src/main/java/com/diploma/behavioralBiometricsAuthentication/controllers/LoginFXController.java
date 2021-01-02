@@ -123,6 +123,8 @@ public class LoginFXController {
                 disableListener();
                 StageCreationService.getCurrentStage().close();
                 stageCreationService.createStage("Особистий кабінет", new Stage(), "info").show();
+                notificationService.createNotification("success");
+                return;
             }
             updateGUIStep("success", step3, circleStep3, stepNum3, authentication2, biometrics1);
             disableListener();

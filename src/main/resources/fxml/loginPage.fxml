@@ -107,32 +107,32 @@
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication1" layoutX="327.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication1" layoutX="316.0" layoutY="140.0" text="Автентифікація 1" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication2" layoutX="571.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication2" layoutX="565.0" layoutY="140.0" text="Автентифікація 2" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication3" layoutX="816.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication3" layoutX="807.0" layoutY="140.0" text="Автентифікація 3" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="passwordAuth" layoutX="369.0" layoutY="158.0" text="(пароль)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="passwordAuth" layoutX="367.0" layoutY="158.0" text="(пароль)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="biometrics2" layoutX="843.0" layoutY="157.0" text="(біометрія 2)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="biometrics2" layoutX="843.0" layoutY="157.0" text="(біометрія)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="biometrics1" layoutX="598.0" layoutY="158.0" text="(біометрія 1)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="biometrics1" layoutX="598.0" layoutY="158.0" text="(біометрія)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>

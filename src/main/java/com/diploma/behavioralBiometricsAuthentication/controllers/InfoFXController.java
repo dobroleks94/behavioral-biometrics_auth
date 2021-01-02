@@ -117,7 +117,8 @@ public class InfoFXController {
         resetGUI();
         mainPage.setVisible(true);
         updateInfoCard();
-        disableListener();
+        if (this.activeListener)
+            disableListener();
     }
     public void showPasswordInput() {
         resetGUI();
