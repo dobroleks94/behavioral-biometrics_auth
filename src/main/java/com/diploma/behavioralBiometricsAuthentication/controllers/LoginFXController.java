@@ -46,7 +46,6 @@ public class LoginFXController {
 
     private static ArbitraryPhraseExtractor phraseExtractor;
     private static KeyboardListener listener;
-    private static UserService userService;
     private static KeyProfileSamplesService kpsService;
     private static StageCreationService stageCreationService;
     private static NotificationService notificationService;
@@ -61,14 +60,13 @@ public class LoginFXController {
     @Autowired
     private void initializeBeans(KeyboardListener listener,
                                  NotificationService notificationService,
-                                 UserService userService,
                                  KeyProfileSamplesService kpsService,
                                  ArbitraryPhraseExtractor phraseExtractor,
                                  StageCreationService stageCreationService,
                                  AuthenticationService authService) {
+
         LoginFXController.listener = listener;
         LoginFXController.notificationService = notificationService;
-        LoginFXController.userService = userService;
         LoginFXController.kpsService = kpsService;
         LoginFXController.phraseExtractor = phraseExtractor;
         LoginFXController.stageCreationService = stageCreationService;
@@ -87,7 +85,7 @@ public class LoginFXController {
 
     public void identify() throws IOException {
         try {
-            User temp = authService.identifyUser( userService.findByLogin( loginField.getText() ) );
+            User temp = authService.identifyUser( loginField.getText() );
             this.username = temp.getLogin();
 
             enableListener();
@@ -173,6 +171,7 @@ public class LoginFXController {
     }
     public void clearInputArea(){
         this.inputArea.setText("");
+        kpsService.clearAllContainers();
     }
     public void verifyFullText(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.SPACE)
@@ -202,6 +201,7 @@ public class LoginFXController {
     }
     public void clearPassword(){
         this.passwordField.setText("");
+        kpsService.clearAllContainers();
     }
     //---------------------------------------------------------------------------------------------//
 
