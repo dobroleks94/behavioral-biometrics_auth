@@ -41,8 +41,17 @@ public class FuzzyMeasureItemService {
 
         List<FuzzyMeasureItem> fuzzyItems = new ArrayList<>();
 
-        double minTime = featureSampleService.getTimeCostsRange()[0];
-        double maxTime = featureSampleService.getTimeCostsRange()[1];
+        double minDwellTime = featureSampleService.getDwellTimeRange()[0];
+        double maxDwellTime = featureSampleService.getDwellTimeRange()[1];
+
+        double minFlightTime = featureSampleService.getFlightTimeRange()[0];
+        double maxFlightTime = featureSampleService.getFlightTimeRange()[1];
+
+        double minDiTime = featureSampleService.getDigraphTimeRange()[0];
+        double maxDiTime = featureSampleService.getDigraphTimeRange()[1];
+
+        double minTriTime = featureSampleService.getTrigraphTimeRange()[0];
+        double maxTriTime = featureSampleService.getTrigraphTimeRange()[1];
 
         double minSpeed = featureSampleService.getTypingSpeedRange()[0];
         double maxSpeed = featureSampleService.getTypingSpeedRange()[1];
@@ -51,7 +60,10 @@ public class FuzzyMeasureItemService {
         double maxFrequencyRate = featureSampleService.getFrequencyRange()[1];
 
 
-        fuzzyItems.addAll( utils.generate(FeatureName.TIME, minTime, maxTime) );
+        fuzzyItems.addAll( utils.generate(FeatureName.DWELL_TIME, minDwellTime, maxDwellTime) );
+        fuzzyItems.addAll( utils.generate(FeatureName.FLIGHT_TIME, minFlightTime, maxFlightTime) );
+        fuzzyItems.addAll( utils.generate(FeatureName.DiGRAPH_TIME, minDiTime, maxDiTime) );
+        fuzzyItems.addAll( utils.generate(FeatureName.TriGRAPH_TIME, minTriTime, maxTriTime) );
         fuzzyItems.addAll( utils.generate(FeatureName.SPEED, minSpeed, maxSpeed) );
         fuzzyItems.addAll( utils.generate(FeatureName.FREQUENCY, minFrequencyRate, maxFrequencyRate ));
 
