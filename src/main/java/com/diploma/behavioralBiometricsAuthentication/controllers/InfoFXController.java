@@ -198,6 +198,8 @@ public class InfoFXController {
     public void updatePhrase() throws IOException {
         phrase = phraseExtractor.getRandomPhrase();
         inputPhrase.setText(phrase);
+        kpsService.clearAllContainers();
+        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     private void updateInfoCard(){
         toggleSwitch.switchedOnProperty().set(AuthenticationService.getAuthenticatedUser().isProtect());
@@ -213,6 +215,7 @@ public class InfoFXController {
         trainPwd.setText("");
         inputArea.setText("");
         kpsService.clearAllContainers();
+        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     public void resetGUI(){
         passwordPage.setVisible(false);
