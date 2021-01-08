@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.controllers;
 import com.diploma.behavioralBiometricsAuthentication.entities.User;
+import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
 import javafx.fxml.FXML;
@@ -49,11 +50,10 @@ public class LoginFXController {
     private static KeyProfileSamplesService kpsService;
     private static StageCreationService stageCreationService;
     private static NotificationService notificationService;
+    private static SystemLogger logger;
 
     private static AuthenticationService authService;
 
-    private String username;
-    private String password;
     private boolean activeListener;
     private String phrase;
 
@@ -63,13 +63,15 @@ public class LoginFXController {
                                  KeyProfileSamplesService kpsService,
                                  ArbitraryPhraseExtractor phraseExtractor,
                                  StageCreationService stageCreationService,
-                                 AuthenticationService authService) {
+                                 AuthenticationService authService,
+                                 SystemLogger logger) {
 
         LoginFXController.listener = listener;
         LoginFXController.notificationService = notificationService;
         LoginFXController.kpsService = kpsService;
         LoginFXController.phraseExtractor = phraseExtractor;
         LoginFXController.stageCreationService = stageCreationService;
+        LoginFXController.logger = logger;
 
         LoginFXController.authService = authService;
     }
@@ -85,8 +87,7 @@ public class LoginFXController {
 
     public void identify() throws IOException {
         try {
-            User temp = authService.identifyUser( loginField.getText() );
-            this.username = temp.getLogin();
+            authService.identifyUser( loginField.getText() );
 
             enableListener();
             updateGUIStep("success", step1, circleStep1, stepNum1, identification);
@@ -99,8 +100,8 @@ public class LoginFXController {
         }
     }
     public void auth() throws IOException {
-        this.password = passwordField.getText();
-        if(authService.passwordAuth(this.password)){
+        String password = passwordField.getText();
+        if(authService.passwordAuth(password)){
             updateGUIStep("success", step2, circleStep2, stepNum2, authentication1, passwordAuth);
             if(authService.checkOnBiometricsProtection()) {
                try {
@@ -172,6 +173,7 @@ public class LoginFXController {
     public void clearInputArea(){
         this.inputArea.setText("");
         kpsService.clearAllContainers();
+        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     public void verifyFullText(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.SPACE)
@@ -182,6 +184,8 @@ public class LoginFXController {
     public void updatePhrase() throws IOException {
         phrase = phraseExtractor.getRandomPhrase();
         inputPhrase.setText(phrase);
+        kpsService.clearAllContainers();
+        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     //---------------------------------------------------------------------------------------------//
 
@@ -202,6 +206,7 @@ public class LoginFXController {
     public void clearPassword(){
         this.passwordField.setText("");
         kpsService.clearAllContainers();
+        logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     //---------------------------------------------------------------------------------------------//
 

@@ -173,18 +173,15 @@ public class FuzzyFeatureSampleService {
             }
         }
         private FeatureName chooseFeatureNameFrom(String feature) {
-            switch (feature) {
-                case "typingSpeed":
-                    return FeatureName.SPEED;
-                case "meanDwellTime", "meanDelBackspDwell", "meanFlightTime",
-                        "meanDiGraphKUTime", "meanDiGraphKDTime",
-                        "meanTriGraphKUTime", "meanTriGraphKDTime":
-                    return FeatureName.TIME;
-                case "mistakesFrequency", "numPadUsageFrequency":
-                    return FeatureName.FREQUENCY;
-                default:
-                    throw new RuntimeException("Bad feature name: " + feature);
-            }
+            return switch (feature) {
+                case "typingSpeed" -> FeatureName.SPEED;
+                case "meanDwellTime", "meanDelBackspDwell" -> FeatureName.DWELL_TIME;
+                case "meanFlightTime" -> FeatureName.FLIGHT_TIME;
+                case "meanDiGraphKUTime", "meanDiGraphKDTime" -> FeatureName.DiGRAPH_TIME;
+                case "meanTriGraphKUTime", "meanTriGraphKDTime" -> FeatureName.TriGRAPH_TIME;
+                case "mistakesFrequency", "numPadUsageFrequency" -> FeatureName.FREQUENCY;
+                default -> throw new RuntimeException("Bad feature name: " + feature);
+            };
         }
     }
 }
