@@ -21,12 +21,21 @@ public class InitialConfig{
         return new BCryptPasswordEncoder();
     }
 
-    /*@Bean
+   /* @Bean
     public void createInitialUser(){
         User dobroshtan = userService.createUser("oleksii_dobroshtan", "dobroshtan_Password94");
         dobroshtan.setId(1L);
+        dobroshtan.setProtect(false);
         System.out.println("User created");
         System.out.println("User saved with id: " + userService.saveUser(dobroshtan).getId());
     }*/
+
+    /*@Bean
+    public void resetProtection(){
+        User dobroshtan = userService.findByLogin("oleksii_dobroshtan");
+        dobroshtan.setProtect(false);
+        userService.saveUser(dobroshtan);
+    }*/
+
 
 }

@@ -77,11 +77,42 @@ public class FeatureSampleService {
 
         return new Double[]{minimum, maximum};
     }
-    public Double[] getTimeCostsRange() {
-        Double minimum = findAscTimedValues(0).stream()
+
+    public Double[] getFlightTimeRange() {
+        Double minimum = findAscFlightTimeValues(0).stream()
                 .reduce(Double::min)
                 .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscTimedValues((int) (getSize() - 1)).stream()
+        Double maximum = findAscFlightTimeValues((int) (getSize() - 1)).stream()
+                .reduce(Double::max)
+                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+
+        return new Double[]{minimum, maximum};
+    }
+    public Double[] getDwellTimeRange() {
+        Double minimum = findAscDwellTimeValues(0).stream()
+                .reduce(Double::min)
+                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        Double maximum = findAscDwellTimeValues((int) (getSize() - 1)).stream()
+                .reduce(Double::max)
+                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+
+        return new Double[]{minimum, maximum};
+    }
+    public Double[] getDigraphTimeRange() {
+        Double minimum = findAscDigraphTimeValues(0).stream()
+                .reduce(Double::min)
+                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        Double maximum = findAscDigraphTimeValues((int) (getSize() - 1)).stream()
+                .reduce(Double::max)
+                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+
+        return new Double[]{minimum, maximum};
+    }
+    public Double[] getTrigraphTimeRange() {
+        Double minimum = findAscTrigraphTimeValues(0).stream()
+                .reduce(Double::min)
+                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        Double maximum = findAscTrigraphTimeValues((int) (getSize() - 1)).stream()
                 .reduce(Double::max)
                 .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
 
@@ -93,7 +124,36 @@ public class FeatureSampleService {
                 featureSampleRepository.findAllByOrderByNumPadUsageFrequencyAsc().get(index).getNumPadUsageFrequency()
         ).collect(Collectors.toList());
     }
-    public List<Double> findAscTimedValues(int index) {
+    public List<Double> findAscDigraphTimeValues(int index) {
+        return Stream.of(
+                featureSampleRepository.findAllByOrderByMeanDigraphKUTimeAsc().get(index).getMeanDigraphKUTime(),
+                featureSampleRepository.findAllByOrderByMeanDigraphKDTimeAsc().get(index).getMeanDigraphKDTime())
+                .collect(Collectors.toList());
+
+    }
+    public List<Double> findAscTrigraphTimeValues(int index) {
+        return Stream.of(
+                featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),
+                featureSampleRepository.findAllByOrderByMeanTrigraphKDTimeAsc().get(index).getMeanTrigraphKDTime())
+                .collect(Collectors.toList());
+
+    }
+    public List<Double> findAscDwellTimeValues(int index) {
+        return Stream.of(
+                featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
+                featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime())
+                .collect(Collectors.toList());
+
+    }
+    public List<Double> findAscFlightTimeValues(int index) {
+        return Stream.of( featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanFlightTime() )
+                .collect(Collectors.toList());
+    }
+
+    public long getCount() { return featureSampleRepository.count(); }
+
+    @Deprecated
+    public List<Double> findAscTimeValues(int index) {
         return Stream.of(
                 featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
                 featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime(),
@@ -103,10 +163,19 @@ public class FeatureSampleService {
                 featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),
                 featureSampleRepository.findAllByOrderByMeanTrigraphKDTimeAsc().get(index).getMeanTrigraphKDTime())
                 .collect(Collectors.toList());
-
     }
 
-    public long getCount() { return featureSampleRepository.count(); }
+    @Deprecated
+    public Double[] getTimeCostRange() {
+        Double minimum = findAscTimeValues(0).stream()
+                .reduce(Double::min)
+                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        Double maximum = findAscTimeValues((int) (getSize() - 1)).stream()
+                .reduce(Double::max)
+                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+
+        return new Double[]{minimum, maximum};
+    }
 
 
     private class Utility {
