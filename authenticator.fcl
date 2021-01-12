@@ -18,43 +18,43 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY meanDelBackspDwell
-	TERM high := TRIAN 244.53201970443348 305.66502463054184 427.9310344827586;
-	TERM lessMedium := TRIAN 61.13300492610837 122.26600985221674 183.39901477832512;
-	TERM low := TRIAN 0.0 61.13300492610837 122.26600985221674;
-	TERM medium := TRIAN 122.26600985221674 183.39901477832512 244.53201970443348;
-	TERM moreMedium := TRIAN 183.39901477832512 244.53201970443348 305.66502463054184;
-	TERM veryHigh := TRIAN 305.66502463054184 427.9310344827586 855.8620689655172;
-	TERM veryLow := TRIAN -427.9310344827586 0.0 61.13300492610837;
+	TERM high := TRIAN 324.0 405.0 567.0;
+	TERM lessMedium := TRIAN 81.0 162.0 243.0;
+	TERM low := TRIAN 0.0 81.0 162.0;
+	TERM medium := TRIAN 162.0 243.0 324.0;
+	TERM moreMedium := TRIAN 243.0 324.0 405.0;
+	TERM veryHigh := TRIAN 405.0 567.0 1134.0;
+	TERM veryLow := TRIAN -567.0 0.0 81.0;
 END_FUZZIFY
 
 FUZZIFY meanDiGraphKDTime
-	TERM high := TRIAN 301.7985739750445 344.2709447415329 429.2156862745098;
-	TERM lessMedium := TRIAN 174.38146167557932 216.85383244206773 259.32620320855614;
-	TERM low := TRIAN 131.9090909090909 174.38146167557932 216.85383244206773;
-	TERM medium := TRIAN 216.85383244206773 259.32620320855614 301.7985739750445;
-	TERM moreMedium := TRIAN 259.32620320855614 301.7985739750445 344.2709447415329;
-	TERM veryHigh := TRIAN 344.2709447415329 429.2156862745098 858.4313725490196;
-	TERM veryLow := TRIAN -297.30659536541884 131.9090909090909 174.38146167557932;
+	TERM high := TRIAN 300.6687038451744 343.51769798828616 429.2156862745098;
+	TERM lessMedium := TRIAN 172.12172141583906 214.97071555895084 257.8197097020626;
+	TERM low := TRIAN 129.27272727272728 172.12172141583906 214.97071555895084;
+	TERM medium := TRIAN 214.97071555895084 257.8197097020626 300.6687038451744;
+	TERM moreMedium := TRIAN 257.8197097020626 300.6687038451744 343.51769798828616;
+	TERM veryHigh := TRIAN 343.51769798828616 429.2156862745098 858.4313725490196;
+	TERM veryLow := TRIAN -299.94295900178247 129.27272727272728 172.12172141583906;
 END_FUZZIFY
 
 FUZZIFY meanDiGraphKUTime
-	TERM high := TRIAN 301.7985739750445 344.2709447415329 429.2156862745098;
-	TERM lessMedium := TRIAN 174.38146167557932 216.85383244206773 259.32620320855614;
-	TERM low := TRIAN 131.9090909090909 174.38146167557932 216.85383244206773;
-	TERM medium := TRIAN 216.85383244206773 259.32620320855614 301.7985739750445;
-	TERM moreMedium := TRIAN 259.32620320855614 301.7985739750445 344.2709447415329;
-	TERM veryHigh := TRIAN 344.2709447415329 429.2156862745098 858.4313725490196;
-	TERM veryLow := TRIAN -297.30659536541884 131.9090909090909 174.38146167557932;
+	TERM high := TRIAN 300.6687038451744 343.51769798828616 429.2156862745098;
+	TERM lessMedium := TRIAN 172.12172141583906 214.97071555895084 257.8197097020626;
+	TERM low := TRIAN 129.27272727272728 172.12172141583906 214.97071555895084;
+	TERM medium := TRIAN 214.97071555895084 257.8197097020626 300.6687038451744;
+	TERM moreMedium := TRIAN 257.8197097020626 300.6687038451744 343.51769798828616;
+	TERM veryHigh := TRIAN 343.51769798828616 429.2156862745098 858.4313725490196;
+	TERM veryLow := TRIAN -299.94295900178247 129.27272727272728 172.12172141583906;
 END_FUZZIFY
 
 FUZZIFY meanDwellTime
-	TERM high := TRIAN 244.53201970443348 305.66502463054184 427.9310344827586;
-	TERM lessMedium := TRIAN 61.13300492610837 122.26600985221674 183.39901477832512;
-	TERM low := TRIAN 0.0 61.13300492610837 122.26600985221674;
-	TERM medium := TRIAN 122.26600985221674 183.39901477832512 244.53201970443348;
-	TERM moreMedium := TRIAN 183.39901477832512 244.53201970443348 305.66502463054184;
-	TERM veryHigh := TRIAN 305.66502463054184 427.9310344827586 855.8620689655172;
-	TERM veryLow := TRIAN -427.9310344827586 0.0 61.13300492610837;
+	TERM high := TRIAN 324.0 405.0 567.0;
+	TERM lessMedium := TRIAN 81.0 162.0 243.0;
+	TERM low := TRIAN 0.0 81.0 162.0;
+	TERM medium := TRIAN 162.0 243.0 324.0;
+	TERM moreMedium := TRIAN 243.0 324.0 405.0;
+	TERM veryHigh := TRIAN 405.0 567.0 1134.0;
+	TERM veryLow := TRIAN -567.0 0.0 81.0;
 END_FUZZIFY
 
 FUZZIFY meanFlightTime
@@ -68,23 +68,23 @@ FUZZIFY meanFlightTime
 END_FUZZIFY
 
 FUZZIFY meanTriGraphKDTime
-	TERM high := TRIAN 612.1722448979593 698.1081632653063 869.98;
-	TERM lessMedium := TRIAN 354.3644897959184 440.3004081632654 526.2363265306124;
-	TERM low := TRIAN 268.42857142857144 354.3644897959184 440.3004081632654;
-	TERM medium := TRIAN 440.3004081632654 526.2363265306124 612.1722448979593;
-	TERM moreMedium := TRIAN 526.2363265306124 612.1722448979593 698.1081632653063;
-	TERM veryHigh := TRIAN 698.1081632653063 869.98 1739.96;
-	TERM veryLow := TRIAN -601.5514285714286 268.42857142857144 354.3644897959184;
+	TERM high := TRIAN 610.6008163265307 697.0605442176872 869.98;
+	TERM lessMedium := TRIAN 351.2216326530612 437.6813605442177 524.1410884353742;
+	TERM low := TRIAN 264.76190476190476 351.2216326530612 437.6813605442177;
+	TERM medium := TRIAN 437.6813605442177 524.1410884353742 610.6008163265307;
+	TERM moreMedium := TRIAN 524.1410884353742 610.6008163265307 697.0605442176872;
+	TERM veryHigh := TRIAN 697.0605442176872 869.98 1739.96;
+	TERM veryLow := TRIAN -605.2180952380952 264.76190476190476 351.2216326530612;
 END_FUZZIFY
 
 FUZZIFY meanTriGraphKUTime
-	TERM high := TRIAN 612.1722448979593 698.1081632653063 869.98;
-	TERM lessMedium := TRIAN 354.3644897959184 440.3004081632654 526.2363265306124;
-	TERM low := TRIAN 268.42857142857144 354.3644897959184 440.3004081632654;
-	TERM medium := TRIAN 440.3004081632654 526.2363265306124 612.1722448979593;
-	TERM moreMedium := TRIAN 526.2363265306124 612.1722448979593 698.1081632653063;
-	TERM veryHigh := TRIAN 698.1081632653063 869.98 1739.96;
-	TERM veryLow := TRIAN -601.5514285714286 268.42857142857144 354.3644897959184;
+	TERM high := TRIAN 610.6008163265307 697.0605442176872 869.98;
+	TERM lessMedium := TRIAN 351.2216326530612 437.6813605442177 524.1410884353742;
+	TERM low := TRIAN 264.76190476190476 351.2216326530612 437.6813605442177;
+	TERM medium := TRIAN 437.6813605442177 524.1410884353742 610.6008163265307;
+	TERM moreMedium := TRIAN 524.1410884353742 610.6008163265307 697.0605442176872;
+	TERM veryHigh := TRIAN 697.0605442176872 869.98 1739.96;
+	TERM veryLow := TRIAN -605.2180952380952 264.76190476190476 351.2216326530612;
 END_FUZZIFY
 
 FUZZIFY mistakesFrequency
@@ -108,13 +108,13 @@ FUZZIFY numPadUsageFrequency
 END_FUZZIFY
 
 FUZZIFY typingSpeed
-	TERM high := TRIAN 308.59968871833973 350.34173945573485 433.82584093052503;
-	TERM lessMedium := TRIAN 183.37353650615444 225.11558724354953 266.8576379809446;
-	TERM low := TRIAN 141.63148576875935 183.37353650615444 225.11558724354953;
-	TERM medium := TRIAN 225.11558724354953 266.8576379809446 308.59968871833973;
-	TERM moreMedium := TRIAN 266.8576379809446 308.59968871833973 350.34173945573485;
-	TERM veryHigh := TRIAN 350.34173945573485 433.82584093052503 867.6516818610501;
-	TERM veryLow := TRIAN -292.19435516176566 141.63148576875935 183.37353650615444;
+	TERM high := TRIAN 316.97851548964286 360.81527291986373 448.4887877803055;
+	TERM lessMedium := TRIAN 185.46824319898022 229.3050006292011 273.141758059422;
+	TERM low := TRIAN 141.63148576875935 185.46824319898022 229.3050006292011;
+	TERM medium := TRIAN 229.3050006292011 273.141758059422 316.97851548964286;
+	TERM moreMedium := TRIAN 273.141758059422 316.97851548964286 360.81527291986373;
+	TERM veryHigh := TRIAN 360.81527291986373 448.4887877803055 896.977575560611;
+	TERM veryLow := TRIAN -306.85730201154615 141.63148576875935 185.46824319898022;
 END_FUZZIFY
 
 DEFUZZIFY user
@@ -128,10 +128,62 @@ RULEBLOCK rulesFromAssociationRules
 	ACT : MIN;
 	ACCU : MAX;
 	AND : MIN;
-	RULE 1876 : IF meanFlightTime IS low AND numPadUsageFrequency IS veryLow THEN user IS oleksii_dobroshtan;
-	RULE 1879 : IF meanDiGraphKUTime IS low AND numPadUsageFrequency IS veryLow THEN user IS oleksii_dobroshtan;
-	RULE 1882 : IF meanTriGraphKUTime IS low AND numPadUsageFrequency IS veryLow THEN user IS oleksii_dobroshtan;
-	RULE 1885 : IF mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow THEN user IS oleksii_dobroshtan;
+	RULE 23073 : IF meanDwellTime IS medium AND (meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23078 : IF meanDwellTime IS medium AND (numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23083 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23088 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND meanDiGraphKUTime IS low)) THEN user IS oleksii_dobroshtan;
+	RULE 23093 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23098 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23103 : IF meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23108 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23113 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanFlightTime IS lessMedium AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23118 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanFlightTime IS lessMedium AND meanDelBackspDwell IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23123 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanFlightTime IS lessMedium AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23128 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23133 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND meanDelBackspDwell IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23138 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23143 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23148 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDelBackspDwell IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23153 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKDTime IS veryLow AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23158 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23163 : IF numPadUsageFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDelBackspDwell IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23168 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDiGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23173 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND meanTriGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23178 : IF meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND (meanTriGraphKDTime IS low AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23183 : IF numPadUsageFrequency IS veryLow AND (meanTriGraphKUTime IS low AND (meanTriGraphKDTime IS low AND meanDiGraphKUTime IS low)) THEN user IS oleksii_dobroshtan;
+	RULE 23188 : IF numPadUsageFrequency IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKDTime IS low AND meanTriGraphKUTime IS low)) THEN user IS oleksii_dobroshtan;
+	RULE 23193 : IF meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23198 : IF numPadUsageFrequency IS veryLow AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND meanDiGraphKUTime IS low)) THEN user IS oleksii_dobroshtan;
+	RULE 23203 : IF mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND numPadUsageFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23208 : IF numPadUsageFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23213 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDiGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23218 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND meanTriGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23223 : IF meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND meanDiGraphKUTime IS low)) THEN user IS oleksii_dobroshtan;
+	RULE 23228 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23233 : IF mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDelBackspDwell IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23238 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND mistakesFrequency IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23243 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDiGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23248 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND meanTriGraphKDTime IS veryLow)) THEN user IS oleksii_dobroshtan;
+	RULE 23253 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND numPadUsageFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23259 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND meanDiGraphKUTime IS low))) THEN user IS oleksii_dobroshtan;
+	RULE 23265 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23271 : IF meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND (mistakesFrequency IS veryLow AND (numPadUsageFrequency IS veryLow AND meanDiGraphKUTime IS low))) THEN user IS oleksii_dobroshtan;
+	RULE 23277 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKUTime IS low AND (meanTriGraphKUTime IS low AND (numPadUsageFrequency IS veryLow AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23283 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKUTime IS low AND (meanDiGraphKUTime IS low AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23289 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND numPadUsageFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23295 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDelBackspDwell IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23301 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23307 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND meanDiGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23313 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND meanTriGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23319 : IF mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND (numPadUsageFrequency IS veryLow AND meanDelBackspDwell IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23325 : IF meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND (numPadUsageFrequency IS veryLow AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23331 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND (numPadUsageFrequency IS veryLow AND meanDiGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23337 : IF meanDelBackspDwell IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (numPadUsageFrequency IS veryLow AND meanTriGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23343 : IF numPadUsageFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanTriGraphKDTime IS veryLow AND (meanDelBackspDwell IS veryLow AND mistakesFrequency IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23349 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanTriGraphKDTime IS veryLow AND (meanDelBackspDwell IS veryLow AND meanDiGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23355 : IF numPadUsageFrequency IS veryLow AND (mistakesFrequency IS veryLow AND (meanDiGraphKDTime IS veryLow AND (meanDelBackspDwell IS veryLow AND meanTriGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23361 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanTriGraphKDTime IS veryLow AND (mistakesFrequency IS veryLow AND meanDiGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
+	RULE 23367 : IF numPadUsageFrequency IS veryLow AND (meanDelBackspDwell IS veryLow AND (meanDiGraphKDTime IS veryLow AND (mistakesFrequency IS veryLow AND meanTriGraphKDTime IS veryLow))) THEN user IS oleksii_dobroshtan;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
