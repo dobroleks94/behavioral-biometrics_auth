@@ -19,11 +19,11 @@
       <Rectangle fx:id="step4" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="749.0" layoutY="137.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
       <Rectangle fx:id="step3" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="503.0" layoutY="138.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
       <Rectangle fx:id="step2" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="249.0" layoutY="138.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
-      <Button fx:id="authButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#auth" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Продовжити" textAlignment="CENTER">
+      <Button fx:id="authButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#auth" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Continue" textAlignment="CENTER">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="continueButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#identify" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Продовжити" textAlignment="CENTER">
+      <Button fx:id="continueButton" layoutX="435.0" layoutY="471.0" mnemonicParsing="false" onAction="#identify" prefHeight="50.0" prefWidth="225.0" styleClass="buttonAdj" text="Continue" textAlignment="CENTER">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -39,7 +39,7 @@
       </Label>
       <Pane fx:id="loginPane" layoutX="322.0" layoutY="380.0" prefHeight="60.0" prefWidth="450.0">
          <children>
-               <TextField fx:id="loginField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateIdentification" onMousePressed="#resetIdentGUI" prefHeight="50.0" prefWidth="370.0" promptText="Логін" styleClass="inputAdj">
+               <TextField fx:id="loginField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateIdentification" onMousePressed="#resetIdentGUI" prefHeight="50.0" prefWidth="370.0" promptText="Username" styleClass="inputAdj">
                <font>
                   <Font size="22.0" />
                </font></TextField>
@@ -52,7 +52,7 @@
       </Pane>
       <Pane fx:id="passwordPane" layoutX="322.0" layoutY="380.0" prefHeight="60.0" prefWidth="450.0">
          <children>
-               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Пароль" styleClass="inputAdj">
+               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Password" styleClass="inputAdj">
                <font>
                   <Font name="Ubuntu" size="22.0" />
                </font>
@@ -102,37 +102,37 @@
             <Font name="Ubuntu Bold" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="identification" layoutX="85.0" layoutY="146.0" text="Ідентифікація" textFill="LIMEGREEN">
+      <Label fx:id="identification" layoutX="92.0" layoutY="148.0" text="Identification" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication1" layoutX="327.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication1" layoutX="326.0" layoutY="140.0" text="Authentication 1" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication2" layoutX="571.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication2" layoutX="570.0" layoutY="140.0" text="Authentication 2" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authentication3" layoutX="816.0" layoutY="140.0" text="Автентифікація" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="authentication3" layoutX="812.0" layoutY="140.0" text="Authentication 3" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="passwordAuth" layoutX="369.0" layoutY="158.0" text="(пароль)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="passwordAuth" layoutX="361.0" layoutY="158.0" text="(password)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="biometrics2" layoutX="843.0" layoutY="157.0" text="(біометрія 2)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="biometrics2" layoutX="845.0" layoutY="157.0" text="(biometrics)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="biometrics1" layoutX="598.0" layoutY="158.0" text="(біометрія 1)" textAlignment="CENTER" textFill="LIMEGREEN">
+      <Label fx:id="biometrics1" layoutX="600.0" layoutY="158.0" text="(biometrics)" textAlignment="CENTER" textFill="LIMEGREEN">
          <font>
             <Font name="Ubuntu Bold" size="14.0" />
          </font>
@@ -141,12 +141,12 @@
          <children>
             <Rectangle fx:id="descriptionContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="76.0" layoutX="15.0" layoutY="15.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
             <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="320.0" layoutX="14.0" layoutY="96.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
-            <Label fx:id="descriptionLabel" layoutX="87.0" layoutY="38.0" text="Будь ласка, введіть нижче запропонований текст:">
+            <Label fx:id="descriptionLabel" layoutX="242.0" layoutY="38.0" text="Please, enter the text below:">
                <font>
                   <Font name="Ubuntu Bold" size="25.0" />
                </font>
             </Label>
-            <TextArea fx:id="inputArea" layoutX="42.0" layoutY="248.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="155.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj" wrapText="true">
+            <TextArea fx:id="inputArea" layoutX="42.0" layoutY="248.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="155.0" prefWidth="751.0" promptText="Enter phrase here ..." styleClass="inputAreaAdj" wrapText="true">
       </TextArea>
             <TextArea fx:id="inputPhrase" editable="false" layoutX="42.0" layoutY="106.0" prefHeight="134.0" prefWidth="744.0" styleClass="inputAreaAdj, phrase" wrapText="true" />
             <ImageView fx:id="update" fitHeight="30.0" fitWidth="40.0" layoutX="750.0" layoutY="208.0" onMouseClicked="#updatePhrase" pickOnBounds="true" preserveRatio="true">
