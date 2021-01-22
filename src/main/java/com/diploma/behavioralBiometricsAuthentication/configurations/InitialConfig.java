@@ -37,5 +37,19 @@ public class InitialConfig{
         userService.saveUser(dobroshtan);
     }*/
 
+    /*@Bean
+    public void updatePassword(){
+        User dobroshtan = userService.findByLogin("oleksii_dobroshtan");
+        dobroshtan.setPassword(passwordEncoder().encode("dobroshtan_Password94"));
+        userService.saveUser(dobroshtan);
+    }*/
+
+   /* @Bean
+    public void updateLogin(){
+        User dobroshtan = userService.findByLogin("oleksii_dobroshtan");
+        dobroshtan.setLogin("oleksii_dobroshtan");
+        userService.saveUser(dobroshtan);
+    }*/
+
 
 }

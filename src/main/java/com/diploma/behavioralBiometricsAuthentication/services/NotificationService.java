@@ -16,21 +16,21 @@ public class NotificationService {
         switch (notification) {
             case "success", "success-write", "success-writeFIS" -> {
                 image = new Image("/fxml/stylesheets/icons/success.png");
-                title = notification.contains("success-write")  ? "Збережено" : "Авторизовано";
-                message = notification.equals("success-write") ? "Запис успішно додано!" :
-                          notification.equals("success-writeFIS")  ? "Біометричний захист успішно активовано" : "Авторизація пройшла успішно!";
+                title = notification.contains("success-write")  ? "Saved" : "Successful authorization";
+                message = notification.equals("success-write") ? "Record has been successfully added!" :
+                          notification.equals("success-writeFIS")  ? "Biometrics security successfully activated" : "Authorization successfully done!";
             }
             case "fail", "fail-writeFIS" -> {
                 image = new Image("/fxml/stylesheets/icons/fail.png");
-                title = "Відмова";
-                message = notification.equals("fail") ? "Відхилено авторизацію :(" : "Упс... Виникла непередбачена помилка :(";
+                title = "Refused";
+                message = notification.equals("fail") ? "Authorization failed :(" : "Oops... There is unexpected error :(";
             }
             case "error-password", "error-phrase", "error-login" -> {
                 image = new Image("/fxml/stylesheets/icons/wrong.png");
-                title = "Помилка";
-                message = notification.equals("error-password") ? "Введено неправильний пароль!"
-                        : notification.equals("error-login") ? "Введено неправильний логін!"
-                        : "Перевірте правильність введеного тексту!";
+                title = "Error";
+                message = notification.equals("error-password") ? "Wrong password!"
+                        : notification.equals("error-login") ? "Wrong username!"
+                        : "Check the text is valid!";
             }
         }
         ImageView imageView = new ImageView(image);
