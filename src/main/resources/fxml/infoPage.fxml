@@ -40,7 +40,7 @@
                   <Image url="@stylesheets/icons/home.png" />
                </image>
             </ImageView>
-            <Button fx:id="mainPageLink" layoutX="-1.0" layoutY="31.0" mnemonicParsing="false" onAction="#showMainPage" prefHeight="50.0" prefWidth="182.0" style="-fx-background-color: transparent;" text="Головна" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="mainPageLink" layoutX="21.0" layoutY="31.0" mnemonicParsing="false" onAction="#showMainPage" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Main page" textFill="WHITE">
                <font>
                   <Font name="Ubuntu Bold" size="24.0" />
                </font>
@@ -53,7 +53,7 @@
                   <Image url="@stylesheets/icons/lock.png" />
                </image>
             </ImageView>
-            <Button fx:id="pwdLink" layoutX="-1.0" layoutY="115.0" mnemonicParsing="false" onAction="#showPasswordInput" prefHeight="50.0" prefWidth="182.0" style="-fx-background-color: transparent;" text="Пароль" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="pwdLink" layoutX="21.0" layoutY="115.0" mnemonicParsing="false" onAction="#showPasswordInput" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Password" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Ubuntu Bold" size="24.0" />
                </font>
@@ -66,7 +66,7 @@
                   <Image url="@stylesheets/icons/file-alt.png" />
                </image>
             </ImageView>
-            <Button fx:id="freeTextLink" layoutX="-1.0" layoutY="189.0" mnemonicParsing="false" onAction="#showFreeTextInput" prefHeight="80.0" prefWidth="182.0" style="-fx-background-color: transparent;" text="Вільний текст" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="freeTextLink" layoutX="21.0" layoutY="189.0" mnemonicParsing="false" onAction="#showFreeTextInput" prefHeight="80.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Free text" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Ubuntu Bold" size="24.0" />
                </font>
@@ -79,7 +79,7 @@
                   <Image url="@stylesheets/icons/sign-out-alt.png" />
                </image>
             </ImageView>
-            <Button fx:id="logoutLink" layoutY="503.0" mnemonicParsing="false" onAction="#logout" prefHeight="55.0" prefWidth="182.0" style="-fx-background-color: transparent;" text="Вихід" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="logoutLink" layoutX="22.0" layoutY="503.0" mnemonicParsing="false" onAction="#logout" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Log out" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Ubuntu Bold" size="24.0" />
                </font>
@@ -110,12 +110,12 @@
                   <Image url="@stylesheets/icons/lock.png" />
                </image>
             </ImageView>
-            <Label layoutX="280.0" layoutY="192.0" text="Пароль:" textFill="WHITE" underline="true">
+            <Label layoutX="280.0" layoutY="192.0" text="Password:" textFill="WHITE" underline="true">
                <font>
                   <Font name="Ubuntu Bold" size="30.0" />
                </font>
             </Label>
-            <Button fx:id="writePwdButton" layoutX="510.0" layoutY="291.0" mnemonicParsing="false" onAction="#writePasswordSample" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Записати" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
+            <Button fx:id="writePwdButton" layoutX="510.0" layoutY="291.0" mnemonicParsing="false" onAction="#writePasswordSample" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Submit" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
                <font>
                   <Font name="Ubuntu Bold" size="22.0" />
                </font>
@@ -123,7 +123,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label layoutX="106.0" layoutY="127.0" text="Будь ласка, введіть свій пароль для збереження профілю ознак набору" textAlignment="CENTER" textFill="WHITE">
+            <Label layoutX="114.0" layoutY="128.0" text="Please, enter your password to save the keystroke feature sample profile" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Ubuntu Bold Italic" size="22.0" />
                </font>
@@ -146,12 +146,12 @@
                               </LinearGradient>
                            </fill>
                         </Rectangle>
-                        <Label layoutX="88.0" layoutY="34.0" text="Асоціативні" textFill="WHITE" wrapText="true">
+                        <Label layoutX="88.0" layoutY="34.0" text="Association" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="88.0" layoutY="61.0" text="правила" textFill="WHITE" wrapText="true">
+                        <Label layoutX="88.0" layoutY="61.0" text="rules" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
@@ -175,7 +175,7 @@
                               </LinearGradient>
                            </fill>
                         </Rectangle>
-                        <Label layoutX="88.0" layoutY="57.0" text="набору" textFill="WHITE" wrapText="true">
+                        <Label layoutX="106.0" layoutY="46.0" prefHeight="24.0" prefWidth="104.0" text="keystroke" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
@@ -185,7 +185,12 @@
                               <Font name="Ubuntu Bold" size="45.0" />
                            </font>
                         </Label>
-                        <Label layoutX="88.0" layoutY="34.0" text="Профілі ознак" textFill="WHITE" wrapText="true">
+                        <Label layoutX="106.0" layoutY="23.0" text="User's" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="105.0" layoutY="69.0" prefHeight="24.0" prefWidth="104.0" text="profiles" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
@@ -205,22 +210,17 @@
                               </LinearGradient>
                            </fill>
                         </Rectangle>
-                        <Label layoutX="77.0" layoutY="46.0" text="досліджуваних" textFill="WHITE" wrapText="true">
+                        <Label layoutX="84.0" layoutY="34.0" text="Keystroke" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="featureCount" layoutX="14.0" layoutY="25.0" prefHeight="66.0" prefWidth="57.0" text="10" textFill="WHITE" wrapText="true">
+                        <Label fx:id="featureCount" layoutX="16.0" layoutY="25.0" prefHeight="66.0" prefWidth="57.0" text="10" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="45.0" />
                            </font>
                         </Label>
-                        <Label layoutX="77.0" layoutY="22.0" text="Кількість" textFill="WHITE" wrapText="true">
-                           <font>
-                              <Font name="Ubuntu Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="77.0" layoutY="70.0" text="ознак" textFill="WHITE" wrapText="true">
+                        <Label layoutX="84.0" layoutY="58.0" text="features" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
@@ -240,17 +240,12 @@
                               </LinearGradient>
                            </fill>
                         </Rectangle>
-                        <Label layoutX="80.0" layoutY="58.0" text="терм" textFill="WHITE" wrapText="true">
-                           <font>
-                              <Font name="Ubuntu Bold" size="20.0" />
-                           </font>
-                        </Label>
                         <Label fx:id="termCount" layoutX="26.0" layoutY="25.0" prefHeight="66.0" prefWidth="38.0" text="7" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="45.0" />
                            </font>
                         </Label>
-                        <Label layoutX="80.0" layoutY="34.0" text="Кількість" textFill="WHITE" wrapText="true">
+                        <Label layoutX="75.0" layoutY="46.0" text="Fuzzy Terms" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Ubuntu Bold" size="20.0" />
                            </font>
@@ -259,25 +254,25 @@
                   </Pane>
                </children>
             </HBox>
-            <Label layoutX="244.0" layoutY="310.0" text="Біометричний захист" textAlignment="CENTER" textFill="WHITE" textOverrun="WORD_ELLIPSIS" underline="true">
+            <Label layoutX="207.0" layoutY="311.0" text="Apply biometrics security" textAlignment="CENTER" textFill="WHITE" textOverrun="WORD_ELLIPSIS" underline="true">
                <font>
                   <Font name="Ubuntu Bold" size="48.0" />
                </font>
             </Label>
          </children>
       </Pane>
-       <Pane fx:id="freeTextPane" layoutX="193.0" layoutY="73.0" prefHeight="592.0" prefWidth="1000.0">
+       <Pane fx:id="freeTextPane" layoutX="193.0" layoutY="97.0" prefHeight="592.0" prefWidth="1000.0">
           <children>
              <Pane fx:id="phrasePane" layoutX="79.0" layoutY="101.0" prefHeight="416.0" prefWidth="842.0">
                 <children>
                    <Rectangle fx:id="descriptionContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="76.0" layoutX="15.0" layoutY="15.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
                    <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="320.0" layoutX="14.0" layoutY="96.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
-                   <Label fx:id="descriptionLabel" layoutX="140.0" layoutY="26.0" text="Будь ласка, введіть нижче запропонований текст ">
+                   <Label fx:id="descriptionLabel" layoutX="220.0" layoutY="26.0" text="Please, enter the proposed text below">
                       <font>
                          <Font name="Ubuntu Bold" size="22.0" />
                       </font>
                    </Label>
-                   <TextArea fx:id="inputArea" layoutX="42.0" layoutY="248.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="155.0" prefWidth="751.0" promptText="Введіть фразу сюди..." styleClass="inputAreaAdj" wrapText="true">
+                   <TextArea fx:id="inputArea" layoutX="42.0" layoutY="248.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="155.0" prefWidth="751.0" promptText="Enter phrase here..." styleClass="inputAreaAdj" wrapText="true">
                    </TextArea>
                    <TextArea fx:id="inputPhrase" editable="false" layoutX="42.0" layoutY="106.0" prefHeight="134.0" prefWidth="744.0" styleClass="inputAreaAdj, phrase" wrapText="true" />
                    <ImageView fx:id="update" fitHeight="30.0" fitWidth="40.0" layoutX="750.0" layoutY="208.0" onMouseClicked="#updatePhrase" pickOnBounds="true" preserveRatio="true">
@@ -288,14 +283,14 @@
                          <Cursor fx:constant="HAND" />
                       </cursor>
                    </ImageView>
-                  <Label fx:id="descriptionLabel1" layoutX="202.0" layoutY="53.0" text="для збереження профілю ознак набору:">
+                  <Label fx:id="descriptionLabel1" layoutX="183.0" layoutY="53.0" text="to save the keystroke feature sample profile:">
                      <font>
                         <Font name="Ubuntu Bold" size="22.0" />
                      </font>
                   </Label>
                 </children>
              </Pane>
-            <Button fx:id="writeTextButton" layoutX="118.0" layoutY="523.0" mnemonicParsing="false" onAction="#writeInputAreaSample" prefHeight="43.0" prefWidth="751.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Записати" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
+            <Button fx:id="writeTextButton" layoutX="118.0" layoutY="523.0" mnemonicParsing="false" onAction="#writeInputAreaSample" prefHeight="43.0" prefWidth="751.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Submit" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
                <font>
                   <Font name="Ubuntu Bold" size="22.0" />
                </font>
