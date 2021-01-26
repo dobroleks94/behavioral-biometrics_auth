@@ -79,7 +79,7 @@ public class FuzzyMeasureItemService {
 
         private List<FuzzyMeasureItem> generate(FeatureName name, double min, double max){
 
-            double step = (max - min) / FuzzyMeasure.values().length; // defining a value of fuzzy indicators' range size
+            double step = (max - min) / (FuzzyMeasure.values().length - 1); // defining a value of fuzzy indicators' range size
 
             FuzzyMeasureItem veryLow = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.VERY_LOW, min);
             FuzzyMeasureItem low = fuzzyEntitiesFactory.createFuzzyMeasureItem(name, FuzzyMeasure.LOW, veryLow.getCrispDescriptor() + step);
