@@ -33,10 +33,10 @@ import java.util.stream.Collectors;
 @Service
 public class AssociationRulesService {
 
-    private static final int MINIMUM_PATTERN_LENGTH = 4;
+    private static final int MINIMUM_PATTERN_LENGTH = 8;
     private static final int MAXIMUM_PATTERN_LENGTH = Integer.MAX_VALUE;
 
-    private static final double MINIMUM_SUPPORT = 0.4;
+    private static final double MINIMUM_SUPPORT = 0.2;
     private static final double MINIMUM_CONFIDENCE = 1;
 
     private final AssociationRuleRepository associationRuleRepository;
