@@ -97,6 +97,9 @@ public class InfoFXController {
         InfoFXController.fisService = fisService;
         InfoFXController.ioManagerService = ioManagerService;
         InfoFXController.stageCreationService = stageCreationService;
+
+        System.out.println("Very high" + ffsService.findAll().stream().filter(feature -> feature.getTypingSpeed().equals(FuzzyMeasure.VERY_HIGH)).count());
+        System.out.println("high" + ffsService.findAll().stream().filter(feature -> feature.getTypingSpeed().equals(FuzzyMeasure.HIGH)).count());
     }
 
     @FXML
