@@ -148,30 +148,19 @@ public class FuzzyFeatureSampleService {
         }
 
         private Double chooseCrispValueFrom(FeatureSample featureSample, String feature) {
-            switch (feature) {
-                case "typingSpeed":
-                    return featureSample.getTypingSpeed();
-                case "meanDwellTime":
-                    return featureSample.getMeanDwellTime();
-                case "meanDelBackspDwell":
-                    return featureSample.getMeanDelBackspDwell();
-                case "meanFlightTime":
-                    return featureSample.getMeanFlightTime();
-                case "meanDiGraphKUTime":
-                    return featureSample.getMeanDigraphKUTime();
-                case "meanDiGraphKDTime":
-                    return featureSample.getMeanDigraphKDTime();
-                case "meanTriGraphKUTime":
-                    return featureSample.getMeanTrigraphKUTime();
-                case "meanTriGraphKDTime":
-                    return featureSample.getMeanTrigraphKDTime();
-                case "mistakesFrequency":
-                    return featureSample.getMistakesFrequency();
-                case "numPadUsageFrequency":
-                    return featureSample.getNumPadUsageFrequency();
-                default:
-                    throw new RuntimeException("Bad feature name: " + feature);
-            }
+            return switch (feature) {
+                case "typingSpeed" -> featureSample.getTypingSpeed();
+                case "meanDwellTime" -> featureSample.getMeanDwellTime();
+                case "meanDelBackspDwell" -> featureSample.getMeanDelBackspDwell();
+                case "meanFlightTime" -> featureSample.getMeanFlightTime();
+                case "meanDiGraphKUTime" -> featureSample.getMeanDigraphKUTime();
+                case "meanDiGraphKDTime" -> featureSample.getMeanDigraphKDTime();
+                case "meanTriGraphKUTime" -> featureSample.getMeanTrigraphKUTime();
+                case "meanTriGraphKDTime" -> featureSample.getMeanTrigraphKDTime();
+                case "mistakesFrequency" -> featureSample.getMistakesFrequency();
+                case "numPadUsageFrequency" -> featureSample.getNumPadUsageFrequency();
+                default -> throw new RuntimeException("Bad feature name: " + feature);
+            };
         }
         private FeatureName chooseFeatureNameFrom(String feature) {
             return switch (feature) {

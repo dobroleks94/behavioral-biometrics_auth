@@ -13,7 +13,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Behavioral Biometrics Authentication System</name>
     <description>Behavioral Biometrics Authentication System for Bachelor's Diploma</description>
-
+    <properties>
+        <start-class>com.diploma.IdentificationSystem</start-class>
+        <java.version>14</java.version>
+    </properties>
+    <packaging>jar</packaging>
     <dependencies>
         <!-- Local modules Dependencies -->
         <dependency>
@@ -21,15 +25,17 @@
             <artifactId>spmf</artifactId>
             <version>3.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/third-party_modules/spmf.jar</systemPath>
+            <systemPath>${project.basedir}/lib/spmf.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>net.sourceforge.jFuzzyLogic</groupId>
             <artifactId>jFuzzyLogic</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/third-party_modules/jFuzzyLogic.jar</systemPath>
+            <systemPath>${project.basedir}/lib/jFuzzyLogic.jar</systemPath>
         </dependency>
+
         <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,18 +111,22 @@
     </dependencies>
 
     <build>
+        <finalName>BiometricsSystemPrototype-1.0</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>14</source>
-                    <target>14</target>
+                    <fork>true</fork>
+                    <mainClass>${start-class}</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
