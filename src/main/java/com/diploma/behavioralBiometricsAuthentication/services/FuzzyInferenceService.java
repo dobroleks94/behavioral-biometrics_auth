@@ -104,8 +104,8 @@ public class FuzzyInferenceService {
 
         fis.evaluate();
 
-        for( Rule r : fis.getFunctionBlock("authenticator").getFuzzyRuleBlock("rulesFromAssociationRules").getRules() )
-            System.out.println(r);
+        /*for( Rule r : fis.getFunctionBlock("authenticator").getFuzzyRuleBlock("rulesFromAssociationRules").getRules() )
+            System.out.println(r);*/
 
         Variable userVerdict = fis.getVariable("user");
 
