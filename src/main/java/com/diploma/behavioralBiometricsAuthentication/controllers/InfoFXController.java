@@ -202,6 +202,7 @@ public class InfoFXController {
         phrase = phraseExtractor.getRandomPhrase();
         inputPhrase.setText(phrase);
         kpsService.clearAllContainers();
+        clearAllInputs();
         logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     private void updateInfoCard(){

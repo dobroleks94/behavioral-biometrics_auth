@@ -1,5 +1,4 @@
 package com.diploma.behavioralBiometricsAuthentication.controllers;
-import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
@@ -77,7 +76,7 @@ public class LoginFXController {
     }
 
     @FXML
-    private void initialize() throws IOException {
+    private void initialize() {
         setElementVisibility("identify");
         try { phrase = phraseExtractor.getRandomPhrase(); }
         catch (IOException e) { e.printStackTrace(); }
@@ -85,7 +84,7 @@ public class LoginFXController {
     }
 
 
-    public void identify() throws IOException {
+    public void identify() {
         try {
             authService.identifyUser( loginField.getText() );
 
@@ -185,6 +184,7 @@ public class LoginFXController {
         phrase = phraseExtractor.getRandomPhrase();
         inputPhrase.setText(phrase);
         kpsService.clearAllContainers();
+        clearInputArea();
         logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     //---------------------------------------------------------------------------------------------//
@@ -215,7 +215,7 @@ public class LoginFXController {
         if(keyEvent.getCode().equals(KeyCode.ENTER))
             auth();
     }
-    public void delegateIdentification(KeyEvent keyEvent) throws IOException {
+    public void delegateIdentification(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER))
             identify();
     }
@@ -248,9 +248,8 @@ public class LoginFXController {
                 updateGUIStep("default", step2, circleStep2, stepNum2, authentication1, passwordAuth);
                 updateGUIStep("default", step3, circleStep3, stepNum3, authentication2, biometrics1);
             }
-            case "authentication2" -> {
+            case "authentication2" ->
                 updateGUIStep("default", step4, circleStep4, stepNum4, authentication3, biometrics2);
-            }
             case "all" -> {
                 resetStepGUI("identification");
                 resetStepGUI("authentication");
@@ -269,7 +268,7 @@ public class LoginFXController {
     }
     //---------------------------------------------------------------------------------------------//
 
-    private void setElementVisibility(String step) throws IOException {
+    private void setElementVisibility(String step) {
         continueButton.setVisible(false);
         loginPane.setVisible(false);
         authButton.setVisible(false);
@@ -301,7 +300,7 @@ public class LoginFXController {
             }
         }
     }
-    private void showLastAuthLayer() throws IOException {
+    private void showLastAuthLayer() {
        setElementVisibility("auth2");
        enableListener();
     }
