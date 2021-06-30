@@ -2,9 +2,11 @@ package com.diploma.behavioralBiometricsAuthentication.configurations;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.User;
 import com.diploma.behavioralBiometricsAuthentication.services.UserService;
+import org.aspectj.lang.annotation.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -21,7 +23,7 @@ public class InitialConfig{
         return new BCryptPasswordEncoder();
     }
 
-   /* @Bean
+    /*@Bean
     public void createInitialUser(){
         User dobroshtan = userService.createUser("oleksii_dobroshtan", "dobroshtan_Password94");
         dobroshtan.setId(1L);
@@ -31,6 +33,7 @@ public class InitialConfig{
     }*/
 
     /*@Bean
+    //@DependsOn(value = {"createInitialUser"})
     public void resetProtection(){
         User dobroshtan = userService.findByLogin("oleksii_dobroshtan");
         dobroshtan.setProtect(false);

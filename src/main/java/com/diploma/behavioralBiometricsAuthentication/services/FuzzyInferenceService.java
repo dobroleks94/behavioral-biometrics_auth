@@ -134,7 +134,7 @@ public class FuzzyInferenceService {
             double max = Integer.MIN_VALUE;
             switch (measure) {
                 case VERY_LOW -> {
-                    min = fuzzyMeasures.get(0).getCrispDescriptor() - fuzzyMeasures.get(6).getCrispDescriptor();
+                    min = fuzzyMeasures.get(0).getCrispDescriptor() - Math.abs(fuzzyMeasures.get(6).getCrispDescriptor());
                     mid = fuzzyMeasures.get(0).getCrispDescriptor();
                     max = fuzzyMeasures.get(1).getCrispDescriptor();
                 }
@@ -166,7 +166,7 @@ public class FuzzyInferenceService {
                 case VERY_HIGH -> {
                     min = fuzzyMeasures.get(5).getCrispDescriptor();
                     mid = fuzzyMeasures.get(6).getCrispDescriptor();
-                    max = fuzzyMeasures.get(6).getCrispDescriptor() * 2;
+                    max = Math.abs(fuzzyMeasures.get(6).getCrispDescriptor()) * 2;
                 }
             }
             return new Value[]{
