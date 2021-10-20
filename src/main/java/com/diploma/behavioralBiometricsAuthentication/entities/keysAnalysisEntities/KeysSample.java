@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Sample {
+public class KeysSample {
 
     private String name;
     private SampleType type;
@@ -21,7 +21,7 @@ public class Sample {
                  keyDownTime;
 
 
-    public Sample(String name, SampleType type, double meanDwell, long flightTime, long keyUpTime, long keyDownTime) {
+    public KeysSample(String name, SampleType type, double meanDwell, long flightTime, long keyUpTime, long keyDownTime) {
         this.name = name;
         this.type = type;
         this.meanDwell = meanDwell;
