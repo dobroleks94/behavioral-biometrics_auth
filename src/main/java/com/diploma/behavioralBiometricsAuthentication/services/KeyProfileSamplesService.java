@@ -1,7 +1,7 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeyProfile;
-import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.Sample;
+import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeysSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
 import com.diploma.behavioralBiometricsAuthentication.factories.KeyInfoHolderFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class KeyProfileSamplesService {
 
     private Utility util;
 
-    private List<Sample> samplesCollector;
+    private List<KeysSample> samplesCollector;
     private List<KeyProfile> keyProfilesCollector, temporaryCollector;
 
 
@@ -46,7 +46,7 @@ public class KeyProfileSamplesService {
         }
     }
 
-    public List<Sample> getSamplesCollector() {
+    public List<KeysSample> getSamplesCollector() {
         return samplesCollector;
     }
     public List<KeyProfile> getKeyProfilesCollector() {
@@ -96,7 +96,7 @@ public class KeyProfileSamplesService {
             return res;
         }
 
-        private Sample createSample(KeyProfile[] keyProfile) {
+        private KeysSample createSample(KeyProfile[] keyProfile) {
             String splitter = "__";
 
             String name = Arrays.stream(keyProfile)

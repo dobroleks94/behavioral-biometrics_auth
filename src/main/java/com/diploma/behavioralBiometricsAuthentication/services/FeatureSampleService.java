@@ -4,7 +4,7 @@ import com.diploma.behavioralBiometricsAuthentication.entities.enums.KeyEventSta
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
 import com.diploma.behavioralBiometricsAuthentication.entities.featureSamples.FeatureSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeyProfile;
-import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.Sample;
+import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeysSample;
 import com.diploma.behavioralBiometricsAuthentication.factories.FeatureSampleFactory;
 import com.diploma.behavioralBiometricsAuthentication.repositories.FeatureSampleRepository;
 import org.springframework.stereotype.Service;
@@ -180,7 +180,7 @@ public class FeatureSampleService {
 
     private class Utility {
 
-        private Map<String, Double> fillFeatures(List<Sample> samplesCollector, List<KeyProfile> keyProfilesCollector) {
+        private Map<String, Double> fillFeatures(List<KeysSample> samplesCollector, List<KeyProfile> keyProfilesCollector) {
 
             HashMap<String, Double> result = new HashMap<>();
 
@@ -223,22 +223,22 @@ public class FeatureSampleService {
             result.put("meanDwellTime", dwellMean);
             result.put("meanDelBackspDwell", delHoldMean);
         }
-        private void computeFlightTime(List<Sample> samples, HashMap<String, Double> result) {
-            List<Sample> digraphSamples = samples.stream().filter(smpl -> smpl.getType() == SampleType.DiGraph).collect(Collectors.toList());
+        private void computeFlightTime(List<KeysSample> keysSamples, HashMap<String, Double> result) {
+            List<KeysSample> digraphKeysSamples = keysSamples.stream().filter(smpl -> smpl.getType() == SampleType.DiGraph).collect(Collectors.toList());
             result.put("meanFlightTime",
-                    ((double) sumAll(digraphSamples, Sample::getFlightTime) / digraphSamples.size()));
+                    ((double) sumAll(digraphKeysSamples, KeysSample::getFlightTime) / digraphKeysSamples.size()));
         }
-        private void computeKeyRelation(List<Sample> samplesCollector, HashMap<String, Double> result, SampleType type, KeyEventState eventState) {
-            List<Sample> samplesKUKD = samplesCollector.stream().filter(item -> item.getType() == type).collect(Collectors.toList());
+        private void computeKeyRelation(List<KeysSample> samplesCollector, HashMap<String, Double> result, SampleType type, KeyEventState eventState) {
+            List<KeysSample> samplesKUKD = samplesCollector.stream().filter(item -> item.getType() == type).collect(Collectors.toList());
 
             switch (eventState) {
                 case KeyUp:
                     result.put(String.format("mean%sKUTime", type.name()),
-                            ((double) sumAll(samplesKUKD, Sample::getKeyUpTime) / samplesKUKD.size()));
+                            ((double) sumAll(samplesKUKD, KeysSample::getKeyUpTime) / samplesKUKD.size()));
                     break;
                 case KeyDown:
                     result.put(String.format("mean%sKDTime", type.name()),
-                            ((double) sumAll(samplesKUKD, Sample::getKeyDownTime) / samplesKUKD.size()));
+                            ((double) sumAll(samplesKUKD, KeysSample::getKeyDownTime) / samplesKUKD.size()));
                     break;
             }
         }

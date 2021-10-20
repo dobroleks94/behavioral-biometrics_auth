@@ -1,7 +1,7 @@
 package com.diploma.behavioralBiometricsAuthentication.factories;
 
 import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeyProfile;
-import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.Sample;
+import com.diploma.behavioralBiometricsAuthentication.entities.keysAnalysisEntities.KeysSample;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.SampleType;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,10 @@ public class KeyInfoHolderFactory {
         return new KeyProfile(keyVal, keyCode);
     }
 
-    public Sample createSample(String name, SampleType type,
-                                      double meanDwell, long flightTime,
-                                      long keyDownTime, long keyUpTime){
-        return new Sample(name, type, meanDwell, flightTime, keyUpTime, keyDownTime);
+    public KeysSample createSample(String name, SampleType type,
+                                   double meanDwell, long flightTime,
+                                   long keyDownTime, long keyUpTime){
+        return new KeysSample(name, type, meanDwell, flightTime, keyUpTime, keyDownTime);
     }
 
 }
