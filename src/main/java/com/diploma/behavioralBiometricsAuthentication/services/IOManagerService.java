@@ -86,7 +86,7 @@ public class IOManagerService {
     }
 
 
-    private class Utility{
+    private static class Utility{
 
         public Path declareAttributes(List<String> mapKeys) throws IOException {
             Path filePath = Paths.get(".", TEMP_INPUT_ARFF);

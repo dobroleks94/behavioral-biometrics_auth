@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 @Service
@@ -41,9 +42,7 @@ public class FeatureSampleService {
     public FeatureSample save(FeatureSample sample) {
         return featureSampleRepository.save(sample);
     }
-    public Long getSize() {
-        return featureSampleRepository.count();
-    }
+    public long getCount() { return featureSampleRepository.count(); }
     public List<FeatureSample> findAll() {
         return featureSampleRepository.findAll();
     }
@@ -60,125 +59,84 @@ public class FeatureSampleService {
             throw new RuntimeException("It is likely to have been input nothing :(");
     }
 
-    public Double[] getTypingSpeedRange() {
-        List<FeatureSample> samples = featureSampleRepository.findAllByOrderByTypingSpeedAsc();
-        return new Double[]{
-                samples.get(0).getTypingSpeed(),
-                samples.get(samples.size() - 1).getTypingSpeed()
-        };
+    public double [] getTypingSpeedRange() {
+        double minimum = findTypingSpeedValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum typing speed value..."));
+        double maximum = findTypingSpeedValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum typing speed value..."));
+        return new double[]{minimum, maximum};
     }
-    public Double[] getFrequencyRange() {
-        Double minimum = findAscFrequencyValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscFrequencyValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getFrequencyRange() {
+        double minimum = findFrequencyValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findFrequencyValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-
-    public Double[] getFlightTimeRange() {
-        Double minimum = findAscFlightTimeValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscFlightTimeValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getFlightTimeRange() {
+        double minimum = findFlightTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findFlightTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-    public Double[] getDwellTimeRange() {
-        Double minimum = findAscDwellTimeValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscDwellTimeValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getDwellTimeRange() {
+        double minimum = findDwellTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findDwellTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-    public Double[] getDigraphTimeRange() {
-        Double minimum = findAscDigraphTimeValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscDigraphTimeValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getDigraphKUTimeRange() {
+        double minimum = findDigraphKUTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findDigraphKUTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-    public Double[] getTrigraphTimeRange() {
-        Double minimum = findAscTrigraphTimeValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscTrigraphTimeValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getDigraphKDTimeRange() {
+        double minimum = findDigraphKDTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findDigraphKDTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-    public List<Double> findAscFrequencyValues(int index) {
-        return Stream.of(
-                featureSampleRepository.findAllByOrderByMistakesFrequencyAsc().get(index).getMistakesFrequency(),
-                featureSampleRepository.findAllByOrderByNumPadUsageFrequencyAsc().get(index).getNumPadUsageFrequency()
-        ).collect(Collectors.toList());
+    public double[] getTrigraphKUTimeRange() {
+        double minimum = findTrigraphKUTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findTrigraphKUTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
-    public List<Double> findAscDigraphTimeValues(int index) {
-        return Stream.of(
-                featureSampleRepository.findAllByOrderByMeanDigraphKUTimeAsc().get(index).getMeanDigraphKUTime(),
-                featureSampleRepository.findAllByOrderByMeanDigraphKDTimeAsc().get(index).getMeanDigraphKDTime())
-                .collect(Collectors.toList());
-
-    }
-    public List<Double> findAscTrigraphTimeValues(int index) {
-        return Stream.of(
-                featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),
-                featureSampleRepository.findAllByOrderByMeanTrigraphKDTimeAsc().get(index).getMeanTrigraphKDTime())
-                .collect(Collectors.toList());
-
-    }
-    public List<Double> findAscDwellTimeValues(int index) {
-        return Stream.of(
-                featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
-                featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime())
-                .collect(Collectors.toList());
-
-    }
-    public List<Double> findAscFlightTimeValues(int index) {
-        return Stream.of( featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanFlightTime() )
-                .collect(Collectors.toList());
-    }
-
-    public long getCount() { return featureSampleRepository.count(); }
-
-    @Deprecated
-    public List<Double> findAscTimeValues(int index) {
-        return Stream.of(
-                featureSampleRepository.findAllByOrderByMeanDelBackspDwellAsc().get(index).getMeanDelBackspDwell(),
-                featureSampleRepository.findAllByOrderByMeanDwellTimeAsc().get(index).getMeanDwellTime(),
-                featureSampleRepository.findAllByOrderByMeanFlightTimeAsc().get(index).getMeanFlightTime(),
-                featureSampleRepository.findAllByOrderByMeanDigraphKUTimeAsc().get(index).getMeanDigraphKUTime(),
-                featureSampleRepository.findAllByOrderByMeanDigraphKDTimeAsc().get(index).getMeanDigraphKDTime(),
-                featureSampleRepository.findAllByOrderByMeanTrigraphKUTimeAsc().get(index).getMeanTrigraphKUTime(),
-                featureSampleRepository.findAllByOrderByMeanTrigraphKDTimeAsc().get(index).getMeanTrigraphKDTime())
-                .collect(Collectors.toList());
-    }
-
-    @Deprecated
-    public Double[] getTimeCostRange() {
-        Double minimum = findAscTimeValues(0).stream()
-                .reduce(Double::min)
-                .orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
-        Double maximum = findAscTimeValues((int) (getSize() - 1)).stream()
-                .reduce(Double::max)
-                .orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
-
-        return new Double[]{minimum, maximum};
+    public double[] getTrigraphKDTimeRange() {
+        double minimum = findTrigraphKDTimeValues().min().orElseThrow(() -> new RuntimeException("Cannot find minimum time value..."));
+        double maximum = findTrigraphKDTimeValues().max().orElseThrow(() -> new RuntimeException("Cannot find maximum time value..."));
+        return new double[]{minimum, maximum};
     }
 
 
-    private class Utility {
+    private DoubleStream findFrequencyValues() {
+        List<FeatureSample> samples = featureSampleRepository.findAll();
+        return DoubleStream.concat(
+                samples.stream().mapToDouble(FeatureSample::getMistakesFrequency),
+                samples.stream().mapToDouble(FeatureSample::getNumPadUsageFrequency)
+        );
+    }
+    private DoubleStream findDwellTimeValues() {
+        List<FeatureSample> samples = featureSampleRepository.findAll();
+        return DoubleStream.concat(
+                samples.stream().mapToDouble(FeatureSample::getMeanDelBackspDwell),
+                samples.stream().mapToDouble(FeatureSample::getMeanDwellTime)
+        );
+
+    }
+    private DoubleStream findFlightTimeValues() {
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getMeanFlightTime);
+    }
+    private DoubleStream findTypingSpeedValues(){
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getTypingSpeed);
+    }
+    private DoubleStream findDigraphKUTimeValues() {
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getMeanDigraphKUTime);
+    }
+    private DoubleStream findDigraphKDTimeValues() {
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getMeanDigraphKDTime);
+    }
+    private DoubleStream findTrigraphKUTimeValues() {
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getMeanTrigraphKUTime);
+    }
+    private DoubleStream findTrigraphKDTimeValues() {
+        return featureSampleRepository.findAll().stream().mapToDouble(FeatureSample::getMeanTrigraphKDTime);
+    }
+
+
+    private static class Utility {
 
         private Map<String, Double> fillFeatures(List<Sample> samplesCollector, List<KeyProfile> keyProfilesCollector) {
 

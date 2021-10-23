@@ -33,11 +33,11 @@ import java.util.stream.Collectors;
 @Service
 public class AssociationRulesService {
 
-    private static final int MINIMUM_PATTERN_LENGTH = 1;
+    private static final int MINIMUM_PATTERN_LENGTH = 7;
     private static final int MAXIMUM_PATTERN_LENGTH = Integer.MAX_VALUE;
 
-    private static final double MINIMUM_SUPPORT = 0.5;
-    private static final double MINIMUM_CONFIDENCE = 1;
+    private static final double MINIMUM_SUPPORT = 0.25;
+    private static final double MINIMUM_CONFIDENCE = 0.95;
 
     private final AssociationRuleRepository associationRuleRepository;
     private final AssociationRulesEngineFactory associationRulesEngine;
@@ -186,14 +186,11 @@ public class AssociationRulesService {
         }
 
         private Number getMeasure(String measure, Map<String, String> parts) {
-            switch (measure){
-                case "support":
-                    return Integer.parseInt(parts.get("support").split(":")[1].trim());
-                case "confidence":
-                    return Double.parseDouble(parts.get("confidence").split(":")[1].trim());
-                default:
-                    throw new RuntimeException("Bad measure specified!");
-            }
+            return switch (measure) {
+                case "support" -> Integer.parseInt(parts.get("support").split(":")[1].trim());
+                case "confidence" -> Double.parseDouble(parts.get("confidence").split(":")[1].trim());
+                default -> throw new RuntimeException("Bad measure specified!");
+            };
         }
 
         private List<AssociationItem> processParty(AssociationRuleParty party, Map<String, String> parts, AssociationRule rule){

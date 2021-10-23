@@ -166,8 +166,10 @@ public class FuzzyFeatureSampleService {
                 case "typingSpeed" -> FeatureName.SPEED;
                 case "meanDwellTime", "meanDelBackspDwell" -> FeatureName.DWELL_TIME;
                 case "meanFlightTime" -> FeatureName.FLIGHT_TIME;
-                case "meanDiGraphKUTime", "meanDiGraphKDTime" -> FeatureName.DiGRAPH_TIME;
-                case "meanTriGraphKUTime", "meanTriGraphKDTime" -> FeatureName.TriGRAPH_TIME;
+                case "meanDiGraphKUTime" -> FeatureName.DiGRAPH_KU_TIME;
+                case "meanTriGraphKUTime" -> FeatureName.TriGRAPH_KU_TIME;
+                case "meanDiGraphKDTime" -> FeatureName.DiGRAPH_KD_TIME;
+                case "meanTriGraphKDTime" -> FeatureName.TriGRAPH_KD_TIME;
                 case "mistakesFrequency", "numPadUsageFrequency" -> FeatureName.FREQUENCY;
                 default -> throw new RuntimeException("Bad feature name: " + feature);
             };

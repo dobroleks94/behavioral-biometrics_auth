@@ -200,6 +200,8 @@ public class InfoFXController {
     }
     public void updatePhrase() throws IOException {
         phrase = phraseExtractor.getRandomPhrase();
+        if (phrase.equals(inputPhrase.getText()))
+            updatePhrase();
         inputPhrase.setText(phrase);
         kpsService.clearAllContainers();
         clearAllInputs();
@@ -256,11 +258,11 @@ public class InfoFXController {
 
 
     private class ToggleSwitch extends Parent {
-        private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
+        private final BooleanProperty switchedOn = new SimpleBooleanProperty(false);
 
-        private TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25));
-        private FillTransition fillTransition = new FillTransition(Duration.seconds(0.25));
-        private ParallelTransition animation = new ParallelTransition(translateTransition, fillTransition);
+        private final TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25));
+        private final FillTransition fillTransition = new FillTransition(Duration.seconds(0.25));
+        private final ParallelTransition animation = new ParallelTransition(translateTransition, fillTransition);
 
         public BooleanProperty switchedOnProperty() {
             return switchedOn;
