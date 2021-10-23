@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.services;
 
+import ch.qos.logback.core.boolex.Matcher;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @Service
 public class ArbitraryPhraseExtractor {
@@ -37,10 +39,15 @@ public class ArbitraryPhraseExtractor {
     }
 
     public String getRandomPhrase() throws IOException {
-        return phrases.get(new Random().nextInt(phrases.size()))
+        String symbolsAbsenceMatch = "[0-9A-Za-z .]+";
+        String phrase = phrases.get(new Random().nextInt(phrases.size()));
+        if (!Pattern.matches(symbolsAbsenceMatch, phrase))
+            return getRandomPhrase();
+        return phrase;
+        /*return phrases.get(new Random().nextInt(phrases.size()))
                 .replaceAll("[“”]", "\"")
                 .replaceAll("\\s*—\\s*", " - ")
-                .replaceAll("’", "'");
+                .replaceAll("’", "'");*/
     }
 
     public void extractPhrases() throws IOException {
