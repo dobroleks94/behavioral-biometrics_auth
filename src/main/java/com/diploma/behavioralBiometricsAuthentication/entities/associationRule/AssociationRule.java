@@ -23,4 +23,13 @@ public class AssociationRule {
     private long userId;
 
 
+    @Override
+    public String toString() {
+        return AssociationRuleBuilder.builder()
+                .conditionWord()
+                .grabAssociationItems(antecedent)
+                .consequentWord()
+                .grabAssociationItems(consequent)
+                .toString();
+    }
 }

@@ -214,7 +214,6 @@ public class FuzzyInferenceService {
                                         List<Variable> variablesIn,
                                         Variable variableOut,
                                         RuleBlock ruleBlock){
-
             return associationRules.stream()
                     .map(aRule -> {
                         Rule rule = factory.createRule(aRule.getId().toString(), ruleBlock);

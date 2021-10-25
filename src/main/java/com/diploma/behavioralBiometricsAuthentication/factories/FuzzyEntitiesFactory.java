@@ -41,10 +41,8 @@ public class FuzzyEntitiesFactory {
         return functionBlock;
     }
     public void updateFunctionBlock(FunctionBlock fb, List<Variable> variables){
-        for(var variable : variables)
-            fb.setVariable(variable.getName(), variable);
+        variables.forEach(variable -> fb.setVariable(variable.getName(), variable));
     }
-
 
     public Variable createVariable(String name){
         return new Variable(name);
@@ -56,8 +54,7 @@ public class FuzzyEntitiesFactory {
         return new LinguisticTerm(name, membershipFunction);
     }
     public void updateVariable(Variable variable, List<LinguisticTerm> terms){
-        for(var term : terms)
-            variable.add(term);
+        terms.forEach(variable::add);
     }
 
 

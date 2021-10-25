@@ -87,7 +87,6 @@ public class LoginFXController {
     public void identify() {
         try {
             authService.identifyUser( loginField.getText() );
-
             enableListener();
             updateGUIStep("success", step1, circleStep1, stepNum1, identification);
             setElementVisibility("auth1");
@@ -104,7 +103,7 @@ public class LoginFXController {
             updateGUIStep("success", step2, circleStep2, stepNum2, authentication1, passwordAuth);
             if(authService.checkOnBiometricsProtection()) {
                try {
-                   if (authService.checkUserIdentity(authService.biometricsAuth())) {
+                   if (!authService.checkUserIdentity(authService.biometricsAuth())) {
                        failAuth2();
                        return;
                    }
@@ -138,7 +137,7 @@ public class LoginFXController {
         String userInput = inputArea.getText().trim();
         if(inputPhrase.getText().trim().equals(userInput)){
             try {
-                if (authService.checkUserIdentity(authService.biometricsAuth())) {
+                if (!authService.checkUserIdentity(authService.biometricsAuth())) {
                     failAuth3();
                     return;
                 }

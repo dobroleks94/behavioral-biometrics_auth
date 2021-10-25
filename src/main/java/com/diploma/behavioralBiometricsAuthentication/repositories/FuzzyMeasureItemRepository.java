@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface FuzzyMeasureItemRepository extends JpaRepository<FuzzyMeasureItem, Long> {
-
     List<FuzzyMeasureItem> findAllByFeatureName(FeatureName featureName);
-
 }
