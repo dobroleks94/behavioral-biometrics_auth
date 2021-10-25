@@ -15,6 +15,15 @@ public class AuthenticationService {
     private static User authenticatedUser;
     private static User tempUser;
 
+    private static boolean trickAuthentication = false;
+    public static void updateTrickAuthentication() {
+        AuthenticationService.trickAuthentication = !AuthenticationService.trickAuthentication;
+        System.out.println(trickAuthentication
+                ? "Trick authentication successfully activated"
+                : "Trick authentication disabled"
+        );
+    }
+
     public static User getAuthenticatedUser() {
         return authenticatedUser;
     }
@@ -40,6 +49,10 @@ public class AuthenticationService {
         return userService.comparePassword(tempUser, password);
     }
     public User biometricsAuth() throws RuntimeException {
+
+        if (trickAuthentication)
+            return new User();
+
         kpsService.buildSamples();
         FeatureSample featureSample = featureSampleService.buildFeatureSample();
         featureSample.setUserId(tempUser.getId());

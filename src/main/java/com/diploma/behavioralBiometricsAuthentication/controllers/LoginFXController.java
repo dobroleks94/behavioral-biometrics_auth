@@ -81,6 +81,7 @@ public class LoginFXController {
         try { phrase = phraseExtractor.getRandomPhrase(); }
         catch (IOException e) { e.printStackTrace(); }
         inputPhrase.setText( phrase );
+        enableListener();
     }
 
 
