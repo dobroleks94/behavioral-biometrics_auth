@@ -12,8 +12,7 @@ import java.util.Map;
 /**
  * Sample for user profile features' fuzzy values
  *
- *  ->  typingSpeed - definitely speed of typing (count of all pressed keys divided by time costs for input
- *                                                                          and multiplied by 60 sec [keys per minute] )
+ *  ->  typingSpeed - definitely speed of typing
  *  ->  mean[...]Time - mean time:
  *               [dwell] - mean holding time of each key per transaction;
  *               [DelBackspDwell] - mean holding time of 'Delete' or 'Backspace' keys;

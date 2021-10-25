@@ -36,8 +36,8 @@ public class AssociationRulesService {
     private static final int MINIMUM_PATTERN_LENGTH = 7;
     private static final int MAXIMUM_PATTERN_LENGTH = Integer.MAX_VALUE;
 
-    private static final double MINIMUM_SUPPORT = 0.25;
-    private static final double MINIMUM_CONFIDENCE = 0.95;
+    private static final double MINIMUM_SUPPORT = 0.15;
+    private static final double MINIMUM_CONFIDENCE = 1;
 
     private final AssociationRuleRepository associationRuleRepository;
     private final AssociationRulesEngineFactory associationRulesEngine;
@@ -69,9 +69,7 @@ public class AssociationRulesService {
         return rules;
     }
     public List<AssociationRule> getAssociationRules(List<FuzzyFeatureSample> fuzzyFeatureSamples){
-
         try {
-
             Map<Integer, String> itemsRepresentation = doDataPreProcess(fuzzyFeatureSamples);
             logger.log(SystemLogger.PRE_PROCESS_RESULT);
             Itemsets frequentPatterns = getFrequentItemsets();
@@ -87,12 +85,10 @@ public class AssociationRulesService {
     }
 
     public Map<Integer, String> doDataPreProcess(List<FuzzyFeatureSample> fuzzyFeatureSamples) throws IOException {
-
         try { ioManagerService.fillFile(fuzzyFeatureSamples); }
         catch (IOException e) { e.printStackTrace(); }
 
         TransactionDatabaseConverter converter = associationRulesEngine.createTransactionalDBConverter();
-
         return converter.convertARFFandReturnMap(
                 IOManagerService.getTempInputArff(),
                 IOManagerService.getTempInput(),
@@ -115,22 +111,18 @@ public class AssociationRulesService {
 
     }
     public Itemsets getFrequentItemsets() throws IOException {
-
         AlgoFPGrowth fpGrowth = associationRulesEngine.createFrequentPatternMiner();
-
         fpGrowth.setMinimumPatternLength(MINIMUM_PATTERN_LENGTH);
         fpGrowth.setMaximumPatternLength(MAXIMUM_PATTERN_LENGTH);
+
         Itemsets itemsets = fpGrowth.runAlgorithm(IOManagerService.getTempInput(), null, MINIMUM_SUPPORT);
         utility.setDBSize(fpGrowth.getDatabaseSize());
+
         return itemsets;
     }
 
     public void generateAssociationRules(Itemsets itemsets) throws IOException {
-
         AlgoAgrawalFaster94 algoAgrawal = associationRulesEngine.createAssociationRulesGenerator();
-
-//        algoAgrawal.setMaxAntecedentLength(FuzzyFeatureSample.getMapKeys().size());
-//        algoAgrawal.setMaxConsequentLength(FuzzyFeatureSample.getMapKeys().size());
         algoAgrawal.runAlgorithm(itemsets, IOManagerService.getTempOutput(), utility.getDBSize(), MINIMUM_CONFIDENCE);
     }
 
@@ -158,15 +150,15 @@ public class AssociationRulesService {
 
         private Map<String, String> splitForVitalParts(String stringRule) {
 
-            Pattern pattern = Pattern.compile("(([A-Za-z]+=[А-Я]+\\s)+)(==>\\s)(([A-Za-z]+=[А-Я]+\\s)+)(#SUP:\\s\\d+)(\\s)(#CONF:\\s\\d+\\.\\d+)");
+            Pattern pattern = Pattern.compile("(?<antecedent>([A-Za-z]+=[А-Я]+\\s)+)(==>\\s)(?<consequent>([A-Za-z]+=[А-Я]+\\s)+)(?<support>#SUP:\\s\\d+)(\\s)(?<confidence>#CONF:\\s\\d+\\.\\d+)");
             Matcher matcher = pattern.matcher(stringRule);
 
             if(matcher.find())
                 return new HashMap<>(){
-                    {  put(AssociationRuleParty.ANTECEDENT.name(), matcher.group(1)); }
-                    {  put(AssociationRuleParty.CONSEQUENT.name(), matcher.group(4)); }
-                    {  put("support",    matcher.group(6)); }
-                    {  put("confidence", matcher.group(8)); }
+                    {  put(AssociationRuleParty.ANTECEDENT.name(), matcher.group("antecedent")); }
+                    {  put(AssociationRuleParty.CONSEQUENT.name(), matcher.group("consequent")); }
+                    {  put("support",    matcher.group("support")); }
+                    {  put("confidence", matcher.group("confidence")); }
                 };
             else throw new RuntimeException("Impossible to process association rule :(");
         }
@@ -174,14 +166,18 @@ public class AssociationRulesService {
         private AssociationRule processPartitions(Map<String, String> parts, AssociationRule rule) {
             List<AssociationItem> antecedents = processParty(AssociationRuleParty.ANTECEDENT, parts, rule);
             List<AssociationItem> consequents = processParty(AssociationRuleParty.CONSEQUENT, parts, rule);
+
             int support = (int) getMeasure("support", parts);
             double confidence = (double) getMeasure("confidence", parts);
 
+            return updateRule(rule, antecedents, consequents, support, confidence);
+        }
+
+        private AssociationRule updateRule(AssociationRule rule, List<AssociationItem> antecedents, List<AssociationItem> consequents, int support, double confidence) {
             rule.setAntecedent(antecedents);
             rule.setConsequent(consequents);
             rule.setSupport(support);
             rule.setConfidence(confidence);
-
             return rule;
         }
 

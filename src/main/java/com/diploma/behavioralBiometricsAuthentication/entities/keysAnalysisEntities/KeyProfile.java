@@ -31,7 +31,7 @@ public class KeyProfile{
         this.numpadKey = false;
     }
     public KeyProfile(String keyVal, int keyCode) {
-        super();
+        this();
         this.keyVal = keyVal;
         this.keyCode = keyCode;
     }
