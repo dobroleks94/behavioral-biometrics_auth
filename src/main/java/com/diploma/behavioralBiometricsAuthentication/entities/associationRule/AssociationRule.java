@@ -22,23 +22,14 @@ public class AssociationRule {
     private double confidence;
     private long userId;
 
-    private String getStringRule(List<AssociationItem> items){
-        String itemRepres = items.stream()
-                .map(AssociationItem::toString)
-                .reduce("", (prevRes, item) -> prevRes + " AND " + item);
-        String pattern = " AND ";
-        return (itemRepres.startsWith(pattern))
-                ? itemRepres.substring(pattern.length())
-                : itemRepres;
-    }
 
     @Override
     public String toString() {
-
-        return new StringBuilder("IF ")
-                .append(getStringRule(antecedent))
-                .append( " THEN " )
-                .append(getStringRule(consequent))
+        return AssociationRuleBuilder.builder()
+                .conditionWord()
+                .grabAssociationItems(antecedent)
+                .consequentWord()
+                .grabAssociationItems(consequent)
                 .toString();
     }
 }

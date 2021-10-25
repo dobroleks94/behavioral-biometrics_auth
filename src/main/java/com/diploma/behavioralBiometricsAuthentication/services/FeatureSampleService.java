@@ -188,29 +188,24 @@ public class FeatureSampleService {
         }
         private void computeKeyRelation(List<KeysSample> samplesCollector, HashMap<String, Double> result, SampleType type, KeyEventState eventState) {
             List<KeysSample> samplesKUKD = samplesCollector.stream().filter(item -> item.getType() == type).collect(Collectors.toList());
-
             switch (eventState) {
-                case KeyUp:
-                    result.put(String.format("mean%sKUTime", type.name()),
-                            ((double) sumAll(samplesKUKD, KeysSample::getKeyUpTime) / samplesKUKD.size()));
-                    break;
-                case KeyDown:
-                    result.put(String.format("mean%sKDTime", type.name()),
-                            ((double) sumAll(samplesKUKD, KeysSample::getKeyDownTime) / samplesKUKD.size()));
-                    break;
+                case KeyUp -> result.put(String.format("mean%sKUTime", type.name()),
+                        ((double) sumAll(samplesKUKD, KeysSample::getKeyUpTime) / samplesKUKD.size()));
+                case KeyDown -> result.put(String.format("mean%sKDTime", type.name()),
+                        ((double) sumAll(samplesKUKD, KeysSample::getKeyDownTime) / samplesKUKD.size()));
             }
         }
         private void calculateUsageOf(String what, List<KeyProfile> keyProfilesCollector, HashMap<String, Double> result) {
             long keyPressCount;
             switch (what) {
-                case "NumPad":
+                case "NumPad" -> {
                     keyPressCount = keyProfilesCollector.stream().filter(KeyProfile::isNumpadKey).count();
                     result.put("numPadUsageFrequency", (double) ((keyPressCount * 100) / keyProfilesCollector.size()));
-                    break;
-                case "BackspDel":
+                }
+                case "BackspDel" -> {
                     keyPressCount = keyProfilesCollector.stream().filter(item -> item.isDeleteKey() || item.isBackspaceKey()).count();
                     result.put("mistakesFrequency", (double) ((keyPressCount * 100) / keyProfilesCollector.size()));
-                    break;
+                }
             }
         }
 

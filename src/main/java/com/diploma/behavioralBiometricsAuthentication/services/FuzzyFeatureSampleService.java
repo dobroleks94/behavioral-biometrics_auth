@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +45,6 @@ public class FuzzyFeatureSampleService {
     public List<FuzzyFeatureSample> saveAll(List<FeatureSample> featureSamples) {
         return fuzzyFeatureSampleRepository.saveAll(getFuzzyRepresentation(featureSamples));
     }
-    public List<FuzzyFeatureSample> findAll(){ return fuzzyFeatureSampleRepository.findAll(); }
     @Transactional
     public void deleteAllByUserId(Long userId) { fuzzyFeatureSampleRepository.deleteAllByUserId(userId);}
 
@@ -64,8 +64,6 @@ public class FuzzyFeatureSampleService {
         return fuzzyFeatureSample;
     }
     public FeatureName getFeatureName(String feature){ return utils.chooseFeatureNameFrom(feature); }
-
-    public long getCount() { return fuzzyFeatureSampleRepository.count(); }
 
 
     private class Utility {
@@ -97,7 +95,7 @@ public class FuzzyFeatureSampleService {
             boolean isHigherThanThreshold = measures.stream()
                     .filter(item -> item.getFeatureName() == featureName && item.getFuzzyMeasure() == FuzzyMeasure.VERY_HIGH)
                     .findFirst()
-                    .get()
+                    .orElseThrow(RuntimeException::new)
                     .getCrispDescriptor() <= crispValue;
 
             if(isHigherThanThreshold){
@@ -109,23 +107,11 @@ public class FuzzyFeatureSampleService {
                 }).sorted((a, b) -> (int) (b.getMembershipRate() * 100 - a.getMembershipRate() * 100))
                         .collect(Collectors.toList());
             }
+            Predicate<FuzzyMeasureItem> crispHigherOrEqual = item -> crispValue >= item.getCrispDescriptor();
+            Predicate<FuzzyMeasureItem> crispLower = item -> crispValue < item.getCrispDescriptor();
 
-            FuzzyMeasureItem leftPossible = measures.stream()
-                    .filter(item -> item.getFeatureName() == featureName)
-                    .filter(item -> crispValue >= item.getCrispDescriptor())
-                    .reduce((first, last) -> last).orElse(
-                            measures.stream()
-                                    .filter(item -> item.getFeatureName() == featureName && item.getFuzzyMeasure() == FuzzyMeasure.VERY_LOW)
-                                    .findFirst().get()
-                    );
-            FuzzyMeasureItem rightPossible = measures.stream()
-                    .filter(item -> item.getFeatureName() == featureName)
-                    .filter(item -> crispValue < item.getCrispDescriptor())
-                    .findFirst().orElse(
-                            measures.stream()
-                                    .filter(item -> item.getFeatureName() == featureName && item.getFuzzyMeasure() == FuzzyMeasure.VERY_HIGH)
-                                    .findFirst().get()
-                    );
+            FuzzyMeasureItem leftPossible = getFuzzyMeasureItem(featureName, crispHigherOrEqual, FuzzyMeasure.VERY_LOW);
+            FuzzyMeasureItem rightPossible = getFuzzyMeasureItem(featureName, crispLower, FuzzyMeasure.VERY_HIGH);
 
             double leftMembershipRate = (rightPossible.getCrispDescriptor() - crispValue) / (rightPossible.getCrispDescriptor() - leftPossible.getCrispDescriptor());
             double rightMembershipRate = (crispValue - leftPossible.getCrispDescriptor()) / (rightPossible.getCrispDescriptor() - leftPossible.getCrispDescriptor());
@@ -134,17 +120,33 @@ public class FuzzyFeatureSampleService {
             final double right = rightMembershipRate > 1 ? 1 : rightMembershipRate;
 
             List<FuzzyValue> values = new ArrayList<>();
-            measures.stream().filter(measure -> measure.getFeatureName() == featureName).forEach(measure -> {
-                if (measure.getFuzzyMeasure() == leftPossible.getFuzzyMeasure())
-                    values.add(fuzzyFactory.createFuzzyValue(leftPossible.getFuzzyMeasure(), left));
-                else if (measure.getFuzzyMeasure() == rightPossible.getFuzzyMeasure())
-                    values.add(fuzzyFactory.createFuzzyValue(rightPossible.getFuzzyMeasure(), right));
-                else
-                    values.add(fuzzyFactory.createFuzzyValue(measure.getFuzzyMeasure(), 0.0));
-
-            });
+            measures.stream()
+                    .filter(measure -> measure.getFeatureName() == featureName)
+                    .forEach(measure ->
+                            values.add(getFuzzyValue(leftPossible, rightPossible, left, right, measure))
+                    );
             values.sort((a, b) -> (int) (b.getMembershipRate() * 100 - a.getMembershipRate() * 100));
             return values;
+        }
+
+        private FuzzyValue getFuzzyValue(FuzzyMeasureItem leftPossible, FuzzyMeasureItem rightPossible, double left, double right, FuzzyMeasureItem measure) {
+            if (measure.getFuzzyMeasure() == leftPossible.getFuzzyMeasure())
+                return fuzzyFactory.createFuzzyValue(leftPossible.getFuzzyMeasure(), left);
+            else if (measure.getFuzzyMeasure() == rightPossible.getFuzzyMeasure())
+                return fuzzyFactory.createFuzzyValue(rightPossible.getFuzzyMeasure(), right);
+            else
+                return fuzzyFactory.createFuzzyValue(measure.getFuzzyMeasure(), 0.0);
+        }
+
+        private FuzzyMeasureItem getFuzzyMeasureItem(FeatureName featureName, Predicate<FuzzyMeasureItem> crispFilter, FuzzyMeasure fuzzyMeasure) {
+            return measures.stream()
+                    .filter(item -> item.getFeatureName() == featureName)
+                    .filter(crispFilter)
+                    .reduce((first, last) -> last).orElse(
+                            measures.stream()
+                                    .filter(item -> item.getFeatureName() == featureName && item.getFuzzyMeasure() == fuzzyMeasure)
+                                    .findFirst().orElseThrow(RuntimeException::new)
+                    );
         }
 
         private Double chooseCrispValueFrom(FeatureSample featureSample, String feature) {

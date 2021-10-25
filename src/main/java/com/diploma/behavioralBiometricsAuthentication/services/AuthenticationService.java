@@ -32,9 +32,8 @@ public class AuthenticationService {
         this.fisService = fisService;
     }
 
-    public User identifyUser(String username){
+    public void identifyUser(String username){
         tempUser = userService.findByLogin( username );
-        return tempUser;
     }
     public boolean passwordAuth(String password) {
         return userService.comparePassword(tempUser, password);
@@ -43,7 +42,6 @@ public class AuthenticationService {
         kpsService.buildSamples();
         FeatureSample featureSample = featureSampleService.buildFeatureSample();
         featureSample.setUserId(tempUser.getId());
-
         return userService.findByLogin( fisService.authentication(featureSample) );
     }
 
@@ -55,7 +53,7 @@ public class AuthenticationService {
         return tempUser.isProtect();
     }
     public boolean checkUserIdentity(User user) {
-        return !tempUser.getLogin().equals(user.getLogin());
+        return tempUser.getLogin().equals(user.getLogin());
     }
 
 

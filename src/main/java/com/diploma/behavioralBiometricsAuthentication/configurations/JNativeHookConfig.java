@@ -1,6 +1,5 @@
 package com.diploma.behavioralBiometricsAuthentication.configurations;
 
-import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +10,6 @@ import java.util.logging.Logger;
 @Configuration
 public class JNativeHookConfig {
 
-//    public JNativeHookConfig(KeyboardListener listener) throws NativeHookException {
-//        GlobalScreen.registerNativeHook();
-//        GlobalScreen.addNativeKeyListener(listener);
-//    }
     public JNativeHookConfig() throws NativeHookException {
         GlobalScreen.registerNativeHook();
     }

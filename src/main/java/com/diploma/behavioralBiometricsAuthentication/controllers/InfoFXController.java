@@ -10,6 +10,7 @@ import com.diploma.behavioralBiometricsAuthentication.services.*;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -64,7 +65,6 @@ public class InfoFXController {
     @FXML
     private TextArea inputPhrase, inputArea;
 
-    private String phrase;
     private boolean activeListener;
 
     @Autowired
@@ -105,11 +105,8 @@ public class InfoFXController {
         toggleSwitch.setLayoutX(430);
         toggleSwitch.setLayoutY(385);
         toggleSwitch.setCursor(Cursor.HAND);
-
         mainPage.getChildren().addAll(toggleSwitch);
-
         username.setText(AuthenticationService.getAuthenticatedUser().getLogin());
-
         showMainPage();
     }
 
@@ -174,8 +171,10 @@ public class InfoFXController {
 
         List<FuzzyFeatureSample> fuzzyFeatures = ffsService.saveAll( fsService.findAll() );
         List<AssociationRule> associationRules = arService.saveAll(
-                arService.assignOwner(userService.findById(AuthenticationService.getAuthenticatedUser().getId()),
-                        arService.getAssociationRules(fuzzyFeatures))
+                arService.assignOwner(
+                        userService.findById( AuthenticationService.getAuthenticatedUser().getId() ),
+                        arService.getAssociationRules(fuzzyFeatures)
+                )
         );
         logger.log(SystemLogger.ASSOCIATION_RULES_SAVE_SUCCESS_RESULT);
 
@@ -197,7 +196,7 @@ public class InfoFXController {
         userService.saveUser(AuthenticationService.getAuthenticatedUser());
     }
     public void updatePhrase() throws IOException {
-        phrase = phraseExtractor.getRandomPhrase();
+        String phrase = phraseExtractor.getRandomPhrase();
         if (phrase.equals(inputPhrase.getText()))
             updatePhrase();
         inputPhrase.setText(phrase);
@@ -270,41 +269,47 @@ public class InfoFXController {
 
         public ToggleSwitch() {
 
-            Rectangle background = new Rectangle(150, 80);
-            background.setArcHeight(80);
-            background.setArcWidth(80);
-            background.setFill(Color.WHITESMOKE);
-            background.setStroke(Color.LIGHTGRAY);
-
-            Circle trigger = new Circle(40);
-            trigger.setCenterX(40);
-            trigger.setCenterY(40);
-            trigger.setFill(Color.WHITE);
-            trigger.setStroke(Color.LIGHTGRAY);
+            Rectangle background = createToggleBackground();
+            Circle trigger = createToggleTrigger();
 
             translateTransition.setNode(trigger);
             fillTransition.setShape(background);
 
             getChildren().addAll(background, trigger);
-
             switchedOn.addListener((obs, oldState, newState) -> {
-                boolean isOn = newState;
-                translateTransition.setToX(isOn ? background.getWidth() - trigger.getRadius() * 2 : 0);
-                fillTransition.setFromValue(isOn ? Color.WHITESMOKE : Color.LIMEGREEN);
-                fillTransition.setToValue(isOn ? Color.LIMEGREEN : Color.WHITESMOKE);
-
-                if (isOn)
-                    generateFIS();
-
-                updateUser(isOn);
+                updateToggleTransitionPosition(background, trigger, newState);
+                if (newState) { generateFIS(); }
+                updateUser(newState);
                 updateInfoCard();
-
                 animation.play();
             });
-
             setOnMouseClicked(event -> {
                 switchedOn.set(!switchedOn.get());
             });
+        }
+
+        private void updateToggleTransitionPosition(Rectangle background, Circle trigger, Boolean newState) {
+            translateTransition.setToX(newState ? background.getWidth() - trigger.getRadius() * 2 : 0);
+            fillTransition.setFromValue(newState ? Color.WHITESMOKE : Color.LIMEGREEN);
+            fillTransition.setToValue(newState ? Color.LIMEGREEN : Color.WHITESMOKE);
+        }
+
+        private Circle createToggleTrigger() {
+            Circle trigger = new Circle(40);
+            trigger.setCenterX(40);
+            trigger.setCenterY(40);
+            trigger.setFill(Color.WHITE);
+            trigger.setStroke(Color.LIGHTGRAY);
+            return trigger;
+        }
+
+        private Rectangle createToggleBackground() {
+            Rectangle background = new Rectangle(150, 80);
+            background.setArcHeight(80);
+            background.setArcWidth(80);
+            background.setFill(Color.WHITESMOKE);
+            background.setStroke(Color.LIGHTGRAY);
+            return background;
         }
     }
 }
