@@ -2,6 +2,7 @@ package com.diploma.behavioralBiometricsAuthentication.controllers;
 import com.diploma.behavioralBiometricsAuthentication.entities.logger.SystemLogger;
 import com.diploma.behavioralBiometricsAuthentication.listeners.KeyboardListener;
 import com.diploma.behavioralBiometricsAuthentication.services.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Controller
@@ -56,6 +59,9 @@ public class LoginFXController {
     private boolean activeListener;
     private String phrase;
 
+    @FXML
+    private Rectangle trickIndicator;
+
     @Autowired
     private void initializeBeans(KeyboardListener listener,
                                  NotificationService notificationService,
@@ -77,6 +83,14 @@ public class LoginFXController {
 
     @FXML
     private void initialize() {
+        Executors.newSingleThreadExecutor().submit(
+                () -> {
+                    while (true) {
+                        trickIndicator.setVisible(AuthenticationService.getTrickAuthentication());
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    }
+                }
+        );
         setElementVisibility("identify");
         try { phrase = phraseExtractor.getRandomPhrase(); }
         catch (IOException e) { e.printStackTrace(); }

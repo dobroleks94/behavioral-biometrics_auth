@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="695.0" prefWidth="1093.0" style="-fx-background-color: grey;" styleClass="backgroundAdj" stylesheets="@stylesheets/css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.diploma.behavioralBiometricsAuthentication.controllers.LoginFXController">
+<AnchorPane prefHeight="695.0" prefWidth="1093.0" style="-fx-background-color: grey;" styleClass="backgroundAdj" stylesheets="@stylesheets/css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.diploma.behavioralBiometricsAuthentication.controllers.LoginFXController">
    <children>
       <Rectangle fx:id="step4" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="749.0" layoutY="137.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
       <Rectangle fx:id="step3" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="40.0" layoutX="503.0" layoutY="138.0" stroke="LIMEGREEN" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="7.0" width="282.0" />
@@ -159,5 +159,6 @@
             </ImageView>
          </children>
       </Pane>
+      <Rectangle fx:id="trickIndicator" arcHeight="5.0" arcWidth="5.0" fill="#00407c" height="16.0" layoutX="1078.0" layoutY="-13.0" stroke="#5232f5" strokeType="INSIDE" strokeWidth="0.0" width="15.0" />
    </children>
 </AnchorPane>

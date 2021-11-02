@@ -15,7 +15,10 @@ public class AuthenticationService {
     private static User authenticatedUser;
     private static User tempUser;
 
-    private static boolean trickAuthentication = false;
+    private static Boolean trickAuthentication = false;
+    public static Boolean getTrickAuthentication() {
+        return trickAuthentication;
+    }
     public static void updateTrickAuthentication() {
         AuthenticationService.trickAuthentication = !AuthenticationService.trickAuthentication;
         System.out.println(trickAuthentication
