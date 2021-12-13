@@ -33,6 +33,7 @@ public class FuzzyFeatureSample {
     @Id
     @GeneratedValue
     private Long id;
+    @Enumerated(EnumType.STRING)
     private FuzzyMeasure typingSpeed,
                          meanDwellTime,
                          meanDelBackspDwell,

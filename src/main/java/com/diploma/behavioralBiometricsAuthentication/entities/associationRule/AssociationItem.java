@@ -17,8 +17,10 @@ public class AssociationItem {
     @Id
     @GeneratedValue
     private Long id;
+    @Enumerated(EnumType.STRING)
     private AssociationRuleParty party;
     private String featureName;
+    @Enumerated(EnumType.STRING)
     private FuzzyMeasure measure;
     @ManyToOne
     private AssociationRule parent;

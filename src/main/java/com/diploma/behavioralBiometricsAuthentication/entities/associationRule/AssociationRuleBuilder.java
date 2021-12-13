@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.associationRule;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
 import com.diploma.behavioralBiometricsAuthentication.entities.enums.RuleConstructors;
 
 import java.util.List;
@@ -20,18 +21,19 @@ public class AssociationRuleBuilder {
         );
         return this;
     }
-    public AssociationRuleBuilder grabAssociationItems(List<AssociationItem> items){
+    public AssociationRuleBuilder grabAssociationItems(List<AssociationItem> items, AssociationRuleParty ruleParty){
         String pattern = RuleConstructors.construct(
                 RuleConstructors.SPACE,
                 RuleConstructors.AND,
                 RuleConstructors.SPACE
         );
-        collectItemsLogicSequence(items, pattern);
+        collectItemsLogicSequence(items, pattern, ruleParty);
         return this;
     }
 
-    private void collectItemsLogicSequence(List<AssociationItem> items, String pattern) {
+    private void collectItemsLogicSequence(List<AssociationItem> items, String pattern, AssociationRuleParty ruleParty) {
         items.stream()
+                .filter(item -> item.getParty().equals(ruleParty))
                 .map(AssociationItem::toString)
                 .map(associationItem -> associationItem.concat(pattern))
                 .forEach(stringBuilder::append);

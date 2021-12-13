@@ -5,10 +5,7 @@ import com.diploma.behavioralBiometricsAuthentication.entities.enums.FuzzyMeasur
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -24,7 +21,9 @@ public class FuzzyMeasureItem {
     @Id
     @GeneratedValue
     private Long id;
+    @Enumerated(EnumType.STRING)
     private FeatureName featureName;
+    @Enumerated(EnumType.STRING)
     private FuzzyMeasure fuzzyMeasure;
     private double crispDescriptor;
 
