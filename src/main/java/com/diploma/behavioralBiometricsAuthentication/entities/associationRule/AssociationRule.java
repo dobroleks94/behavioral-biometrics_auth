@@ -1,5 +1,6 @@
 package com.diploma.behavioralBiometricsAuthentication.entities.associationRule;
 
+import com.diploma.behavioralBiometricsAuthentication.entities.enums.AssociationRuleParty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +16,7 @@ public class AssociationRule {
     @GeneratedValue
     private Long id;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<AssociationItem> antecedent;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<AssociationItem> consequent;
+    private List<AssociationItem> associationItems;
     private int support;
     private double confidence;
     private long userId;
@@ -27,9 +26,9 @@ public class AssociationRule {
     public String toString() {
         return AssociationRuleBuilder.builder()
                 .conditionWord()
-                .grabAssociationItems(antecedent)
+                .grabAssociationItems(associationItems, AssociationRuleParty.ANTECEDENT)
                 .consequentWord()
-                .grabAssociationItems(consequent)
+                .grabAssociationItems(associationItems, AssociationRuleParty.CONSEQUENT)
                 .toString();
     }
 }
