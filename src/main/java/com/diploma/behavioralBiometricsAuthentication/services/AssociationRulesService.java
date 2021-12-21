@@ -22,13 +22,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AssociationRulesService {
@@ -174,8 +172,7 @@ public class AssociationRulesService {
         }
 
         private AssociationRule updateRule(AssociationRule rule, List<AssociationItem> antecedents, List<AssociationItem> consequents, int support, double confidence) {
-            rule.setAntecedent(antecedents);
-            rule.setConsequent(consequents);
+            rule.setAssociationItems(Stream.of(antecedents, consequents).flatMap(Collection::stream).collect(Collectors.toList()));
             rule.setSupport(support);
             rule.setConfidence(confidence);
             return rule;

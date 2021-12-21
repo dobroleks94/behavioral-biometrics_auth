@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -30,5 +31,19 @@ public class AssociationRule {
                 .consequentWord()
                 .grabAssociationItems(associationItems, AssociationRuleParty.CONSEQUENT)
                 .toString();
+    }
+
+    public List<AssociationItem> getAntecedent() {
+        return this.associationItems
+                .stream()
+                .filter(item -> item.getParty().equals(AssociationRuleParty.ANTECEDENT))
+                .collect(Collectors.toList());
+    }
+
+    public List<AssociationItem> getConsequent() {
+        return this.associationItems
+                .stream()
+                .filter(item -> item.getParty().equals(AssociationRuleParty.CONSEQUENT))
+                .collect(Collectors.toList());
     }
 }
