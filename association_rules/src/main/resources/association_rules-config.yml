@@ -1,0 +1,9 @@
+association-rules:
+  files:
+    temp-input-arff: "tempInput.arff"
+    temp-output-arff: "tempOutput.arff"
+    temp-input: "tempInput.arff.tmp"
+    temp-output: "tempOutput.arff.tmp"
+  support: 0.15
+  confidence: 1
+  min-pattern-length: 7

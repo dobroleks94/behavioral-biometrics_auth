@@ -1,0 +1,12 @@
+notifications:
+  title:
+    success:
+      save: "Saved"
+      auth: "Successful authorization"
+      prefix: "success-write"
+    fail: "Refused"
+    error: "Error"
+  icon-path:
+    success: "/fxml/stylesheets/icons/success.png"
+    fail: "/fxml/stylesheets/icons/fail.png"
+    error: "/fxml/stylesheets/icons/wrong.png"

@@ -1,0 +1,10 @@
+fcl:
+  function-block: "authenticator"
+  rule-block: "association_rules"
+  variables:
+    output: "user"
+  fis:
+    file-name: "authenticator.fcl"
+    deffuzification:
+      term:
+        step: 10
