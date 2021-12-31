@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="695.0" prefWidth="1093.0" style="-fx-background-color: grey;" styleClass="backgroundAdj" stylesheets="@stylesheets/css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="acs.behavioral_biometrics.gui_fx.controllers.InfoFXController">
+    <children>
+      <Pane layoutX="5.0" layoutY="4.0" prefHeight="88.0" prefWidth="1181.0">
+         <children>
+            <Rectangle arcHeight="35.0" arcWidth="35.0" fill="DARKBLUE" height="88.0" layoutX="-1.0" opacity="0.35" stroke="TRANSPARENT" strokeType="INSIDE" width="1181.0" />
+              <Label fx:id="title1" layoutX="386.0" layoutY="5.0" text="Behavioral Biometrics" textAlignment="CENTER" textFill="WHITE">
+                  <font>
+                      <Font name="Ubuntu Bold" size="40.0" />
+                  </font>
+              </Label>
+              <Label fx:id="title2" layoutX="500.0" layoutY="48.0" text="Training System" textAlignment="CENTER" textFill="WHITE">
+                  <font>
+                      <Font name="Ubuntu Bold" size="25.0" />
+                  </font>
+              </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="4.0" layoutY="97.0" prefHeight="592.0" prefWidth="182.0">
+         <children>
+            <Rectangle arcHeight="35.0" arcWidth="35.0" fill="DARKBLUE" height="592.0" opacity="0.35" stroke="TRANSPARENT" strokeType="INSIDE" width="182.0" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="6.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@stylesheets/icons/home.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="mainPageLink" layoutX="21.0" layoutY="31.0" mnemonicParsing="false" onAction="#showMainPage" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Main page" textFill="WHITE">
+               <font>
+                  <Font name="Ubuntu Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="8.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@stylesheets/icons/lock.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="pwdLink" layoutX="21.0" layoutY="115.0" mnemonicParsing="false" onAction="#showPasswordInput" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Password" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@stylesheets/icons/file-alt.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="freeTextLink" layoutX="21.0" layoutY="189.0" mnemonicParsing="false" onAction="#showFreeTextInput" prefHeight="80.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Free text" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="17.0" layoutY="516.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@stylesheets/icons/sign-out-alt.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="logoutLink" layoutX="22.0" layoutY="503.0" mnemonicParsing="false" onAction="#logout" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: transparent;" text="Log out" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="204.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@stylesheets/icons/user-circle.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="username" layoutX="243.0" layoutY="136.0" text="dobroshtan94" textFill="WHITE">
+         <font>
+            <Font name="Ubuntu Bold" size="35.0" />
+         </font>
+      </Label>
+      <Pane fx:id="passwordPage" layoutX="193.0" layoutY="98.0" prefHeight="590.0" prefWidth="1000.0">
+         <children>
+            <TextField fx:id="trainPwd" layoutX="329.0" layoutY="237.0" onKeyPressed="#checkEnterPress" prefHeight="48.0" prefWidth="321.0">
+               <font>
+                  <Font name="Ubuntu Bold" size="15.0" />
+               </font></TextField>
+            <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="280.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@stylesheets/icons/lock.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="280.0" layoutY="192.0" text="Password:" textFill="WHITE" underline="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="30.0" />
+               </font>
+            </Label>
+            <Button fx:id="writePwdButton" layoutX="510.0" layoutY="291.0" mnemonicParsing="false" onAction="#writePasswordSample" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Submit" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label layoutX="114.0" layoutY="128.0" text="Please, enter your password to save the keystroke feature sample profile" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Ubuntu Bold Italic" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="mainPage" layoutX="188.0" layoutY="98.0" prefHeight="590.0" prefWidth="1000.0">
+         <children>
+            <HBox layoutX="14.0" layoutY="114.0" spacing="15.0">
+               <children>
+                  <Pane prefHeight="115.0" prefWidth="229.0">
+                     <children>
+                        <Rectangle arcHeight="50.0" arcWidth="50.0" height="115.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" width="229.0">
+                           <fill>
+                              <LinearGradient endX="0.23076923076923062" endY="1.0" startX="1.0">
+                                 <stops>
+                                    <Stop color="#273927" />
+                                    <Stop color="#23e14c" offset="1.0" />
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Label layoutX="88.0" layoutY="34.0" text="Association" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="88.0" layoutY="61.0" text="rules" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="associationRuleCount" layoutX="5.0" layoutY="25.0" prefHeight="66.0" prefWidth="104.0" text="123" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="45.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="115.0" prefWidth="236.0">
+                     <children>
+                        <Rectangle arcHeight="50.0" arcWidth="50.0" height="115.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" width="236.0">
+                           <fill>
+                              <LinearGradient endY="1.0" startX="1.0">
+                                 <stops>
+                                    <Stop color="#65403c" />
+                                    <Stop color="#fc0d0d" offset="1.0" />
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Label layoutX="106.0" layoutY="46.0" prefHeight="24.0" prefWidth="104.0" text="keystroke" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="featureSampleCount" layoutX="7.0" layoutY="25.0" prefHeight="66.0" prefWidth="98.0" text="549" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="106.0" layoutY="23.0" text="User's" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="105.0" layoutY="69.0" prefHeight="24.0" prefWidth="104.0" text="profiles" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="115.0" prefWidth="236.0">
+                     <children>
+                        <Rectangle arcHeight="50.0" arcWidth="50.0" height="115.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" width="236.0">
+                           <fill>
+                              <LinearGradient endX="0.038461538461538325" endY="1.0" startX="1.0">
+                                 <stops>
+                                    <Stop color="#2a2c15" />
+                                    <Stop color="#2a2c15" offset="0.007407407407407408" />
+                                    <Stop color="#eeee14" offset="1.0" />
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Label layoutX="84.0" layoutY="34.0" text="Keystroke" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="featureCount" layoutX="16.0" layoutY="25.0" prefHeight="66.0" prefWidth="57.0" text="10" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="84.0" layoutY="58.0" text="features" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="115.0" prefWidth="236.0">
+                     <children>
+                        <Rectangle arcHeight="50.0" arcWidth="50.0" height="115.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" width="236.0">
+                           <fill>
+                              <LinearGradient endX="0.15384615384615374" endY="1.0" startX="1.0">
+                                 <stops>
+                                    <Stop color="#18434d" />
+                                    <Stop color="#18434d" offset="0.007407407407407408" />
+                                    <Stop color="#1aa8d7" offset="1.0" />
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Label fx:id="termCount" layoutX="26.0" layoutY="25.0" prefHeight="66.0" prefWidth="38.0" text="7" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="75.0" layoutY="46.0" text="Fuzzy Terms" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Ubuntu Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+            <Label layoutX="207.0" layoutY="311.0" text="Apply biometrics security" textAlignment="CENTER" textFill="WHITE" textOverrun="WORD_ELLIPSIS" underline="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+       <Pane fx:id="freeTextPane" layoutX="193.0" layoutY="97.0" prefHeight="592.0" prefWidth="1000.0">
+          <children>
+             <Pane fx:id="phrasePane" layoutX="79.0" layoutY="101.0" prefHeight="416.0" prefWidth="842.0">
+                <children>
+                   <Rectangle fx:id="descriptionContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="76.0" layoutX="15.0" layoutY="15.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
+                   <Rectangle fx:id="inputContainer" arcHeight="75.0" arcWidth="75.0" fill="WHITE" height="320.0" layoutX="14.0" layoutY="96.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="7.0" width="806.0" />
+                   <Label fx:id="descriptionLabel" layoutX="220.0" layoutY="26.0" text="Please, enter the proposed text below">
+                      <font>
+                         <Font name="Ubuntu Bold" size="22.0" />
+                      </font>
+                   </Label>
+                   <TextArea fx:id="inputArea" layoutX="42.0" layoutY="248.0" onKeyReleased="#verifyFullText" onMouseClicked="#actionInputArea" prefHeight="155.0" prefWidth="751.0" promptText="Enter phrase here..." styleClass="inputAreaAdj" wrapText="true">
+                   </TextArea>
+                   <TextArea fx:id="inputPhrase" editable="false" layoutX="42.0" layoutY="106.0" prefHeight="134.0" prefWidth="744.0" styleClass="inputAreaAdj, phrase" wrapText="true" />
+                   <ImageView fx:id="update" fitHeight="30.0" fitWidth="40.0" layoutX="750.0" layoutY="208.0" onMouseClicked="#updatePhrase" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                         <Image url="@stylesheets/icons/sync-alt.png" />
+                      </image>
+                      <cursor>
+                         <Cursor fx:constant="HAND" />
+                      </cursor>
+                   </ImageView>
+                  <Label fx:id="descriptionLabel1" layoutX="183.0" layoutY="53.0" text="to save the keystroke feature sample profile:">
+                     <font>
+                        <Font name="Ubuntu Bold" size="22.0" />
+                     </font>
+                  </Label>
+                </children>
+             </Pane>
+            <Button fx:id="writeTextButton" layoutX="118.0" layoutY="523.0" mnemonicParsing="false" onAction="#writeInputAreaSample" prefHeight="43.0" prefWidth="751.0" style="-fx-background-color: linear-gradient(green, limegreen);" text="Submit" textAlignment="CENTER" textFill="#f2efef" wrapText="true">
+               <font>
+                  <Font name="Ubuntu Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+          </children>
+       </Pane>
+    </children>
+</AnchorPane>
