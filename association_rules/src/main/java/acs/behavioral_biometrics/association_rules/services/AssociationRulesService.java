@@ -18,7 +18,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -70,7 +69,6 @@ public class AssociationRulesService {
         rules.forEach(rule -> rule.setUserId(user.getId()));
         return rules;
     }
-    @Transactional
     public void deleteUserRules(long userId){
         associationRuleRepository.deleteAllByUserId(userId);
     }

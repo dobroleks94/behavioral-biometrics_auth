@@ -2,7 +2,6 @@ package acs.behavioral_biometrics.app_utils.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +17,7 @@ public class User {
     private Long id;
     private String login;
     private String password;
-    @Type(type = "yes_no")
-    private boolean protectionEnabled; // switch behavioral biometrics protection (true - switch on, false - switch off)
+    private boolean protect; // switch behavioral biometrics protection (true - switch on, false - switch off)
 
 
     public User() {};

@@ -5,6 +5,7 @@ import acs.behavioral_biometrics.app_utils.service.UserService;
 import acs.behavioral_biometrics.fuzzy_inference_system.services.FuzzyInferenceService;
 import acs.behavioral_biometrics.keystroke_handler.services.KeyProfileSamplesService;
 import lombok.Getter;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import acs.behavioral_biometrics.user_keystroke_profile.model.FeatureSample;
 import acs.behavioral_biometrics.user_keystroke_profile.service.FeatureSampleService;
@@ -53,7 +54,7 @@ public class AuthenticationService {
     }
 
     public boolean checkOnBiometricsProtection() {
-        return tempUser.isProtectionEnabled();
+        return tempUser.isProtect();
     }
     public boolean checkUserIdentity(User user) {
         return tempUser.getLogin().equals(user.getLogin());

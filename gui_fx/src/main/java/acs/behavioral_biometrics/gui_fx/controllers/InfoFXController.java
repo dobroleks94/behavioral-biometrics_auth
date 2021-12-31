@@ -158,7 +158,7 @@ public class InfoFXController {
         logger.log(SystemLogger.KEY_FEATURE_CONTAINERS_CLEAN);
     }
     private void updateInfoCard(){
-        toggleSwitch.switchedOnProperty().set(accessControlService.getAuthenticatedUser().isProtectionEnabled());
+        toggleSwitch.switchedOnProperty().set(accessControlService.getAuthenticatedUser().isProtect());
         associationRuleCount.setText(String.valueOf( dataCollector.getAssociationRulesCount() ));
         featureSampleCount.setText(String.valueOf( dataCollector.getFeatureSamplesCount() ));
         featureCount.setText(String.valueOf( dataCollector.getFeaturesCount() ));

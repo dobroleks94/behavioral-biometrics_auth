@@ -52,9 +52,8 @@
       </Pane>
       <Pane fx:id="passwordPane" layoutX="322.0" layoutY="380.0" prefHeight="60.0" prefWidth="450.0">
          <children>
-<!--               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Password" styleClass="inputAdj">-->
-            <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Password" styleClass="inputAdj">
-            <font>
+               <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="5.0" onKeyPressed="#delegateAuthorization" onMousePressed="#actionPassword" onMouseReleased="#enableListener" prefHeight="50.0" prefWidth="327.0" promptText="Password" styleClass="inputAdj">
+               <font>
                   <Font name="Ubuntu" size="22.0" />
                </font>
             </PasswordField>
