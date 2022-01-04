@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(scanBasePackages = {"acs.behavioral_biometrics"})
 @EntityScan(basePackages = {"acs.behavioral_biometrics"})
 @EnableJpaRepositories(basePackages = {"acs.behavioral_biometrics"})
-
 public class AccessControlSystem {
     public static void main(String[] args) {
         Application.launch(AccessControlSystemFX.class, args);
-        //SpringApplication.run(IdentificationSystem.class, args);
     }
 }
