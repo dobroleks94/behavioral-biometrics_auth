@@ -106,7 +106,7 @@ public class TrainingService {
     }
 
     public void updateUser(boolean isProtected) {
-        accessControlService.getAuthenticatedUser().setProtect(isProtected);
+        accessControlService.getAuthenticatedUser().setProtectionEnabled(isProtected);
         userService.saveUser(accessControlService.getAuthenticatedUser());
     }
 
