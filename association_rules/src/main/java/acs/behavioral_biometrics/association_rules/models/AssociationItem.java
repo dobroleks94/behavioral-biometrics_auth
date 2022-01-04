@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class AssociationItem {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)
     private AssociationRuleParty party;

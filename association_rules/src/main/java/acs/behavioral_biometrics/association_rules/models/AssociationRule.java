@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class AssociationRule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany(cascade = CascadeType.ALL)
     private List<AssociationItem> associationItems;
@@ -46,4 +46,6 @@ public class AssociationRule {
                 .filter(item -> item.getParty().equals(AssociationRuleParty.CONSEQUENT))
                 .collect(Collectors.toList());
     }
+
+
 }
