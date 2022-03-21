@@ -27,7 +27,7 @@ public class ArbitraryPhraseExtractor {
         phrases = new ArrayList<>();
         Document document = Jsoup.parse(
                 Jsoup.connect(resourceLocation).get()
-                        .childNode(1)
+//                        .childNode(1)
                         .childNode(2)
                         .toString()
         );
@@ -49,7 +49,7 @@ public class ArbitraryPhraseExtractor {
         int linkIndex = new Random().nextInt(links.size());
         Document doc = Jsoup.parse(
                 Jsoup.connect(links.get( linkIndex )).get()
-                        .childNode(1)
+//                        .childNode(1)
                         .childNode(2)
                         .toString()
         );
