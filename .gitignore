@@ -1,5 +1,5 @@
 HELP.md
-authenticator.fcl
+**/authenticator.fcl
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
